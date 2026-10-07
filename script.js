@@ -1,165 +1,128 @@
-document.addEventListener('DOMContentLoaded', function() {
-  // Parallax effect for hero background
-  window.addEventListener('scroll', () => {
-    const scrolled = window.scrollY;
-    const hero = document.querySelector('.hero');
-    
-    if (hero && window.innerWidth > 768) {
-      hero.style.backgroundPositionY = scrolled * 0.5 + 'px';
-    }
-  });
-  
-  // Parallax effect for sections with .parallax-section class
-  const parallaxSections = document.querySelectorAll('.parallax-section');
-  parallaxSections.forEach(section => {
-    const bg = section.querySelector('.parallax-bg');
-    if (bg) {
+document.addEventListener('DOMContentLoaded', function () {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Header: glass state on scroll
+  const header = document.querySelector('header');
+  const setHeaderState = () => {
+    header.classList.toggle('scrolled', window.scrollY > 24);
+  };
+  setHeaderState();
+  window.addEventListener('scroll', setHeaderState, { passive: true });
+
+  // Parallax — geparst via rAF, uitgeschakeld bij reduced motion
+  if (!prefersReducedMotion) {
+    const parallaxBg = document.querySelector('.parallax-bg');
+    const parallaxSection = document.querySelector('.parallax-section');
+    if (parallaxBg && parallaxSection) {
+      let ticking = false;
+      const update = () => {
+        const rect = parallaxSection.getBoundingClientRect();
+        const progress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+        const clamped = Math.min(Math.max(progress, 0), 1);
+        parallaxBg.style.transform = `translateY(${(clamped - 0.5) * 60}px) translateZ(0)`;
+        ticking = false;
+      };
       window.addEventListener('scroll', () => {
-        const rect = section.getBoundingClientRect();
-        const scrollPosition = window.pageYOffset;
-        const offset = (scrollPosition - (rect.top + scrollPosition - window.innerHeight)) * 0.4;
-        
-        if (window.innerWidth > 768) {
-          bg.style.transform = `translateY(${offset}px)`;
+        if (!ticking && window.innerWidth > 768) {
+          requestAnimationFrame(update);
+          ticking = true;
         }
-      });
+      }, { passive: true });
+    }
+  }
+
+  // Reveal on scroll — gestaggerd binnen elke oudergroep
+  const fadeEls = document.querySelectorAll('.fade-in');
+  fadeEls.forEach(el => {
+    if (!el.style.getPropertyValue('--i')) {
+      const siblings = [...el.parentElement.children].filter(c => c.classList.contains('fade-in'));
+      el.style.setProperty('--i', Math.min(siblings.indexOf(el), 6));
     }
   });
-  
-  // Fade-in animations on scroll
-  const fadeEls = document.querySelectorAll('.fade-in');
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1 });
-
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
   fadeEls.forEach(el => observer.observe(el));
 
-  // FAQ Accordion functionality
-  const accordionTriggers = document.querySelectorAll('.accordion-trigger');
-  
-  accordionTriggers.forEach(trigger => {
-    trigger.addEventListener('click', function() {
-      // Toggle active class on the trigger
-      this.classList.toggle('active');
-      
-      // Get the accordion content panel
-      const content = this.nextElementSibling;
-      
-      // Toggle active class on the content panel
-      content.classList.toggle('active');
-      
-      // Close other accordion items
-      accordionTriggers.forEach(otherTrigger => {
-        if (otherTrigger !== trigger) {
-          otherTrigger.classList.remove('active');
-          otherTrigger.nextElementSibling.classList.remove('active');
-        }
+  // FAQ accordion met aria
+  const triggers = document.querySelectorAll('.accordion-trigger');
+  triggers.forEach(trigger => {
+    trigger.addEventListener('click', function () {
+      const isOpen = this.classList.contains('active');
+      triggers.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-expanded', 'false');
+        t.nextElementSibling.classList.remove('active');
       });
-    });
-  });
-
-  // Mobile Navigation Toggle
-  const navCheckbox = document.getElementById('nav__checkbox');
-  const navMenuLinks = document.querySelectorAll('.nav__menu a');
-  
-  // Close mobile navigation when a link is clicked
-  navMenuLinks.forEach(link => {
-    link.addEventListener('click', function() {
-      navCheckbox.checked = false;
-    });
-  });
-
-  // Smooth scroll to anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      e.preventDefault();
-      
-      const targetId = this.getAttribute('href');
-      if (targetId === '#') return;
-      
-      const targetElement = document.querySelector(targetId);
-      if (targetElement) {
-        const headerHeight = document.querySelector('header').offsetHeight;
-        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-        
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        });
+      if (!isOpen) {
+        this.classList.add('active');
+        this.setAttribute('aria-expanded', 'true');
+        this.nextElementSibling.classList.add('active');
       }
     });
   });
 
-  // Add sticky class to header on scroll
-  const header = document.querySelector('header');
-  const addStickyClass = () => {
-    if (window.scrollY > 0) {
-      header.classList.add('sticky');
-    } else {
-      header.classList.remove('sticky');
-    }
-  };
+  // Mobiel menu sluiten bij klik op link
+  const navCheckbox = document.getElementById('nav__checkbox');
+  document.querySelectorAll('.nav__menu a').forEach(link => {
+    link.addEventListener('click', () => { navCheckbox.checked = false; });
+  });
 
-  // Initialize header state
-  addStickyClass();
-  
-  // Add event listener for scroll
-  window.addEventListener('scroll', addStickyClass);
-  
-  // Enhance horizontal scroll section
-  const horizontalScrollSection = document.querySelector('.horizontal-scroll-section');
-  if (horizontalScrollSection) {
-    // Add touch swiping functionality
+  // Smooth anchors (fallback naast scroll-padding)
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      const target = document.querySelector(targetId);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    });
+  });
+
+  // Horizontale scroll: grab-to-scroll + indicator
+  const scroller = document.querySelector('.horizontal-scroll-section');
+  if (scroller) {
     let isDown = false;
     let startX;
     let scrollLeft;
-    
-    horizontalScrollSection.addEventListener('mousedown', (e) => {
+
+    scroller.addEventListener('mousedown', (e) => {
       isDown = true;
-      horizontalScrollSection.style.cursor = 'grabbing';
-      startX = e.pageX - horizontalScrollSection.offsetLeft;
-      scrollLeft = horizontalScrollSection.scrollLeft;
+      scroller.style.cursor = 'grabbing';
+      startX = e.pageX - scroller.offsetLeft;
+      scrollLeft = scroller.scrollLeft;
     });
-    
-    horizontalScrollSection.addEventListener('mouseleave', () => {
-      isDown = false;
-      horizontalScrollSection.style.cursor = 'grab';
-    });
-    
-    horizontalScrollSection.addEventListener('mouseup', () => {
-      isDown = false;
-      horizontalScrollSection.style.cursor = 'grab';
-    });
-    
-    horizontalScrollSection.addEventListener('mousemove', (e) => {
+    ['mouseleave', 'mouseup'].forEach(evt =>
+      scroller.addEventListener(evt, () => {
+        isDown = false;
+        scroller.style.cursor = 'grab';
+      })
+    );
+    scroller.addEventListener('mousemove', (e) => {
       if (!isDown) return;
       e.preventDefault();
-      const x = e.pageX - horizontalScrollSection.offsetLeft;
-      const walk = (x - startX) * 2; // Scroll speed multiplier
-      horizontalScrollSection.scrollLeft = scrollLeft - walk;
+      const x = e.pageX - scroller.offsetLeft;
+      scroller.scrollLeft = scrollLeft - (x - startX) * 1.6;
     });
-    
-    // Set initial cursor style
-    horizontalScrollSection.style.cursor = 'grab';
-    
-    // Add scroll indicator click functionality
-    const scrollIndicator = document.querySelector('.scroll-indicator');
-    if (scrollIndicator) {
-      scrollIndicator.addEventListener('click', () => {
-        // Scroll to the next card that's not fully visible
-        const cards = horizontalScrollSection.querySelectorAll('.scroll-card');
-        const containerRect = horizontalScrollSection.getBoundingClientRect();
-        
-        for (let card of cards) {
+    scroller.style.cursor = 'grab';
+
+    const indicator = document.querySelector('.scroll-indicator');
+    if (indicator) {
+      indicator.addEventListener('click', () => {
+        const cards = scroller.querySelectorAll('.scroll-card');
+        const rect = scroller.getBoundingClientRect();
+        for (const card of cards) {
           const cardRect = card.getBoundingClientRect();
-          if (cardRect.right > containerRect.right) {
-            horizontalScrollSection.scrollTo({
-              left: horizontalScrollSection.scrollLeft + (cardRect.right - containerRect.right) + 20,
-              behavior: 'smooth'
+          if (cardRect.right > rect.right + 1) {
+            scroller.scrollTo({
+              left: scroller.scrollLeft + (cardRect.right - rect.right) + 20,
+              behavior: prefersReducedMotion ? 'auto' : 'smooth'
             });
             break;
           }

@@ -3,14 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WoningVrij - Zonder BKR. Zonder hypotheek. Wél een woning.</title>
+  <title>WoningVrij — Zonder BKR. Zonder hypotheek. Wél een woning.</title>
   <meta name="description" content="Via een non-hypotheekmodel kom je in aanmerking voor woningen van €200.000 tot €650.000 — van appartement tot villa.">
+  <meta property="og:title" content="WoningVrij — Zonder BKR. Zonder hypotheek. Wél een woning.">
+  <meta property="og:description" content="Via een non-hypotheekmodel kom je in aanmerking voor woningen van €200.000 tot €650.000.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.woningvry.nl">
+  <meta name="theme-color" content="#0d1b2e">
+  <link rel="icon" type="image/png" href="generated-icon.png">
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+  <a href="#wat-is" class="skip-link">Direct naar inhoud</a>
   <!-- Header met navigatie -->
   <header class="sticky">
     <div class="container">
@@ -42,16 +49,21 @@
 
   <!-- Hero section -->
   <section class="hero">
+    <div class="hero__bg" aria-hidden="true"></div>
     <div class="container">
       <div class="hero__content">
-        <h1 class="fade-in">
-          <span>WoningVrij.</span> 
+        <h1 class="fade-in" style="--i:0">
           <span>Zonder BKR.</span>
           <span>Zonder hypotheek.</span>
-          <span>Wél een woning.</span>
+          <span><em>Wél</em> een woning.</span>
         </h1>
-        <p class="fade-in">Via een non-hypotheekmodel kom je in aanmerking voor woningen van €200.000 tot €650.000 — van appartement tot villa.</p>
-        <a href="#hoe-werkt-het" class="btn-primary fade-in">Reserveer jouw woning</a>
+        <p class="fade-in" style="--i:1">Via een non-hypotheekmodel kom je in aanmerking voor woningen van €200.000 tot €650.000 — van appartement tot villa.</p>
+        <a href="#hoe-werkt-het" class="btn-primary fade-in" style="--i:2">Reserveer jouw woning</a>
+        <div class="hero__meta fade-in" style="--i:3">
+          <div class="hero__meta-item"><strong>500</strong><span>plekken in totaal</span></div>
+          <div class="hero__meta-item"><strong>4</strong><span>rondes</span></div>
+          <div class="hero__meta-item"><strong>€200k–€650k</strong><span>woningwaarde</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -60,7 +72,8 @@
   <section id="wat-is" class="wat-is">
     <div class="container">
       <div class="section-header">
-        <h2 class="fade-in">Wat is WoningVrij?</h2>
+        <span class="eyebrow fade-in">Het model</span>
+        <h2 class="fade-in" style="--i:1">Wat is WoningVrij?</h2>
       </div>
       <div class="wat-is__grid">
         <div class="wat-is__content fade-in">
@@ -124,8 +137,9 @@
   <section id="hoe-werkt-het" class="hoe-werkt-het">
     <div class="container">
       <div class="section-header">
-        <h2 class="fade-in">Hoe werkt het?</h2>
-        <p class="fade-in">In vier eenvoudige stappen naar jouw eigen woning, zonder de gebruikelijke obstakels.</p>
+        <span class="eyebrow fade-in">Traject</span>
+        <h2 class="fade-in" style="--i:1">Hoe werkt het?</h2>
+        <p class="fade-in" style="--i:2">In vier eenvoudige stappen naar jouw eigen woning, zonder de gebruikelijke obstakels.</p>
       </div>
       <div class="steps-container">
         <div class="step fade-in">
@@ -161,7 +175,8 @@
         </div>
       </div>
       <div class="notification fade-in">
-        <p><strong>Let op:</strong> Er zijn slechts 500 plekken beschikbaar, verdeeld over 4 rondes. Wie het eerst komt, wie het eerst maalt.</p>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        <p><strong>Let op:</strong> slechts 500 plekken, verdeeld over 4 rondes. Wie het eerst komt, wie het eerst maalt.</p>
       </div>
     </div>
   </section>
@@ -170,8 +185,9 @@
   <section id="woningen" class="woningen">
     <div class="container">
       <div class="section-header">
-        <h2 class="fade-in">Woningen & Locaties</h2>
-        <p class="fade-in">Diverse opties in heel Nederland, van appartementen tot villa's, aangepast naar jouw wensen.</p>
+        <span class="eyebrow fade-in">Aanbod</span>
+        <h2 class="fade-in" style="--i:1">Woningen &amp; locaties</h2>
+        <p class="fade-in" style="--i:2">Diverse opties in heel Nederland, van appartementen tot villa's, aangepast naar jouw wensen.</p>
       </div>
       
       <div class="woningen__grid">
@@ -312,40 +328,41 @@
   <section id="faq" class="faq">
     <div class="container">
       <div class="section-header">
-        <h2 class="fade-in">Veelgestelde vragen</h2>
+        <span class="eyebrow fade-in">Antwoorden</span>
+        <h2 class="fade-in" style="--i:1">Veelgestelde vragen</h2>
       </div>
-      
+
       <div class="accordion-container">
         <div class="accordion-item fade-in">
-          <button class="accordion-trigger">Wat is een non-hypotheek?</button>
+          <button class="accordion-trigger" aria-expanded="false">Wat is een non-hypotheek?<span class="accordion-icon" aria-hidden="true">+</span></button>
           <div class="accordion-content">
             <p>Een non-hypotheek is een alternatieve financieringsvorm waarbij je een woning kunt verkrijgen zonder de traditionele bancaire hypotheek. Bij WoningVrij werken we met een uniek model waarbij je eigenaar wordt van de woning via een zakelijke constructie, zonder tussenkomst van een bank en zonder BKR-check.</p>
           </div>
         </div>
         
         <div class="accordion-item fade-in">
-          <button class="accordion-trigger">Hoeveel borg moet ik betalen?</button>
+          <button class="accordion-trigger" aria-expanded="false">Hoeveel borg moet ik betalen?<span class="accordion-icon" aria-hidden="true">+</span></button>
           <div class="accordion-content">
             <p>De borg is afhankelijk van het type woning en jouw persoonlijke situatie. Doorgaans ligt dit tussen de 5% en 15% van de woningwaarde. Dit is aanzienlijk lager dan de gebruikelijke eigen inleg bij een traditionele hypotheek. Bij acceptatie van je aanvraag ontvang je een voorstel met het exacte borgbedrag.</p>
           </div>
         </div>
         
         <div class="accordion-item fade-in">
-          <button class="accordion-trigger">Is er een BKR-registratie?</button>
+          <button class="accordion-trigger" aria-expanded="false">Is er een BKR-registratie?<span class="accordion-icon" aria-hidden="true">+</span></button>
           <div class="accordion-content">
             <p>Nee, dat is het unieke aan ons model. We kijken niet naar je BKR-registratie en er wordt geen nieuwe registratie toegevoegd. Dit maakt WoningVrij ideaal voor mensen met een BKR-notering die via de reguliere weg geen hypotheek kunnen krijgen.</p>
           </div>
         </div>
         
         <div class="accordion-item fade-in">
-          <button class="accordion-trigger">Wat als ik geen inkomen heb?</button>
+          <button class="accordion-trigger" aria-expanded="false">Wat als ik geen inkomen heb?<span class="accordion-icon" aria-hidden="true">+</span></button>
           <div class="accordion-content">
             <p>Anders dan bij traditionele hypotheekverstrekkers kijken wij breder dan alleen naar inkomen uit loondienst. We beoordelen je totale financiële situatie, inclusief vermogen, potentiële toekomstige inkomsten en familie-ondersteuning. Ook zonder vast inkomen kun je in aanmerking komen, afhankelijk van je individuele situatie.</p>
           </div>
         </div>
         
         <div class="accordion-item fade-in">
-          <button class="accordion-trigger">Hoe snel kan ik beginnen?</button>
+          <button class="accordion-trigger" aria-expanded="false">Hoe snel kan ik beginnen?<span class="accordion-icon" aria-hidden="true">+</span></button>
           <div class="accordion-content">
             <p>Na aankoop van je ticket krijg je binnen 1-2 weken bericht over je plek in de ronde. Het volledige traject van aanvraag tot sleuteloverdracht duurt gemiddeld 6-12 maanden, afhankelijk van de locatie en het type woning. Dit is inclusief de bouwperiode. We streven ernaar het proces zo snel en soepel mogelijk te laten verlopen.</p>
           </div>
@@ -358,8 +375,9 @@
   <section id="contact" class="contact">
     <div class="container">
       <div class="section-header">
-        <h2 class="fade-in">Neem contact met ons op</h2>
-        <p class="fade-in">Heb je vragen of wil je meer informatie? Laat je gegevens achter en we nemen binnen 24 uur contact met je op.</p>
+        <span class="eyebrow fade-in">Contact</span>
+        <h2 class="fade-in" style="--i:1">Neem contact met ons op</h2>
+        <p class="fade-in" style="--i:2">Heb je vragen of wil je meer informatie? Laat je gegevens achter en we nemen binnen 24 uur contact met je op.</p>
       </div>
       
       <div class="contact-container">
@@ -450,7 +468,7 @@
       </div>
       
       <div class="footer-bottom">
-        <p>&copy; 2025 WoningVrij. Alle rechten voorbehouden.</p>
+        <p>&copy; 2026 WoningVrij. Alle rechten voorbehouden.</p>
       </div>
     </div>
   </footer>
