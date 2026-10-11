@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mijn account | WoningVrij</title>
+  <meta name="description" content="Beheer je WoningVrij-account.">
+  <meta name="theme-color" content="#0d1b2e">
+  <link rel="icon" type="image/png" href="generated-icon.png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="sticky sticky--solid">
+    <div class="container">
+      <nav class="nav">
+        <input type="checkbox" id="nav__checkbox" class="nav__checkbox">
+        <label for="nav__checkbox" class="nav__toggle">
+          <svg class="menu" viewBox="0 0 24 24" width="24" height="24">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12h18M3 6h18M3 18h18"></path>
+          </svg>
+          <svg class="close" viewBox="0 0 24 24" width="24" height="24">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 6L6 18M6 6l12 12"></path>
+          </svg>
+        </label>
+        <div class="nav__logo">
+          <a href="index.html">
+            <img src="attached_assets/photo-output(5).PNG" alt="WoningVrij Logo" class="logo-image">
+          </a>
+        </div>
+        <ul class="nav__menu">
+          <li><a href="index.html#wat-is">Wat is WoningVrij?</a></li>
+          <li><a href="index.html#hoe-werkt-het">Hoe werkt het</a></li>
+          <li><a href="index.html#woningen">Woningen & Locaties</a></li>
+          <li><a href="index.html#faq">Veelgestelde vragen</a></li>
+          <li><a href="index.html#contact" class="btn-primary">Reserveer jouw woning</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="account-page section">
+    <div class="container">
+      <span class="eyebrow">Mijn account</span>
+      <h1>Hoi, <span id="user-name">bezoeker</span></h1>
+      <p class="auth-sub">Beheer je gegevens en volg je reservering.</p>
+
+      <div class="account-grid">
+        <section class="account-card">
+          <h2>Profiel</h2>
+          <dl class="account-details">
+            <dt>Naam</dt><dd id="profiel-naam">…</dd>
+            <dt>E-mailadres</dt><dd id="profiel-email">…</dd>
+            <dt>E-mail geverifieerd</dt><dd id="profiel-verified">…</dd>
+            <dt>Lid sinds</dt><dd id="profiel-sinds">…</dd>
+          </dl>
+          <div class="account-actions">
+            <button id="verify-btn" class="btn-secondary" type="button" hidden>Verificatiemail opnieuw sturen</button>
+            <button id="reset-btn" class="btn-secondary" type="button">Wachtwoord wijzigen</button>
+          </div>
+          <p id="account-melding" class="form-melding" hidden></p>
+        </section>
+
+        <section class="account-card">
+          <h2>Mijn reservering</h2>
+          <p class="account-muted">Je hebt nog geen reservering aangevraagd. Vraag er een aan en we beoordelen je situatie individueel.</p>
+          <a href="mailto:info@woningvry.nl?subject=Reserveringsaanvraag%20WoningVrij" class="btn-primary">Vraag een reservering aan</a>
+        </section>
+      </div>
+
+      <button id="logout-btn" class="auth-link" type="button">Uitloggen</button>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script type="module">
+    import {
+      auth, onAuthStateChanged, sendPasswordResetEmail,
+      sendEmailVerification, signOut, foutTekst, toonMelding,
+    } from "./auth.js";
+
+    const melding = document.getElementById("account-melding");
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) { window.location.href = "login.html"; return; }
+      user.reload().then(() => {
+        const u = auth.currentUser;
+        if (u) {
+          document.getElementById("user-name").textContent = u.displayName || u.email.split("@")[0];
+          document.getElementById("profiel-naam").textContent = u.displayName || "Niet ingevuld";
+        }
+      });
+
+      document.getElementById("user-name").textContent = user.displayName || user.email.split("@")[0];
+      document.getElementById("profiel-naam").textContent = user.displayName || "Niet ingevuld";
+      document.getElementById("profiel-email").textContent = user.email;
+      document.getElementById("profiel-verified").textContent = user.emailVerified ? "Ja" : "Nee";
+      document.getElementById("profiel-sinds").textContent = user.metadata.creationTime
+        ? new Date(user.metadata.creationTime).toLocaleDateString("nl-NL", { day: "numeric", month: "long", year: "numeric" })
+        : "Onbekend";
+
+      const verifyBtn = document.getElementById("verify-btn");
+      verifyBtn.hidden = user.emailVerified;
+      verifyBtn.addEventListener("click", async () => {
+        try {
+          await sendEmailVerification(user);
+          toonMelding(melding, "Verificatiemail opnieuw verstuurd.", "success");
+        } catch (err) { toonMelding(melding, foutTekst(err)); }
+      });
+
+      document.getElementById("reset-btn").addEventListener("click", async () => {
+        try {
+          await sendPasswordResetEmail(auth, user.email);
+          toonMelding(melding, "Wijziglink verstuurd naar " + user.email + ".", "success");
+        } catch (err) { toonMelding(melding, foutTekst(err)); }
+      });
+    });
+
+    document.getElementById("logout-btn").addEventListener("click", async () => {
+      await signOut(auth);
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>

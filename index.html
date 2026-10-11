@@ -41,6 +41,7 @@
           <li><a href="#hoe-werkt-het">Hoe werkt het</a></li>
           <li><a href="#woningen">Woningen & Locaties</a></li>
           <li><a href="#faq">Veelgestelde vragen</a></li>
+          <li><a href="login.html" class="nav-auth-link">Inloggen</a></li>
           <li><a href="#contact" class="btn-primary">Reserveer jouw woning</a></li>
         </ul>
       </nav>
@@ -440,5 +441,13 @@
   </footer>
 
   <script src="script.js"></script>
+  <script type="module">
+    import { auth, onAuthStateChanged } from "./auth.js";
+    onAuthStateChanged(auth, (user) => {
+      if (!user) return;
+      const link = document.querySelector(".nav-auth-link");
+      if (link) { link.textContent = "Mijn account"; link.href = "account.html"; }
+    });
+  </script>
 </body>
 </html>

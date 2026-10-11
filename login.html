@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inloggen | WoningVrij</title>
+  <meta name="description" content="Log in op je WoningVrij-account.">
+  <meta name="theme-color" content="#0d1b2e">
+  <link rel="icon" type="image/png" href="generated-icon.png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="sticky sticky--solid">
+    <div class="container">
+      <nav class="nav">
+        <input type="checkbox" id="nav__checkbox" class="nav__checkbox">
+        <label for="nav__checkbox" class="nav__toggle">
+          <svg class="menu" viewBox="0 0 24 24" width="24" height="24">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12h18M3 6h18M3 18h18"></path>
+          </svg>
+          <svg class="close" viewBox="0 0 24 24" width="24" height="24">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 6L6 18M6 6l12 12"></path>
+          </svg>
+        </label>
+        <div class="nav__logo">
+          <a href="index.html">
+            <img src="attached_assets/photo-output(5).PNG" alt="WoningVrij Logo" class="logo-image">
+          </a>
+        </div>
+        <ul class="nav__menu">
+          <li><a href="index.html#wat-is">Wat is WoningVrij?</a></li>
+          <li><a href="index.html#hoe-werkt-het">Hoe werkt het</a></li>
+          <li><a href="index.html#woningen">Woningen & Locaties</a></li>
+          <li><a href="index.html#faq">Veelgestelde vragen</a></li>
+          <li><a href="index.html#contact" class="btn-primary">Reserveer jouw woning</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="auth-page section">
+    <div class="container">
+      <div class="auth-card">
+        <span class="eyebrow">Inloggen</span>
+        <h1>Welkom terug</h1>
+        <p class="auth-sub">Log in om je reservering en rondes te volgen.</p>
+
+        <form id="login-form" novalidate>
+          <div class="form-group">
+            <label for="email">E-mailadres</label>
+            <input type="email" id="email" autocomplete="email" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Wachtwoord</label>
+            <input type="password" id="password" autocomplete="current-password" required>
+          </div>
+          <p id="form-melding" class="form-melding" hidden></p>
+          <button type="submit" class="btn-primary auth-submit">Inloggen</button>
+        </form>
+
+        <button id="reset-link" class="auth-link" type="button">Wachtwoord vergeten?</button>
+        <p class="auth-switch">Nog geen account? <a href="registratie.html">Registreer hier</a></p>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script type="module">
+    import {
+      auth, onAuthStateChanged, signInWithEmailAndPassword,
+      sendPasswordResetEmail, foutTekst, toonMelding,
+    } from "./auth.js";
+
+    const form = document.getElementById("login-form");
+    const melding = document.getElementById("form-melding");
+    const resetLink = document.getElementById("reset-link");
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) window.location.href = "account.html";
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector("button[type=submit]");
+      btn.disabled = true;
+      try {
+        await signInWithEmailAndPassword(auth, form.email.value.trim(), form.password.value);
+        window.location.href = "account.html";
+      } catch (err) {
+        toonMelding(melding, foutTekst(err));
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    resetLink.addEventListener("click", async () => {
+      const email = form.email.value.trim();
+      if (!email) return toonMelding(melding, "Vul eerst je e-mailadres in.");
+      try {
+        await sendPasswordResetEmail(auth, email);
+        toonMelding(melding, "Resetlink verstuurd naar " + email + ".", "success");
+      } catch (err) {
+        toonMelding(melding, foutTekst(err));
+      }
+    });
+  </script>
+</body>
+</html>
