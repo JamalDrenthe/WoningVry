@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Header: glass state on scroll
   const header = document.querySelector('header');
   const setHeaderState = () => {
-    header.classList.toggle('scrolled', window.scrollY > 24);
+    header.classList.toggle('scrolled', window.scrollY > 24 || header.classList.contains('sticky--solid'));
   };
   setHeaderState();
   window.addEventListener('scroll', setHeaderState, { passive: true });
