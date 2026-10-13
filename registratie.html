@@ -121,18 +121,21 @@
     const form = document.getElementById("register-form");
     const melding = document.getElementById("form-melding");
     const googleBtn = document.getElementById("google-register-btn");
+    let registering = false;
 
     onAuthStateChanged(auth, (user) => {
-      if (user) window.location.href = "account.html";
+      if (user && !registering) window.location.href = "account.html";
     });
 
     googleBtn.addEventListener("click", async () => {
       googleBtn.disabled = true;
       const chosenRole = document.querySelector('input[name="account_role"]:checked')?.value || "zoekende";
       try {
+        registering = true;
         await signInWithGoogle(chosenRole);
         window.location.href = "account.html";
       } catch (err) {
+        registering = false;
         toonMelding(melding, foutTekst(err));
       } finally {
         googleBtn.disabled = false;
@@ -152,6 +155,7 @@
       const btn = form.querySelector("button[type=submit]");
       btn.disabled = true;
       try {
+        registering = true;
         const cred = await createUserWithEmailAndPassword(auth, email, pw);
         await updateProfile(cred.user, { displayName: name });
         await cred.user.reload();
@@ -159,6 +163,7 @@
         await sendEmailVerification(cred.user);
         window.location.href = "account.html";
       } catch (err) {
+        registering = false;
         toonMelding(melding, foutTekst(err));
       } finally {
         btn.disabled = false;
