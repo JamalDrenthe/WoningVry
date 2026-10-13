@@ -1,7 +1,7 @@
 {
   "projects": {
     "default": "woningvry-dev",
-    "prod": "woningvry-dev",
+    "prod": "woningvry-prod",
     "dev": "woningvry-dev"
   },
   "targets": {},
