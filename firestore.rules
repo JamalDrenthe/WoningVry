@@ -11,7 +11,7 @@ rules_version = '2';
 //   - email: string (required, 3-100 chars, valid email format)
 //   - displayName: string (optional, 1-100 chars)
 //   - name: string (optional, 1-100 chars)
-//   - role: string (optional, allowed: 'woningzoekende', 'woningaanbieder', 'user', 'admin')
+//   - role: string (optional, allowed: 'woningzoekende', 'woningaanbieder', 'zoekende', 'aanbieder', 'user', 'admin')
 //   - phoneNumber: string (optional, 1-30 chars)
 //   - phone: string (optional, 1-30 chars)
 //   - woonplaats: string (optional, 1-100 chars)
@@ -121,7 +121,7 @@ service cloud.firestore {
         (!('uid' in data) || (data.uid is string && data.uid.size() > 0 && data.uid.size() <= 128)) &&
         (!('displayName' in data) || (data.displayName is string && data.displayName.size() <= 100)) &&
         (!('name' in data) || (data.name is string && data.name.size() <= 100)) &&
-        (!('role' in data) || (data.role is string && data.role in ['woningzoekende', 'woningaanbieder', 'user', 'admin'])) &&
+        (!('role' in data) || (data.role is string && data.role in ['woningzoekende', 'woningaanbieder', 'zoekende', 'aanbieder', 'user', 'admin'])) &&
         (!('phoneNumber' in data) || (data.phoneNumber is string && data.phoneNumber.size() <= 30)) &&
         (!('phone' in data) || (data.phone is string && data.phone.size() <= 30)) &&
         (!('woonplaats' in data) || (data.woonplaats is string && data.woonplaats.size() <= 100)) &&
@@ -144,7 +144,7 @@ service cloud.firestore {
     function isAuthorizedUserCreate(uid) {
       let data = request.resource.data;
       return (!('uid' in data) || data.uid == uid) &&
-             (!('role' in data) || data.role in ['woningzoekende', 'woningaanbieder', 'user']) &&
+             (!('role' in data) || data.role in ['woningzoekende', 'woningaanbieder', 'zoekende', 'aanbieder', 'user']) &&
              (!('email' in data) || ('email' in request.auth.token && data.email == request.auth.token.email));
     }
 
