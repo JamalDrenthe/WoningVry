@@ -1,6 +1,6 @@
 # WoningVry Firebase & Authenticatie
 
-- **Productie Firebase Project:** `woningvry-prod`
+- **Firebase Project voor live en development:** `woningvry-dev`
 - **Ontwikkeling Firebase Project:** `woningvry-dev`
 - **Gekoppeld beheeraccount:** `info@jamaldrenthe.com`
 - **Live website:** [https://www.woningvry.nl](https://www.woningvry.nl) (Vercel)

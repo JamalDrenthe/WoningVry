@@ -29,12 +29,12 @@ import {
 export const ADMIN_EMAIL = "info@jamaldrenthe.com";
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyB0_cbCa22cnBcs5deRXT00dI6t6gKApow",
-  authDomain: "woningvry-prod.firebaseapp.com",
-  projectId: "woningvry-prod",
-  storageBucket: "woningvry-prod.firebasestorage.app",
-  messagingSenderId: "445042161749",
-  appId: "1:445042161749:web:079683f6d6c38409d77cdc",
+  apiKey: "AIzaSyB5JglCyZQ8MJbZAK55VAVEBTDqGDfp3Rg",
+  authDomain: "woningvry-dev.firebaseapp.com",
+  projectId: "woningvry-dev",
+  storageBucket: "woningvry-dev.firebasestorage.app",
+  messagingSenderId: "646933889467",
+  appId: "1:646933889467:web:31d034e49f4137c15dc49e",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -176,4 +176,3 @@ export function toonMelding(el, tekst, type = "error") {
   el.className = "form-melding form-melding--" + type;
   el.hidden = false;
 }
-
