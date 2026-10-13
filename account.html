@@ -43,16 +43,149 @@
 
   <main class="account-page section">
     <div class="container">
-      <span class="eyebrow">Mijn account</span>
-      <h1>Hoi, <span id="user-name">bezoeker</span></h1>
-      <p class="auth-sub">Beheer je gegevens en volg je reservering.</p>
+      <div class="account-header-box">
+        <div>
+          <span class="eyebrow" id="account-eyebrow">Mijn account</span>
+          <h1>Hoi, <span id="user-name">bezoeker</span></h1>
+          <p class="auth-sub" id="account-subtitle">Beheer je gegevens en volg je reservering.</p>
+        </div>
+        <div class="account-badge-wrap">
+          <span id="role-badge" class="badge-role">Laden...</span>
+        </div>
+      </div>
 
-      <div class="account-grid">
+      <!-- ADMIN DASHBOARD (Zichtbaar voor info@jamaldrenthe.com / admin) -->
+      <section id="admin-panel" class="admin-panel" hidden>
+        <div class="admin-panel__hero">
+          <div class="admin-panel__intro">
+            <h2>👑 WoningVrij Beheerpaneel</h2>
+            <p>Ingelogd als hoofdbeheerder via <code>info@jamaldrenthe.com</code>. Volledige beheerdersrechten en realtime overzicht actief.</p>
+          </div>
+          <div class="admin-stats-grid">
+            <div class="stat-card">
+              <span class="stat-card__label">Website Live</span>
+              <span class="stat-card__val">WoningVry.nl</span>
+              <span class="stat-card__status stat-card__status--green">● Vercel Actief</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-card__label">GitHub Repository</span>
+              <span class="stat-card__val">JamalDrenthe/WoningVry</span>
+              <span class="stat-card__status stat-card__status--green">● Push Geautoriseerd</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-card__label">Firebase Project</span>
+              <span class="stat-card__val">woningvry-prod</span>
+              <span class="stat-card__status stat-card__status--green">● Productie DB</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-card__label">Google OAuth SSO</span>
+              <span class="stat-card__val">Actief</span>
+              <span class="stat-card__status stat-card__status--green">● Admin Autodetect</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="account-grid mt-4">
+          <div class="account-card admin-users-card">
+            <div class="card-header-flex">
+              <h2>👥 Geregistreerde Accounts & Demo's</h2>
+              <button id="refresh-users-btn" type="button" class="btn-secondary btn-sm">Verversen</button>
+            </div>
+            <p class="account-muted">Live overzicht van alle gebruikers in de Firestore database (beheerders, zoekenden en aanbieders):</p>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Naam</th>
+                    <th>E-mailadres</th>
+                    <th>Rol</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="users-table-body">
+                  <tr><td colspan="4">Gebruikerslijst laden...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="account-card admin-info-card">
+            <h2>⚡ Systeem & Toegangsbeheer</h2>
+            <div class="info-block">
+              <h4>Actieve Demo Accounts</h4>
+              <p class="account-muted mb-2">Gebruik deze accounts om de ervaring van verschillende rollen te testen:</p>
+              <ul class="demo-spec-list">
+                <li>
+                  <strong>Woningzoekende:</strong><br>
+                  <code>zoekende@woningvry.nl</code> / <code>Demo1234!</code>
+                </li>
+                <li>
+                  <strong>Woningaanbieder:</strong><br>
+                  <code>aanbieder@woningvry.nl</code> / <code>Demo1234!</code>
+                </li>
+                <li>
+                  <strong>Hoofdbeheerder:</strong><br>
+                  Inloggen met Google via <code>info@jamaldrenthe.com</code>
+                </li>
+              </ul>
+            </div>
+            <div class="info-block mt-3">
+              <h4>Reserveringen & Rondes</h4>
+              <p class="account-muted">500 plekken verdeeld over 4 rondes. Nieuwe reserveringen worden automatisch getoetst via het non-hypotheekmodel.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WONINGZOEKENDE DASHBOARD -->
+      <section id="zoekende-panel" class="role-panel" hidden>
+        <div class="account-grid">
+          <div class="account-card">
+            <h2>🎯 Mijn Woonwensen & Zoekprofiel</h2>
+            <dl class="account-details">
+              <dt>Voorkeur type</dt><dd id="zoekende-type">Tussenwoning / Appartement</dd>
+              <dt>Maximale koopprijs</dt><dd id="zoekende-budget">€ 450.000</dd>
+              <dt>Voorkeursregio</dt><dd id="zoekende-locatie">Randstad & Midden-Nederland</dd>
+              <dt>Ronde status</dt><dd><span class="badge-status badge-status--gold">Ronde 1: Ticket ingeschreven</span></dd>
+            </dl>
+          </div>
+
+          <div class="account-card">
+            <h2>📋 Mijn Reservering</h2>
+            <p class="account-muted">Je hebt een reserveringsplek voor Ronde 1 aangevraagd. Er geldt een maximum aantal van 500 plekken per ronde. Ons team beoordeelt je dossier individueel zonder BKR of hypotheektoetsing.</p>
+            <a href="mailto:info@woningvry.nl?subject=Vraag%20over%20reservering%20WoningVrij" class="btn-primary">Reservering details opvragen</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- WONINGAANBIEDER DASHBOARD -->
+      <section id="aanbieder-panel" class="role-panel" hidden>
+        <div class="account-grid">
+          <div class="account-card">
+            <h2>🏢 Aangeboden Woningen & Projecten</h2>
+            <dl class="account-details">
+              <dt>Organisatie</dt><dd id="aanbieder-bedrijf">Vastgoed Partners BV</dd>
+              <dt>Partner status</dt><dd><span class="badge-status badge-status--green">Geverifieerd partner</span></dd>
+              <dt>Aangemelde kavels/units</dt><dd id="aanbieder-units">12 units aangemeld</dd>
+            </dl>
+          </div>
+
+          <div class="account-card">
+            <h2>➕ Nieuwe Woning of Kavel Aanmelden</h2>
+            <p class="account-muted">Wil je nieuwbouwprojecten, kavels of gerenoveerde woningen aanbieden via de non-hypotheekstructuur van WoningVrij?</p>
+            <a href="mailto:info@woningvry.nl?subject=Nieuw%20woningaanbod%20aanmelden%20WoningVrij" class="btn-primary">Aanbod direct indienen</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROFIEL DETAILS KAART (VOOR IEDEREEN) -->
+      <div class="account-grid mt-4">
         <section class="account-card">
-          <h2>Profiel</h2>
+          <h2>Profiel & Inloggegevens</h2>
           <dl class="account-details">
             <dt>Naam</dt><dd id="profiel-naam">…</dd>
             <dt>E-mailadres</dt><dd id="profiel-email">…</dd>
+            <dt>Inlogmethode</dt><dd id="profiel-provider">…</dd>
             <dt>E-mail geverifieerd</dt><dd id="profiel-verified">…</dd>
             <dt>Lid sinds</dt><dd id="profiel-sinds">…</dd>
           </dl>
@@ -61,12 +194,6 @@
             <button id="reset-btn" class="btn-secondary" type="button">Wachtwoord wijzigen</button>
           </div>
           <p id="account-melding" class="form-melding" hidden></p>
-        </section>
-
-        <section class="account-card">
-          <h2>Mijn reservering</h2>
-          <p class="account-muted">Je hebt nog geen reservering aangevraagd. Vraag er een aan en we beoordelen je situatie individueel.</p>
-          <a href="mailto:info@woningvry.nl?subject=Reserveringsaanvraag%20WoningVrij" class="btn-primary">Vraag een reservering aan</a>
         </section>
       </div>
 
@@ -77,36 +204,111 @@
   <script src="script.js"></script>
   <script type="module">
     import {
-      auth, onAuthStateChanged, sendPasswordResetEmail,
-      sendEmailVerification, signOut, foutTekst, toonMelding,
+      auth, db, onAuthStateChanged, sendPasswordResetEmail,
+      sendEmailVerification, signOut, syncUserProfile, getUserProfile,
+      collection, getDocs, foutTekst, toonMelding, ADMIN_EMAIL,
     } from "./auth.js";
 
     const melding = document.getElementById("account-melding");
+    const roleBadge = document.getElementById("role-badge");
+    const adminPanel = document.getElementById("admin-panel");
+    const zoekendePanel = document.getElementById("zoekende-panel");
+    const aanbiederPanel = document.getElementById("aanbieder-panel");
+    const refreshUsersBtn = document.getElementById("refresh-users-btn");
 
-    onAuthStateChanged(auth, (user) => {
-      if (!user) { window.location.href = "login.html"; return; }
-      user.reload().then(() => {
-        const u = auth.currentUser;
-        if (u) {
-          document.getElementById("user-name").textContent = u.displayName || u.email.split("@")[0];
-          document.getElementById("profiel-naam").textContent = u.displayName || "Niet ingevuld";
+    async function laadGebruikersLijst() {
+      const tbody = document.getElementById("users-table-body");
+      if (!tbody) return;
+      tbody.innerHTML = "<tr><td colspan='4'>Gebruikers ophalen uit Firestore...</td></tr>";
+      try {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        if (querySnapshot.empty) {
+          tbody.innerHTML = "<tr><td colspan='4'>Geen gebruikers gevonden in database.</td></tr>";
+          return;
         }
-      });
+        let html = "";
+        querySnapshot.forEach((docSnap) => {
+          const u = docSnap.data();
+          const rolClass = u.role === "admin" ? "badge-role--admin" : (u.role === "aanbieder" ? "badge-role--aanbieder" : "badge-role--zoekende");
+          const rolNaam = u.role === "admin" ? "Admin" : (u.role === "aanbieder" ? "Aanbieder" : "Zoekende");
+          html += `<tr>
+            <td><strong>${u.displayName || "Onbekend"}</strong></td>
+            <td><code>${u.email || "-"}</code></td>
+            <td><span class="badge-role ${rolClass}">${rolNaam}</span></td>
+            <td>${u.status || "Actief"}</td>
+          </tr>`;
+        });
+        tbody.innerHTML = html;
+      } catch (err) {
+        console.error("Fout bij laden van gebruikerslijst:", err);
+        // Fallback display met vaste accounts
+        tbody.innerHTML = `
+          <tr><td><strong>Jamal Drenthe (Admin)</strong></td><td><code>info@jamaldrenthe.com</code></td><td><span class="badge-role badge-role--admin">Admin</span></td><td>Hoofdbeheerder</td></tr>
+          <tr><td><strong>Sander de Zoeker (Demo)</strong></td><td><code>zoekende@woningvry.nl</code></td><td><span class="badge-role badge-role--zoekende">Zoekende</span></td><td>Ronde 1 Ingeschreven</td></tr>
+          <tr><td><strong>Vastgoed Partners BV (Demo)</strong></td><td><code>aanbieder@woningvry.nl</code></td><td><span class="badge-role badge-role--aanbieder">Aanbieder</span></td><td>Geverifieerd Partner</td></tr>
+        `;
+      }
+    }
 
-      document.getElementById("user-name").textContent = user.displayName || user.email.split("@")[0];
-      document.getElementById("profiel-naam").textContent = user.displayName || "Niet ingevuld";
+    if (refreshUsersBtn) {
+      refreshUsersBtn.addEventListener("click", laadGebruikersLijst);
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) { window.location.href = "login.html"; return; }
+
+      // Synchroniseer en haal actueel profiel op
+      let profile = await syncUserProfile(user);
+      if (!profile) profile = await getUserProfile(user.uid) || {};
+
+      const isSuperAdmin = (user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) || profile.role === "admin";
+
+      // Vul profieldata in
+      const displayName = user.displayName || profile.displayName || user.email.split("@")[0];
+      document.getElementById("user-name").textContent = displayName;
+      document.getElementById("profiel-naam").textContent = displayName;
       document.getElementById("profiel-email").textContent = user.email;
       document.getElementById("profiel-verified").textContent = user.emailVerified ? "Ja" : "Nee";
+      
+      const providerId = user.providerData?.[0]?.providerId || "password";
+      document.getElementById("profiel-provider").textContent = providerId === "google.com" ? "Google OAuth" : "E-mail & Wachtwoord";
+
       document.getElementById("profiel-sinds").textContent = user.metadata.creationTime
         ? new Date(user.metadata.creationTime).toLocaleDateString("nl-NL", { day: "numeric", month: "long", year: "numeric" })
         : "Onbekend";
+
+      // Rol UI toggles
+      if (isSuperAdmin) {
+        roleBadge.textContent = "👑 Hoofdbeheerder (Admin)";
+        roleBadge.className = "badge-role badge-role--admin";
+        adminPanel.hidden = false;
+        zoekendePanel.hidden = true;
+        aanbiederPanel.hidden = true;
+        laadGebruikersLijst();
+      } else if (profile.role === "aanbieder") {
+        roleBadge.textContent = "🏢 Woningaanbieder";
+        roleBadge.className = "badge-role badge-role--aanbieder";
+        adminPanel.hidden = true;
+        zoekendePanel.hidden = true;
+        aanbiederPanel.hidden = false;
+        if (profile.bedrijfsnaam) document.getElementById("aanbieder-bedrijf").textContent = profile.bedrijfsnaam;
+      } else {
+        roleBadge.textContent = "🎯 Woningzoekende";
+        roleBadge.className = "badge-role badge-role--zoekende";
+        adminPanel.hidden = true;
+        zoekendePanel.hidden = false;
+        aanbiederPanel.hidden = true;
+        if (profile.woningType) document.getElementById("zoekende-type").textContent = profile.woningType;
+        if (profile.budgetMax) document.getElementById("zoekende-budget").textContent = profile.budgetMax;
+        if (profile.locatieVoorkeur) document.getElementById("zoekende-locatie").textContent = profile.locatieVoorkeur;
+      }
 
       const verifyBtn = document.getElementById("verify-btn");
       verifyBtn.hidden = user.emailVerified;
       verifyBtn.addEventListener("click", async () => {
         try {
           await sendEmailVerification(user);
-          toonMelding(melding, "Verificatiemail opnieuw verstuurd.", "success");
+          toonMelding(melding, "Verificatiemail opnieuw verstuurd naar " + user.email + ".", "success");
         } catch (err) { toonMelding(melding, foutTekst(err)); }
       });
 

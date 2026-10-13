@@ -9,6 +9,8 @@ import {
   sendPasswordResetEmail,
   sendEmailVerification,
   signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import {
   getFirestore,
@@ -16,9 +18,15 @@ import {
   addDoc,
   getDocs,
   doc,
+  getDoc,
   setDoc,
   serverTimestamp,
+  query,
+  where,
+  orderBy,
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+export const ADMIN_EMAIL = "info@jamaldrenthe.com";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyB0_cbCa22cnBcs5deRXT00dI6t6gKApow",
@@ -33,6 +41,9 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: "select_account" });
+
 export {
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -45,9 +56,99 @@ export {
   addDoc,
   getDocs,
   doc,
+  getDoc,
   setDoc,
   serverTimestamp,
+  query,
+  where,
+  orderBy,
+  GoogleAuthProvider,
+  signInWithPopup,
 };
+
+// Profiel synchroniseren met Firestore (rol toekennen, admin toewijzen bij info@jamaldrenthe.com)
+export async function syncUserProfile(user, preferredRole = "zoekende") {
+  if (!user) return null;
+  const userRef = doc(db, "users", user.uid);
+  const isSuperAdmin = user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+
+  try {
+    const snap = await getDoc(userRef);
+    if (!snap.exists()) {
+      const role = isSuperAdmin ? "admin" : (preferredRole || "zoekende");
+      const profile = {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName || (user.email ? user.email.split("@")[0] : "Gebruiker"),
+        role: role,
+        createdAt: serverTimestamp(),
+        lastLoginAt: serverTimestamp(),
+        authProvider: user.providerData?.[0]?.providerId || "password",
+      };
+      if (role === "zoekende") {
+        profile.woningType = "Tussenwoning / Appartement";
+        profile.budgetMax = "€ 450.000";
+        profile.locatieVoorkeur = "Randstad & Midden-Nederland";
+        profile.status = "Ingeschreven - Wacht op ronde toewijzing";
+      } else if (role === "aanbieder") {
+        profile.bedrijfsnaam = user.displayName || "Woningaanbieder";
+        profile.status = "Actief woningaanbieder";
+      } else if (role === "admin") {
+        profile.status = "Hoofdbeheerder";
+      }
+      await setDoc(userRef, profile);
+      return profile;
+    } else {
+      const existing = snap.data();
+      const role = isSuperAdmin ? "admin" : (existing.role || preferredRole || "zoekende");
+      const updateData = {
+        email: user.email,
+        displayName: user.displayName || existing.displayName || user.email.split("@")[0],
+        role: role,
+        lastLoginAt: serverTimestamp(),
+      };
+      await setDoc(userRef, updateData, { merge: true });
+      return { ...existing, ...updateData };
+    }
+  } catch (err) {
+    console.warn("Fout bij synchroniseren gebruikersprofiel:", err);
+    return {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName || user.email?.split("@")[0],
+      role: isSuperAdmin ? "admin" : (preferredRole || "zoekende"),
+    };
+  }
+}
+
+// Haal profiel op uit Firestore
+export async function getUserProfile(uid) {
+  if (!uid) return null;
+  try {
+    const userRef = doc(db, "users", uid);
+    const snap = await getDoc(userRef);
+    if (snap.exists()) return snap.data();
+  } catch (err) {
+    console.warn("Fout bij ophalen gebruikersprofiel:", err);
+  }
+  return null;
+}
+
+// Inloggen via Google OAuth popup
+export async function signInWithGoogle(preferredRole = "zoekende") {
+  const result = await signInWithPopup(auth, googleProvider);
+  await syncUserProfile(result.user, preferredRole);
+  return result.user;
+}
+
+// Inloggen met vaste demo-accounts
+export async function signInDemo(type) {
+  const email = type === "aanbieder" ? "aanbieder@woningvry.nl" : "zoekende@woningvry.nl";
+  const pw = "Demo1234!";
+  const cred = await signInWithEmailAndPassword(auth, email, pw);
+  await syncUserProfile(cred.user, type);
+  return cred.user;
+}
 
 // Nederlandse foutmeldingen
 const foutmeldingen = {
@@ -59,9 +160,14 @@ const foutmeldingen = {
   "auth/user-not-found": "Er is geen account met dit e-mailadres.",
   "auth/too-many-requests": "Te veel pogingen. Probeer het later opnieuw.",
   "auth/network-request-failed": "Geen verbinding. Controleer je internet.",
+  "auth/popup-closed-by-user": "Inloggen met Google is geannuleerd.",
+  "auth/popup-blocked": "Het pop-upvenster is geblokkeerd. Sta pop-ups toe om in te loggen met Google.",
+  "auth/cancelled-popup-request": "Er is al een inlogvenster geopend.",
+  "auth/account-exists-with-different-credential": "Er bestaat al een account met dit e-mailadres via een andere aanmeldmethode.",
 };
+
 export function foutTekst(err) {
-  return foutmeldingen[err?.code] || "Er ging iets mis. Probeer het opnieuw.";
+  return foutmeldingen[err?.code] || err?.message || "Er ging iets mis. Probeer het opnieuw.";
 }
 
 // Toon melding onder een formulier
@@ -70,3 +176,4 @@ export function toonMelding(el, tekst, type = "error") {
   el.className = "form-melding form-melding--" + type;
   el.hidden = false;
 }
+

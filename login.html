@@ -48,14 +48,29 @@
         <h1>Welkom terug</h1>
         <p class="auth-sub">Log in om je reservering en rondes te volgen.</p>
 
+        <!-- Google OAuth Inloggen -->
+        <button id="google-login-btn" type="button" class="btn-google">
+          <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.98 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+          </svg>
+          <span>Inloggen met Google</span>
+        </button>
+
+        <div class="auth-divider">
+          <span>of met e-mailadres</span>
+        </div>
+
         <form id="login-form" novalidate>
           <div class="form-group">
             <label for="email">E-mailadres</label>
-            <input type="email" id="email" autocomplete="email" required>
+            <input type="email" id="email" autocomplete="email" required placeholder="naam@voorbeeld.nl">
           </div>
           <div class="form-group">
             <label for="password">Wachtwoord</label>
-            <input type="password" id="password" autocomplete="current-password" required>
+            <input type="password" id="password" autocomplete="current-password" required placeholder="••••••••">
           </div>
           <p id="form-melding" class="form-melding" hidden></p>
           <button type="submit" class="btn-primary auth-submit">Inloggen</button>
@@ -63,6 +78,30 @@
 
         <button id="reset-link" class="auth-link" type="button">Wachtwoord vergeten?</button>
         <p class="auth-switch">Nog geen account? <a href="registratie.html">Registreer hier</a></p>
+
+        <!-- Directe Demo Accounts & Admin Toegang -->
+        <div class="demo-box">
+          <div class="demo-box__header">
+            <span class="demo-badge">Snelle Demo Inlog</span>
+            <span class="demo-subtext">Direct testen zonder registratie:</span>
+          </div>
+          <div class="demo-grid">
+            <button type="button" id="demo-zoekende-btn" class="btn-demo">
+              <span class="btn-demo__tag">Demo</span>
+              <span class="btn-demo__role">Woningzoekende</span>
+              <span class="btn-demo__email">zoekende@woningvry.nl</span>
+            </button>
+            <button type="button" id="demo-aanbieder-btn" class="btn-demo">
+              <span class="btn-demo__tag">Demo</span>
+              <span class="btn-demo__role">Woningaanbieder</span>
+              <span class="btn-demo__email">aanbieder@woningvry.nl</span>
+            </button>
+          </div>
+          <div class="demo-admin-hint">
+            <span class="admin-icon">👑</span>
+            <span><strong>Admin toegang:</strong> Log in met Google via <code>info@jamaldrenthe.com</code> voor direct beheerpaneel.</span>
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -71,17 +110,64 @@
   <script type="module">
     import {
       auth, onAuthStateChanged, signInWithEmailAndPassword,
+      signInWithGoogle, signInDemo,
       sendPasswordResetEmail, foutTekst, toonMelding,
     } from "./auth.js";
 
     const form = document.getElementById("login-form");
     const melding = document.getElementById("form-melding");
     const resetLink = document.getElementById("reset-link");
+    const googleBtn = document.getElementById("google-login-btn");
+    const demoZoekendeBtn = document.getElementById("demo-zoekende-btn");
+    const demoAanbiederBtn = document.getElementById("demo-aanbieder-btn");
 
     onAuthStateChanged(auth, (user) => {
       if (user) window.location.href = "account.html";
     });
 
+    // Google OAuth inloggen
+    googleBtn.addEventListener("click", async () => {
+      googleBtn.disabled = true;
+      try {
+        await signInWithGoogle();
+        window.location.href = "account.html";
+      } catch (err) {
+        toonMelding(melding, foutTekst(err));
+      } finally {
+        googleBtn.disabled = false;
+      }
+    });
+
+    // Demo accounts 1-klik inlog
+    demoZoekendeBtn.addEventListener("click", async () => {
+      demoZoekendeBtn.disabled = true;
+      demoAanbiederBtn.disabled = true;
+      toonMelding(melding, "Inloggen als woningzoekende demo...", "info");
+      try {
+        await signInDemo("zoekende");
+        window.location.href = "account.html";
+      } catch (err) {
+        toonMelding(melding, foutTekst(err));
+        demoZoekendeBtn.disabled = false;
+        demoAanbiederBtn.disabled = false;
+      }
+    });
+
+    demoAanbiederBtn.addEventListener("click", async () => {
+      demoZoekendeBtn.disabled = true;
+      demoAanbiederBtn.disabled = true;
+      toonMelding(melding, "Inloggen als woningaanbieder demo...", "info");
+      try {
+        await signInDemo("aanbieder");
+        window.location.href = "account.html";
+      } catch (err) {
+        toonMelding(melding, foutTekst(err));
+        demoZoekendeBtn.disabled = false;
+        demoAanbiederBtn.disabled = false;
+      }
+    });
+
+    // Formulier regulier inloggen
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = form.querySelector("button[type=submit]");
@@ -96,6 +182,7 @@
       }
     });
 
+    // Wachtwoord herstel
     resetLink.addEventListener("click", async () => {
       const email = form.email.value.trim();
       if (!email) return toonMelding(melding, "Vul eerst je e-mailadres in.");

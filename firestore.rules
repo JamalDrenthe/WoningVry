@@ -1,11 +1,279 @@
 rules_version = '2';
+
+// ===============================================================
+// Assumed Data Model
+// ===============================================================
+//
+// Collection: users
+// Document ID: {uid} (Firebase Auth UID)
+// Fields:
+//   - uid: string (optional, 1-128 chars, must match path {uid})
+//   - email: string (required, 3-100 chars, valid email format)
+//   - displayName: string (optional, 1-100 chars)
+//   - name: string (optional, 1-100 chars)
+//   - role: string (optional, allowed: 'woningzoekende', 'woningaanbieder', 'user', 'admin')
+//   - phoneNumber: string (optional, 1-30 chars)
+//   - phone: string (optional, 1-30 chars)
+//   - woonplaats: string (optional, 1-100 chars)
+//   - city: string (optional, 1-100 chars)
+//   - status: string (optional, 1-50 chars)
+//   - photoURL: string (optional, valid URL, 1-500 chars)
+//   - lastLoginAt: timestamp (optional)
+//   - authProvider: string (optional, 1-50 chars)
+//   - woningType: string (optional, 1-100 chars)
+//   - budgetMax: string (optional, 1-100 chars)
+//   - locatieVoorkeur: string (optional, 1-100 chars)
+//   - bedrijfsnaam: string (optional, 1-150 chars)
+//   - kvk: string (optional, 1-30 chars)
+//   - aangebodenWoningen: list (optional, max 100 items)
+//   - createdAt: timestamp (optional, immutable once set)
+//   - updatedAt: timestamp (optional)
+//
+// Subcollection: users/{uid}/reserveringen
+// Document ID: {docId}
+// Fields:
+//   - id: string (optional, 1-100 chars)
+//   - reserveringId: string (optional, 1-100 chars)
+//   - userId: string (optional, 1-128 chars, must match parent {uid})
+//   - uid: string (optional, 1-128 chars, must match parent {uid})
+//   - woningType: string (optional, 1-100 chars, e.g. 'appartement', 'rijwoning', 'villa')
+//   - woningId: string (optional, 1-100 chars)
+//   - locatie: string (optional, 1-100 chars, e.g. 'Amsterdam', 'Rotterdam')
+//   - stad: string (optional, 1-100 chars)
+//   - plaats: string (optional, 1-100 chars)
+//   - ronde: number (1-10) or string (1-50 chars)
+//   - prijsklasse: string (1-100 chars) or number (> 0)
+//   - budget: string (1-100 chars) or number (> 0)
+//   - status: string (optional, 1-50 chars, e.g. 'aangevraagd', 'in_behandeling', 'goedgekeurd', 'afgewezen', 'geannuleerd')
+//   - naam: string (optional, 1-100 chars)
+//   - name: string (optional, 1-100 chars)
+//   - email: string (optional, valid email format, 1-100 chars)
+//   - telefoon: string (optional, 1-30 chars)
+//   - phone: string (optional, 1-30 chars)
+//   - notities: string (optional, 1-2000 chars)
+//   - opmerkingen: string (optional, 1-2000 chars)
+//   - message: string (optional, 1-2000 chars)
+//   - createdAt: timestamp (optional, immutable once set)
+//   - updatedAt: timestamp (optional)
+//
+// Generic Subcollections: users/{uid}/{subcollection}
+// Document ID: {docId}
+// General subcollection documents for user-scoped activity
+//
+// ===============================================================
+
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    // Check if the request is from an authenticated user
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Check if the authenticated user is the designated bootstrap admin
+    function isAdmin() {
+      return isAuthenticated() &&
+        'email' in request.auth.token &&
+        request.auth.token.email == 'info@jamaldrenthe.com' &&
+        'email_verified' in request.auth.token &&
+        request.auth.token.email_verified == true;
+    }
+
+    // Check if user owns the resource based on path UID
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Validate email format
+    function isValidEmail(email) {
+      return email is string &&
+        email.size() >= 3 &&
+        email.size() <= 100 &&
+        email.matches('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
+    }
+
+    // Validate URL format
+    function isValidUrl(url) {
+      return url is string &&
+        url.size() <= 500 &&
+        (url.matches('^https://.*') || url.matches('^http://.*'));
+    }
+
+    // ===============================================================
+    // Domain Validators: User Document (/users/{uid})
+    // ===============================================================
+
+    function isValidUser(data) {
+      let allowedKeys = [
+        'uid', 'email', 'displayName', 'name', 'role',
+        'phoneNumber', 'phone', 'woonplaats', 'city',
+        'status', 'photoURL', 'createdAt', 'updatedAt',
+        'lastLoginAt', 'authProvider', 'woningType',
+        'budgetMax', 'locatieVoorkeur', 'bedrijfsnaam',
+        'kvk', 'aangebodenWoningen'
+      ];
+      return data.keys().hasOnly(allowedKeys) &&
+        ('email' in data && isValidEmail(data.email)) &&
+        (!('uid' in data) || (data.uid is string && data.uid.size() > 0 && data.uid.size() <= 128)) &&
+        (!('displayName' in data) || (data.displayName is string && data.displayName.size() <= 100)) &&
+        (!('name' in data) || (data.name is string && data.name.size() <= 100)) &&
+        (!('role' in data) || (data.role is string && data.role in ['woningzoekende', 'woningaanbieder', 'user', 'admin'])) &&
+        (!('phoneNumber' in data) || (data.phoneNumber is string && data.phoneNumber.size() <= 30)) &&
+        (!('phone' in data) || (data.phone is string && data.phone.size() <= 30)) &&
+        (!('woonplaats' in data) || (data.woonplaats is string && data.woonplaats.size() <= 100)) &&
+        (!('city' in data) || (data.city is string && data.city.size() <= 100)) &&
+        (!('status' in data) || (data.status is string && data.status.size() <= 50)) &&
+        (!('photoURL' in data) || (data.photoURL is string && isValidUrl(data.photoURL))) &&
+        (!('lastLoginAt' in data) || data.lastLoginAt is timestamp) &&
+        (!('authProvider' in data) || (data.authProvider is string && data.authProvider.size() <= 50)) &&
+        (!('woningType' in data) || (data.woningType is string && data.woningType.size() <= 100)) &&
+        (!('budgetMax' in data) || (data.budgetMax is string && data.budgetMax.size() <= 100) || (data.budgetMax is number && data.budgetMax > 0)) &&
+        (!('locatieVoorkeur' in data) || (data.locatieVoorkeur is string && data.locatieVoorkeur.size() <= 100)) &&
+        (!('bedrijfsnaam' in data) || (data.bedrijfsnaam is string && data.bedrijfsnaam.size() <= 150)) &&
+        (!('kvk' in data) || (data.kvk is string && data.kvk.size() <= 30)) &&
+        (!('aangebodenWoningen' in data) || (data.aangebodenWoningen is list && data.aangebodenWoningen.size() <= 100)) &&
+        (!('createdAt' in data) || data.createdAt is timestamp) &&
+        (!('updatedAt' in data) || data.updatedAt is timestamp);
+    }
+
+    // Enforce initial permissions and identity bindings for new user documents
+    function isAuthorizedUserCreate(uid) {
+      let data = request.resource.data;
+      return (!('uid' in data) || data.uid == uid) &&
+             (!('role' in data) || data.role in ['woningzoekende', 'woningaanbieder', 'user']) &&
+             (!('email' in data) || ('email' in request.auth.token && data.email == request.auth.token.email));
+    }
+
+    // Enforce immutability of critical identity & role fields for user updates
+    function isAuthorizedUserUpdate() {
+      let data = request.resource.data;
+      let prev = resource.data;
+      return (!('uid' in prev) || ('uid' in data && data.uid == prev.uid)) &&
+             (!('createdAt' in prev) || ('createdAt' in data && data.createdAt == prev.createdAt)) &&
+             (!('role' in prev) || ('role' in data && data.role == prev.role)) &&
+             (!('role' in data) || data.role != 'admin') &&
+             (!('email' in data) || ('email' in request.auth.token && data.email == request.auth.token.email) || ('email' in prev && data.email == prev.email));
+    }
+
+    // ===============================================================
+    // Domain Validators: Reservering Document (/users/{uid}/reserveringen/{docId})
+    // ===============================================================
+
+    function isValidReservering(data) {
+      let allowedKeys = [
+        'id', 'reserveringId', 'userId', 'uid', 'woningType', 'woningId',
+        'locatie', 'stad', 'plaats', 'ronde', 'prijsklasse', 'budget',
+        'status', 'naam', 'name', 'email', 'telefoon', 'phone',
+        'notities', 'opmerkingen', 'message', 'createdAt', 'updatedAt'
+      ];
+      return data.keys().hasOnly(allowedKeys) &&
+        (!('id' in data) || (data.id is string && data.id.size() <= 100)) &&
+        (!('reserveringId' in data) || (data.reserveringId is string && data.reserveringId.size() <= 100)) &&
+        (!('userId' in data) || (data.userId is string && data.userId.size() <= 128)) &&
+        (!('uid' in data) || (data.uid is string && data.uid.size() <= 128)) &&
+        (!('woningType' in data) || (data.woningType is string && data.woningType.size() <= 100)) &&
+        (!('woningId' in data) || (data.woningId is string && data.woningId.size() <= 100)) &&
+        (!('locatie' in data) || (data.locatie is string && data.locatie.size() <= 100)) &&
+        (!('stad' in data) || (data.stad is string && data.stad.size() <= 100)) &&
+        (!('plaats' in data) || (data.plaats is string && data.plaats.size() <= 100)) &&
+        (!('ronde' in data) || (data.ronde is string && data.ronde.size() <= 50) || (data.ronde is number && data.ronde >= 1 && data.ronde <= 10)) &&
+        (!('prijsklasse' in data) || (data.prijsklasse is string && data.prijsklasse.size() <= 100) || (data.prijsklasse is number && data.prijsklasse > 0)) &&
+        (!('budget' in data) || (data.budget is string && data.budget.size() <= 100) || (data.budget is number && data.budget > 0)) &&
+        (!('status' in data) || (data.status is string && data.status.size() <= 50)) &&
+        (!('naam' in data) || (data.naam is string && data.naam.size() <= 100)) &&
+        (!('name' in data) || (data.name is string && data.name.size() <= 100)) &&
+        (!('email' in data) || (data.email is string && isValidEmail(data.email))) &&
+        (!('telefoon' in data) || (data.telefoon is string && data.telefoon.size() <= 30)) &&
+        (!('phone' in data) || (data.phone is string && data.phone.size() <= 30)) &&
+        (!('notities' in data) || (data.notities is string && data.notities.size() <= 2000)) &&
+        (!('opmerkingen' in data) || (data.opmerkingen is string && data.opmerkingen.size() <= 2000)) &&
+        (!('message' in data) || (data.message is string && data.message.size() <= 2000)) &&
+        (!('createdAt' in data) || data.createdAt is timestamp) &&
+        (!('updatedAt' in data) || data.updatedAt is timestamp);
+    }
+
+    function isAuthorizedReserveringCreate(uid) {
+      let data = request.resource.data;
+      return (!('userId' in data) || data.userId == uid) &&
+             (!('uid' in data) || data.uid == uid);
+    }
+
+    function isAuthorizedReserveringUpdate(uid) {
+      let data = request.resource.data;
+      let prev = resource.data;
+      return (!('userId' in prev) || ('userId' in data && data.userId == prev.userId)) &&
+             (!('uid' in prev) || ('uid' in data && data.uid == prev.uid)) &&
+             (!('createdAt' in prev) || ('createdAt' in data && data.createdAt == prev.createdAt));
+    }
+
+    // ===============================================================
+    // Domain Validators: Generic Subcollection Document
+    // ===============================================================
+
+    function isValidSubcollectionDoc(data) {
+      return data is map &&
+        data.size() <= 50 &&
+        (!('uid' in data) || (data.uid is string && data.uid.size() <= 128)) &&
+        (!('userId' in data) || (data.userId is string && data.userId.size() <= 128)) &&
+        (!('createdAt' in data) || data.createdAt is timestamp) &&
+        (!('updatedAt' in data) || data.updatedAt is timestamp);
+    }
+
+    // ===============================================================
+    // Match Rules: Users Collection & Subcollections
+    // ===============================================================
+
     match /users/{uid} {
-      allow read, write: if request.auth != null && request.auth.uid == uid;
+      // User can read their own profile; Admin can read all profiles and execute collection queries (e.g. listing woningzoekenden & woningaanbieders)
+      allow read: if isOwner(uid) || isAdmin();
+
+      // User creates profile upon registration/login without privilege escalation; Admin can create any profile
+      allow create: if (isOwner(uid) && isValidUser(request.resource.data) && isAuthorizedUserCreate(uid)) || isAdmin();
+
+      // User updates their own profile with strict schema and immutable field checks; Admin can update any profile
+      allow update: if (isOwner(uid) && isValidUser(request.resource.data) && isAuthorizedUserUpdate()) || isAdmin();
+
+      // Only admin can delete user profiles
+      allow delete: if isAdmin();
+
+      // -------------------------------------------------------------
+      // Specific Subcollection: reserveringen
+      // -------------------------------------------------------------
       match /reserveringen/{docId} {
-        allow read, write: if request.auth != null && request.auth.uid == uid;
+        allow read: if isOwner(uid) || isAdmin();
+        allow create: if (isOwner(uid) && isValidReservering(request.resource.data) && isAuthorizedReserveringCreate(uid)) || isAdmin();
+        allow update: if (isOwner(uid) && isValidReservering(request.resource.data) && isAuthorizedReserveringUpdate(uid)) || isAdmin();
+        allow delete: if isOwner(uid) || isAdmin();
       }
+
+      // -------------------------------------------------------------
+      // Generic Subcollections: direct child subcollections
+      // -------------------------------------------------------------
+      match /{subcollection}/{docId} {
+        allow read: if isOwner(uid) || isAdmin();
+        allow create: if (isOwner(uid) && subcollection != 'reserveringen' && isValidSubcollectionDoc(request.resource.data) && (!('userId' in request.resource.data) || request.resource.data.userId == uid) && (!('uid' in request.resource.data) || request.resource.data.uid == uid)) || isAdmin();
+        allow update: if (isOwner(uid) && subcollection != 'reserveringen' && isValidSubcollectionDoc(request.resource.data) && (!('userId' in resource.data) || request.resource.data.userId == resource.data.userId) && (!('uid' in resource.data) || request.resource.data.uid == resource.data.uid) && (!('createdAt' in resource.data) || request.resource.data.createdAt == resource.data.createdAt)) || isAdmin();
+        allow delete: if isOwner(uid) || isAdmin();
+      }
+
+      // -------------------------------------------------------------
+      // Recursive catch-all for deeper paths under /users/{uid}
+      // -------------------------------------------------------------
+      match /{allSubpaths=**} {
+        allow read, write: if isAdmin();
+      }
+    }
+
+    // ===============================================================
+    // Collection Group Queries: reserveringen
+    // ===============================================================
+    // Allows admin dashboard to query across all reservations in the system
+    match /{path=**}/reserveringen/{docId} {
+      allow read, write: if isAdmin();
     }
   }
 }

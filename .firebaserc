@@ -1,5 +1,9 @@
 {
-  "projects": {},
+  "projects": {
+    "default": "woningvry-prod",
+    "prod": "woningvry-prod",
+    "dev": "woningvry-dev"
+  },
   "targets": {},
   "etags": {}
 }

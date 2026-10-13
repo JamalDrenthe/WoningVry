@@ -1,7 +1,16 @@
 {
   "auth": {
     "providers": {
-      "emailPassword": true
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "WoningVrij",
+        "supportEmail": "info@jamaldrenthe.com",
+        "authorizedRedirectUris": [
+          "https://woningvry-prod.firebaseapp.com/__/auth/handler",
+          "https://woningvry.nl/__/auth/handler",
+          "https://www.woningvry.nl/__/auth/handler"
+        ]
+      }
     }
   },
   "firestore": {

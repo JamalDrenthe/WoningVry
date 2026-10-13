@@ -48,23 +48,58 @@
         <h1>Maak je account aan</h1>
         <p class="auth-sub">Met een account volg je je reservering en ontvang je updates per ronde.</p>
 
+        <!-- Google OAuth Registreren -->
+        <button id="google-register-btn" type="button" class="btn-google">
+          <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.98 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+          </svg>
+          <span>Registreren met Google</span>
+        </button>
+
+        <div class="auth-divider">
+          <span>of registreer met e-mail</span>
+        </div>
+
         <form id="register-form" novalidate>
           <div class="form-group">
-            <label for="name">Naam</label>
-            <input type="text" id="name" autocomplete="name" required>
+            <label class="form-label-bold">Type account:</label>
+            <div class="role-selector">
+              <label class="role-option">
+                <input type="radio" name="account_role" value="zoekende" checked>
+                <span class="role-option__box">
+                  <span class="role-option__title">Woningzoekende</span>
+                  <span class="role-option__desc">Ik zoek een woning via het non-hypotheekmodel</span>
+                </span>
+              </label>
+              <label class="role-option">
+                <input type="radio" name="account_role" value="aanbieder">
+                <span class="role-option__box">
+                  <span class="role-option__title">Woningaanbieder</span>
+                  <span class="role-option__desc">Ik bied woningen of vastgoedprojecten aan</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Naam / Bedrijfsnaam</label>
+            <input type="text" id="name" autocomplete="name" required placeholder="Je volledige naam">
           </div>
           <div class="form-group">
             <label for="email">E-mailadres</label>
-            <input type="email" id="email" autocomplete="email" required>
+            <input type="email" id="email" autocomplete="email" required placeholder="naam@voorbeeld.nl">
           </div>
           <div class="form-group">
             <label for="password">Wachtwoord</label>
-            <input type="password" id="password" autocomplete="new-password" minlength="6" required>
+            <input type="password" id="password" autocomplete="new-password" minlength="6" required placeholder="Minimaal 6 tekens">
             <small class="form-hint">Minimaal 6 tekens</small>
           </div>
           <div class="form-group">
             <label for="password2">Herhaal wachtwoord</label>
-            <input type="password" id="password2" autocomplete="new-password" required>
+            <input type="password" id="password2" autocomplete="new-password" required placeholder="Herhaal je wachtwoord">
           </div>
           <p id="form-melding" class="form-melding" hidden></p>
           <button type="submit" class="btn-primary auth-submit">Account aanmaken</button>
@@ -79,14 +114,29 @@
   <script type="module">
     import {
       auth, onAuthStateChanged, createUserWithEmailAndPassword,
+      signInWithGoogle, syncUserProfile,
       updateProfile, sendEmailVerification, foutTekst, toonMelding,
     } from "./auth.js";
 
     const form = document.getElementById("register-form");
     const melding = document.getElementById("form-melding");
+    const googleBtn = document.getElementById("google-register-btn");
 
     onAuthStateChanged(auth, (user) => {
       if (user) window.location.href = "account.html";
+    });
+
+    googleBtn.addEventListener("click", async () => {
+      googleBtn.disabled = true;
+      const chosenRole = document.querySelector('input[name="account_role"]:checked')?.value || "zoekende";
+      try {
+        await signInWithGoogle(chosenRole);
+        window.location.href = "account.html";
+      } catch (err) {
+        toonMelding(melding, foutTekst(err));
+      } finally {
+        googleBtn.disabled = false;
+      }
     });
 
     form.addEventListener("submit", async (e) => {
@@ -94,6 +144,8 @@
       const name = form.name.value.trim();
       const email = form.email.value.trim();
       const pw = form.password.value;
+      const chosenRole = form.account_role.value || "zoekende";
+
       if (pw !== form.password2.value) {
         return toonMelding(melding, "De wachtwoorden komen niet overeen.");
       }
@@ -103,6 +155,7 @@
         const cred = await createUserWithEmailAndPassword(auth, email, pw);
         await updateProfile(cred.user, { displayName: name });
         await cred.user.reload();
+        await syncUserProfile(cred.user, chosenRole);
         await sendEmailVerification(cred.user);
         window.location.href = "account.html";
       } catch (err) {
