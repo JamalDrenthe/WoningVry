@@ -28,6 +28,7 @@ import {
 
 export const ADMIN_EMAILS = [
   "info@woningvry.nl",
+  "admin@woningvry.nl",
   "info@jamaldrenthe.com",
 ];
 export const ADMIN_EMAIL = "info@woningvry.nl";
@@ -151,9 +152,16 @@ export async function signInWithGoogle(preferredRole = "zoekende") {
   return result.user;
 }
 
-// Inloggen met vaste demo-accounts
+// Inloggen met vaste demo-accounts (zoekende, aanbieder, admin)
 export async function signInDemo(type) {
-  const email = type === "aanbieder" ? "aanbieder@woningvry.nl" : "zoekende@woningvry.nl";
+  let email;
+  if (type === "aanbieder") {
+    email = "aanbieder@woningvry.nl";
+  } else if (type === "admin") {
+    email = "admin@woningvry.nl";
+  } else {
+    email = "zoekende@woningvry.nl";
+  }
   const pw = "Demo1234!";
   const cred = await signInWithEmailAndPassword(auth, email, pw);
   await syncUserProfile(cred.user, type);

@@ -27,6 +27,12 @@
 - **Rol:** `aanbieder` ("Woningaanbieder")
 - **Dashboard:** Toont Vastgoed Partners BV, geverifieerde partnerstatus, en mogelijkheid om woningen/kavels aan te melden.
 
+### 4. Demo Account: Beheerder (Admin)
+- **E-mail:** `admin@woningvry.nl`
+- **Wachtwoord:** `Demo1234!`
+- **Rol:** `admin` ("Hoofdbeheerder")
+- **Dashboard:** 1-klik toegang tot het complete WoningVrij beheerpaneel, statistieken en gebruikersoverzicht.
+
 ---
 
 ## 🚀 Deployment & CI/CD

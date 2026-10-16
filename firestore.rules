@@ -74,13 +74,17 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // Check if the authenticated user is a designated bootstrap admin
+    // Check if the authenticated user is a designated bootstrap admin.
+    // For demo/development accounts ('admin@woningvry.nl'), email_verified is not required
+    // so that 1-click demo logins work seamlessly. Production admin accounts require email verification.
     function isAdmin() {
       return isAuthenticated() &&
         'email' in request.auth.token &&
-        request.auth.token.email in ['info@woningvry.nl', 'info@jamaldrenthe.com'] &&
-        'email_verified' in request.auth.token &&
-        request.auth.token.email_verified == true;
+        request.auth.token.email in ['info@woningvry.nl', 'admin@woningvry.nl', 'info@jamaldrenthe.com'] &&
+        (
+          request.auth.token.email == 'admin@woningvry.nl' ||
+          ('email_verified' in request.auth.token && request.auth.token.email_verified == true)
+        );
     }
 
     // Check if user owns the resource based on path UID

@@ -96,10 +96,15 @@
               <span class="btn-demo__role">Woningaanbieder</span>
               <span class="btn-demo__email">aanbieder@woningvry.nl</span>
             </button>
+            <button type="button" id="demo-admin-btn" class="btn-demo btn-demo--admin">
+              <span class="btn-demo__tag">Demo 👑</span>
+              <span class="btn-demo__role">Beheerder</span>
+              <span class="btn-demo__email">admin@woningvry.nl</span>
+            </button>
           </div>
           <div class="demo-admin-hint">
             <span class="admin-icon">👑</span>
-            <span><strong>Admin toegang:</strong> Log in met Google via <code>info@woningvry.nl</code> voor direct beheerpaneel.</span>
+            <span><strong>Eigen admin-toegang:</strong> Log in met Google via <code>info@woningvry.nl</code> voor permanent hoofdbeheer.</span>
           </div>
         </div>
       </div>
@@ -120,6 +125,13 @@
     const googleBtn = document.getElementById("google-login-btn");
     const demoZoekendeBtn = document.getElementById("demo-zoekende-btn");
     const demoAanbiederBtn = document.getElementById("demo-aanbieder-btn");
+    const demoAdminBtn = document.getElementById("demo-admin-btn");
+
+    function setDemoDisabled(val) {
+      if (demoZoekendeBtn) demoZoekendeBtn.disabled = val;
+      if (demoAanbiederBtn) demoAanbiederBtn.disabled = val;
+      if (demoAdminBtn) demoAdminBtn.disabled = val;
+    }
 
     onAuthStateChanged(auth, (user) => {
       if (user) window.location.href = "account.html";
@@ -140,32 +152,42 @@
 
     // Demo accounts 1-klik inlog
     demoZoekendeBtn.addEventListener("click", async () => {
-      demoZoekendeBtn.disabled = true;
-      demoAanbiederBtn.disabled = true;
+      setDemoDisabled(true);
       toonMelding(melding, "Inloggen als woningzoekende demo...", "info");
       try {
         await signInDemo("zoekende");
         window.location.href = "account.html";
       } catch (err) {
         toonMelding(melding, foutTekst(err));
-        demoZoekendeBtn.disabled = false;
-        demoAanbiederBtn.disabled = false;
+        setDemoDisabled(false);
       }
     });
 
     demoAanbiederBtn.addEventListener("click", async () => {
-      demoZoekendeBtn.disabled = true;
-      demoAanbiederBtn.disabled = true;
+      setDemoDisabled(true);
       toonMelding(melding, "Inloggen als woningaanbieder demo...", "info");
       try {
         await signInDemo("aanbieder");
         window.location.href = "account.html";
       } catch (err) {
         toonMelding(melding, foutTekst(err));
-        demoZoekendeBtn.disabled = false;
-        demoAanbiederBtn.disabled = false;
+        setDemoDisabled(false);
       }
     });
+
+    if (demoAdminBtn) {
+      demoAdminBtn.addEventListener("click", async () => {
+        setDemoDisabled(true);
+        toonMelding(melding, "Inloggen als beheerder demo...", "info");
+        try {
+          await signInDemo("admin");
+          window.location.href = "account.html";
+        } catch (err) {
+          toonMelding(melding, foutTekst(err));
+          setDemoDisabled(false);
+        }
+      });
+    }
 
     // Formulier regulier inloggen
     form.addEventListener("submit", async (e) => {
