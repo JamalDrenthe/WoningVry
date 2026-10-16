@@ -245,13 +245,13 @@ header.scrolled {
   height: 68px;
 }
 .logo-image {
-  height: 52px;
+  height: 46px;
   width: auto;
+  max-width: 240px;
   display: block;
-  border-radius: var(--r-s);
   transition: transform var(--dur-quick) var(--ease-standard);
 }
-.nav__logo a:hover .logo-image { transform: scale(1.03); }
+.nav__logo a:hover .logo-image { transform: scale(1.02); }
 
 .nav__checkbox { display: none; }
 .nav__logo { order: -1; }
@@ -830,10 +830,10 @@ section { padding: var(--space-xl) 0; }
   margin-bottom: var(--space-l);
 }
 .footer-logo-image {
-  height: 44px;
+  height: 48px;
   width: auto;
+  max-width: 250px;
   display: block;
-  border-radius: var(--r-s);
   margin-bottom: var(--space-s);
 }
 .footer-logo p {
