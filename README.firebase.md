@@ -2,7 +2,7 @@
 
 - **Firebase Project voor live en development:** `woningvry-dev`
 - **Ontwikkeling Firebase Project:** `woningvry-dev`
-- **Gekoppeld beheeraccount:** `info@jamaldrenthe.com`
+- **Gekoppeld beheeraccount:** `info@woningvry.nl` (en `info@jamaldrenthe.com`)
 - **Live website:** [https://www.woningvry.nl](https://www.woningvry.nl) (Vercel)
 - **GitHub Repository:** [JamalDrenthe/WoningVry](https://github.com/JamalDrenthe/WoningVry.git)
 
@@ -11,7 +11,7 @@
 ## 🔐 Authenticatie & Rollen
 
 ### 1. Hoofdbeheerder (Admin)
-- **Account:** `info@jamaldrenthe.com`
+- **Account:** `info@woningvry.nl` (primair) / `info@jamaldrenthe.com`
 - **Inlogmethode:** Google OAuth (Single Sign-On) of E-mail/Wachtwoord
 - **Rechten:** Automatisch toegekende rol `admin` in Firestore met toegang tot het **WoningVrij Beheerpaneel** op `account.html`. Kan alle woningzoekenden, woningaanbieders en reserveringen inzien.
 

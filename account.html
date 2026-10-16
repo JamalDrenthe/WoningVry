@@ -59,7 +59,7 @@
         <div class="admin-panel__hero">
           <div class="admin-panel__intro">
             <h2>👑 WoningVrij Beheerpaneel</h2>
-            <p>Ingelogd als hoofdbeheerder via <code>info@jamaldrenthe.com</code>. Volledige beheerdersrechten en realtime overzicht actief.</p>
+            <p>Ingelogd als hoofdbeheerder via <code>info@woningvry.nl</code>. Volledige beheerdersrechten en realtime overzicht actief.</p>
           </div>
           <div class="admin-stats-grid">
             <div class="stat-card">
@@ -125,7 +125,7 @@
                 </li>
                 <li>
                   <strong>Hoofdbeheerder:</strong><br>
-                  Inloggen met Google via <code>info@jamaldrenthe.com</code>
+                  Inloggen met Google via <code>info@woningvry.nl</code>
                 </li>
               </ul>
             </div>
@@ -206,7 +206,7 @@
     import {
       auth, db, onAuthStateChanged, sendPasswordResetEmail,
       sendEmailVerification, signOut, syncUserProfile, getUserProfile,
-      collection, getDocs, foutTekst, toonMelding, ADMIN_EMAIL,
+      collection, getDocs, foutTekst, toonMelding, ADMIN_EMAIL, isAdminEmail,
     } from "./auth.js";
 
     const melding = document.getElementById("account-melding");
@@ -243,7 +243,7 @@
         console.error("Fout bij laden van gebruikerslijst:", err);
         // Fallback display met vaste accounts
         tbody.innerHTML = `
-          <tr><td><strong>Jamal Drenthe (Admin)</strong></td><td><code>info@jamaldrenthe.com</code></td><td><span class="badge-role badge-role--admin">Admin</span></td><td>Hoofdbeheerder</td></tr>
+          <tr><td><strong>WoningVrij Beheer (Admin)</strong></td><td><code>info@woningvry.nl</code></td><td><span class="badge-role badge-role--admin">Admin</span></td><td>Hoofdbeheerder</td></tr>
           <tr><td><strong>Sander de Zoeker (Demo)</strong></td><td><code>zoekende@woningvry.nl</code></td><td><span class="badge-role badge-role--zoekende">Zoekende</span></td><td>Ronde 1 Ingeschreven</td></tr>
           <tr><td><strong>Vastgoed Partners BV (Demo)</strong></td><td><code>aanbieder@woningvry.nl</code></td><td><span class="badge-role badge-role--aanbieder">Aanbieder</span></td><td>Geverifieerd Partner</td></tr>
         `;
@@ -261,7 +261,7 @@
       let profile = await syncUserProfile(user);
       if (!profile) profile = await getUserProfile(user.uid) || {};
 
-      const isSuperAdmin = (user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) || profile.role === "admin";
+      const isSuperAdmin = isAdminEmail(user.email) || profile.role === "admin";
 
       // Vul profieldata in
       const displayName = user.displayName || profile.displayName || user.email.split("@")[0];

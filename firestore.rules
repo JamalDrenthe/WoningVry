@@ -74,11 +74,11 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // Check if the authenticated user is the designated bootstrap admin
+    // Check if the authenticated user is a designated bootstrap admin
     function isAdmin() {
       return isAuthenticated() &&
         'email' in request.auth.token &&
-        request.auth.token.email == 'info@jamaldrenthe.com' &&
+        request.auth.token.email in ['info@woningvry.nl', 'info@jamaldrenthe.com'] &&
         'email_verified' in request.auth.token &&
         request.auth.token.email_verified == true;
     }

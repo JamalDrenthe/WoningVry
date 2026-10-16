@@ -26,7 +26,17 @@ import {
   orderBy,
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-export const ADMIN_EMAIL = "info@jamaldrenthe.com";
+export const ADMIN_EMAILS = [
+  "info@woningvry.nl",
+  "info@jamaldrenthe.com",
+];
+export const ADMIN_EMAIL = "info@woningvry.nl";
+
+export function isAdminEmail(email) {
+  if (!email) return false;
+  const normalized = email.trim().toLowerCase();
+  return ADMIN_EMAILS.some((admin) => admin.toLowerCase() === normalized);
+}
 
 export const firebaseConfig = {
   apiKey: "AIzaSyB5JglCyZQ8MJbZAK55VAVEBTDqGDfp3Rg",
@@ -66,11 +76,11 @@ export {
   signInWithPopup,
 };
 
-// Profiel synchroniseren met Firestore (rol toekennen, admin toewijzen bij info@jamaldrenthe.com)
+// Profiel synchroniseren met Firestore (rol toekennen, admin toewijzen bij info@woningvry.nl of info@jamaldrenthe.com)
 export async function syncUserProfile(user, preferredRole = "zoekende") {
   if (!user) return null;
   const userRef = doc(db, "users", user.uid);
-  const isSuperAdmin = user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+  const isSuperAdmin = isAdminEmail(user.email);
 
   try {
     const snap = await getDoc(userRef);
