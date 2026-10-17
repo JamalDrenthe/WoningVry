@@ -6,9 +6,9 @@
   <title>Cookiebeleid | WoningVrij</title>
   <meta name="description" content="Welke cookies WoningVrij gebruikt (alleen noodzakelijke).">
   <meta name="theme-color" content="#0d1b2e">
-  <link rel="icon" type="image/png" href="generated-icon.png">
-  <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -19,12 +19,13 @@
     <div class="container">
       <nav class="nav">
         <input type="checkbox" id="nav__checkbox" class="nav__checkbox">
-        <label for="nav__checkbox" class="nav__toggle">
-          <svg class="menu" viewBox="0 0 24 24" width="24" height="24">
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12h18M3 6h18M3 18h18"></path>
+        <label for="nav__checkbox" class="nav__backdrop" aria-hidden="true"></label>
+        <label for="nav__checkbox" class="nav__toggle" aria-label="Menu navigatie">
+          <svg class="menu" viewBox="0 0 24 24" width="22" height="22">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12h18M3 6h18M3 18h18"></path>
           </svg>
-          <svg class="close" viewBox="0 0 24 24" width="24" height="24">
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 6L6 18M6 6l12 12"></path>
+          <svg class="close" viewBox="0 0 24 24" width="22" height="22">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M18 6L6 18M6 6l12 12"></path>
           </svg>
         </label>
         <div class="nav__logo">

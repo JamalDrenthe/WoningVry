@@ -67,11 +67,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Mobiel menu sluiten bij klik op link
+  // Mobiel menu sluiten bij klik op link of Escape toets
   const navCheckbox = document.getElementById('nav__checkbox');
-  document.querySelectorAll('.nav__menu a').forEach(link => {
-    link.addEventListener('click', () => { navCheckbox.checked = false; });
-  });
+  if (navCheckbox) {
+    document.querySelectorAll('.nav__menu a').forEach(link => {
+      link.addEventListener('click', () => { navCheckbox.checked = false; });
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navCheckbox.checked) {
+        navCheckbox.checked = false;
+      }
+    });
+  }
 
   // Smooth anchors (fallback naast scroll-padding)
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
