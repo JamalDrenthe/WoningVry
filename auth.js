@@ -145,6 +145,19 @@ export async function getUserProfile(uid) {
   return null;
 }
 
+// Sla aangepaste profieldata op in Firestore
+export async function saveUserProfile(uid, data) {
+  if (!uid) return;
+  try {
+    const userRef = doc(db, "users", uid);
+    await setDoc(userRef, { ...data, updatedAt: serverTimestamp() }, { merge: true });
+    return true;
+  } catch (err) {
+    console.error("Fout bij opslaan gebruikersprofiel:", err);
+    return false;
+  }
+}
+
 // Inloggen via Google OAuth popup
 export async function signInWithGoogle(preferredRole = "zoekende") {
   const result = await signInWithPopup(auth, googleProvider);

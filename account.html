@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mijn account | WoningVrij</title>
-  <meta name="description" content="Beheer je WoningVrij-account.">
+  <title>Account Centrum | WoningVrij</title>
+  <meta name="description" content="Jouw persoonlijke WoningVrij Portaal voor ronde-indeling, woningmatching en non-hypotheekbeoordeling.">
   <meta name="theme-color" content="#0d1b2e">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header class="sticky sticky--solid">
@@ -37,7 +37,7 @@
           <li><a href="index.html#hoe-werkt-het">Hoe werkt het</a></li>
           <li><a href="index.html#woningen">Woningen & Locaties</a></li>
           <li><a href="index.html#faq">Veelgestelde vragen</a></li>
-          <li><a href="index.html#contact" class="btn-primary">Reserveer jouw woning</a></li>
+          <li><a href="#uitloggen" id="nav-logout-btn" class="nav-auth-link"><span>Uitloggen</span></a></li>
         </ul>
       </nav>
     </div>
@@ -45,55 +45,642 @@
 
   <main class="account-page section">
     <div class="container">
-      <div class="account-header-box">
-        <div>
-          <span class="eyebrow" id="account-eyebrow">Mijn account</span>
-          <h1>Hoi, <span id="user-name">bezoeker</span></h1>
-          <p class="auth-sub" id="account-subtitle">Beheer je gegevens en volg je reservering.</p>
+      
+      <!-- HERO BANNER MET CAPACITEIT & TICKET STATUS -->
+      <section class="account-banner">
+        <div class="account-banner-top">
+          <div>
+            <span class="eyebrow" style="color: var(--gold-bright);">WoningVrij Member Portaal</span>
+            <h1>Welkom terug, <span id="user-display-name">deelnemer</span></h1>
+            <p>Volg jouw traject binnen het non-hypotheekmodel, beheer je woonwensen over 6 steden en bekijk jouw actuele positie in de selectierondes.</p>
+          </div>
+          <div class="capacity-card">
+            <div class="capacity-header">
+              <span><strong>Ronde 1 van 4</strong></span>
+              <span id="capacity-text">348 / 500 plekken bezet</span>
+            </div>
+            <div class="capacity-bar-wrap">
+              <div class="capacity-bar-fill" style="width: 70%;"></div>
+            </div>
+            <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+              <span class="ticket-badge" id="ticket-badge-tag">🎟️ Ticket: #WV-2026-R1-0142</span>
+              <span id="role-badge" class="badge-role">Laden...</span>
+            </div>
+          </div>
         </div>
-        <div class="account-badge-wrap">
-          <span id="role-badge" class="badge-role">Laden...</span>
-        </div>
-      </div>
 
-      <!-- ADMIN DASHBOARD (Zichtbaar voor info@jamaldrenthe.com / admin) -->
-      <section id="admin-panel" class="admin-panel" hidden>
+        <!-- ROL/DEMO WEERGAVE SWITCHER (Ideaal voor testen en beheer) -->
+        <div class="role-switcher-box">
+          <span class="role-switcher-label">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+            Weergave portaal:
+          </span>
+          <div class="role-switcher-pills">
+            <button type="button" class="role-switcher-btn active" data-view="zoekende" id="btn-view-zoekende">
+              🎯 Woningzoekende
+            </button>
+            <button type="button" class="role-switcher-btn" data-view="aanbieder" id="btn-view-aanbieder">
+              🏢 Woningaanbieder
+            </button>
+            <button type="button" class="role-switcher-btn" data-view="admin" id="btn-view-admin">
+              👑 Hoofdbeheerder
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           VIEW 1: WONINGZOEKENDE PORTAAL (DEELNEMER)
+           ============================================================ -->
+      <section id="view-zoekende" class="portal-view">
+        <!-- Sub-pages / Tabs Navigatie -->
+        <nav class="account-tabs" aria-label="Zoekende tabs">
+          <button type="button" class="account-tab active" data-tab="tab-traject">
+            🧭 Mijn Traject & Ronde
+          </button>
+          <button type="button" class="account-tab" data-tab="tab-wensen">
+            🏡 Woonwensen & Matches
+          </button>
+          <button type="button" class="account-tab" data-tab="tab-borg">
+            💰 Non-Hypotheek & Borg Calculator
+          </button>
+          <button type="button" class="account-tab" data-tab="tab-dossier">
+            📁 Dossier & Documenten
+          </button>
+          <button type="button" class="account-tab" data-tab="tab-profiel">
+            ⚙️ Profiel & Beveiliging
+          </button>
+        </nav>
+
+        <!-- TAB 1: MIJN TRAJECT & RONDE -->
+        <div id="tab-traject" class="tab-pane active">
+          <!-- 4 Stappen visualizer -->
+          <div class="traject-timeline">
+            <div class="traject-step traject-step--completed">
+              <span class="traject-step__num">01</span>
+              <h4>Plek in de Ronde</h4>
+              <p>Reserveringsticket aangeschaft. Toegang tot Ronde 1 verzekerd.</p>
+              <span class="step-status-tag" style="color: #166534;">✅ Voltooid (#WV-0142)</span>
+            </div>
+            <div class="traject-step traject-step--completed">
+              <span class="traject-step__num">02</span>
+              <h4>Locatie & Type Keuze</h4>
+              <p>Woonwensen en steden (Amsterdam/Utrecht) geregistreerd.</p>
+              <span class="step-status-tag" style="color: #166534;">✅ Ingevuld (€450k)</span>
+            </div>
+            <div class="traject-step traject-step--current">
+              <span class="traject-step__num">03</span>
+              <h4>Gegevens & Beoordeling</h4>
+              <p>Individuele situatiebeoordeling zónder BKR-toetsing door acceptatieteam.</p>
+              <span class="step-status-tag" style="color: #854d0e;">⏳ In Behandeling</span>
+            </div>
+            <div class="traject-step traject-step--upcoming">
+              <span class="traject-step__num">04</span>
+              <h4>Voorstel & Bouwtraject</h4>
+              <p>Samenstelling non-hypotheekovereenkomst en start bouw (6-12 mnd).</p>
+              <span class="step-status-tag" style="color: var(--muted);">🏁 Volgende stap</span>
+            </div>
+          </div>
+
+          <!-- Deelnameticket Card & Rondes Status Grid -->
+          <div class="account-grid">
+            <div class="ticket-card">
+              <div class="ticket-header">
+                <div class="ticket-logo-text">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                  <span>WoningVrij Deelnamebewijs</span>
+                </div>
+                <span class="ticket-badge">RONDE 1 GELDIG</span>
+              </div>
+              <div class="ticket-body">
+                <div class="ticket-field">
+                  <span>Deelnemer</span>
+                  <strong class="ticket-field-name">Sander de Zoeker</strong>
+                </div>
+                <div class="ticket-field">
+                  <span>Ticket ID</span>
+                  <strong>#WV-2026-R1-0142</strong>
+                </div>
+                <div class="ticket-field">
+                  <span>Voorkeurstype</span>
+                  <strong id="ticket-field-type">Appartement / Rijwoning</strong>
+                </div>
+                <div class="ticket-field">
+                  <span>Steden</span>
+                  <strong id="ticket-field-locaties">Amsterdam, Utrecht</strong>
+                </div>
+                <div class="ticket-field">
+                  <span>Borgindicatie</span>
+                  <strong>10% (€35.000)</strong>
+                </div>
+                <div class="ticket-field">
+                  <span>BKR Check</span>
+                  <strong style="color: #4ade80;">VRIJGESTELD</strong>
+                </div>
+              </div>
+              <div class="ticket-footer">
+                <div class="ticket-barcode">||| |||| || ||||| ||| ||||</div>
+                <button type="button" class="btn-secondary btn-sm" id="print-ticket-btn" style="color: #ffffff; border-color: rgba(255,255,255,0.3);">
+                  🖨️ Deelnamebewijs downloaden
+                </button>
+              </div>
+            </div>
+
+            <div class="account-card">
+              <h2>📅 Rondes & Capaciteit</h2>
+              <p class="account-muted">Er zijn in totaal <strong>500 plekken per ronde</strong> beschikbaar over 4 rondes. Wie het eerst komt, wie het eerst maalt.</p>
+              
+              <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div class="ronde-card ronde-card--active">
+                  <div class="ronde-card-header">
+                    <h4>Ronde 1 (Huidige ronde)</h4>
+                    <span class="badge-status badge-status--gold">Nu open</span>
+                  </div>
+                  <p>348 van de 500 plekken gereserveerd. Toewijzingen starten vanaf november 2026.</p>
+                  <div class="ronde-card-meta">Jouw ticket is ingedeeld in deze ronde.</div>
+                </div>
+
+                <div class="ronde-card">
+                  <div class="ronde-card-header">
+                    <h4>Ronde 2</h4>
+                    <span class="badge-status" style="background: rgba(13,27,46,0.06); color: var(--muted);">Voorinschrijving</span>
+                  </div>
+                  <p>500 nieuwe plekken voor nieuwbouwprojecten in Almere, Eindhoven en Groningen (Q1 2027).</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: WOONWENSEN & MATCHES -->
+        <div id="tab-wensen" class="tab-pane">
+          <div class="account-card">
+            <h2>🏡 Pas jouw Woonwensen aan</h2>
+            <p class="account-muted">Selecteer jouw gewenste woningtype, steden en budget. Ons systeem matcht je automatisch met passend aanbod.</p>
+
+            <form id="wensen-form">
+              <!-- Type Woning -->
+              <label class="form-hint" style="font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted);">1. Gewenst Woningtype</label>
+              <div class="type-selector-grid">
+                <div class="type-card-select selected" data-type="Appartementen">
+                  <h4>🏢 Appartementen</h4>
+                  <p>Centrum of stadsrand, 50-100 m², 2-3 kamers.</p>
+                  <span class="price-tag">Vanaf €200.000</span>
+                </div>
+                <div class="type-card-select selected" data-type="Rijtjeshuizen">
+                  <h4>🏘️ Rijtjeshuizen</h4>
+                  <p>Comfortabele gezinswoningen, 100-150 m², 4-5 kamers.</p>
+                  <span class="price-tag">Vanaf €350.000</span>
+                </div>
+                <div class="type-card-select" data-type="Villa's">
+                  <h4>🏡 Villa's</h4>
+                  <p>Vrijstaand met ruime tuin, 150-250 m², 5+ kamers.</p>
+                  <span class="price-tag">Vanaf €500.000</span>
+                </div>
+              </div>
+
+              <!-- Steden -->
+              <label class="form-hint" style="font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted);">2. Voorkeurssteden (klik om te selecteren)</label>
+              <div class="city-chips-wrap">
+                <button type="button" class="city-chip active" data-city="Amsterdam">Amsterdam</button>
+                <button type="button" class="city-chip" data-city="Rotterdam">Rotterdam</button>
+                <button type="button" class="city-chip active" data-city="Utrecht">Utrecht</button>
+                <button type="button" class="city-chip" data-city="Almere">Almere</button>
+                <button type="button" class="city-chip" data-city="Eindhoven">Eindhoven</button>
+                <button type="button" class="city-chip" data-city="Groningen">Groningen</button>
+              </div>
+
+              <!-- Budget Slider -->
+              <div class="calc-slider-group">
+                <div class="calc-slider-header">
+                  <label for="wensen-budget-slider" style="font-weight: 600; font-size: 0.88rem;">3. Maximale Woningwaarde</label>
+                  <span id="wensen-budget-val" class="calc-slider-val">€ 450.000</span>
+                </div>
+                <input type="range" id="wensen-budget-slider" class="calc-slider" min="200000" max="650000" step="10000" value="450000">
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <button type="submit" class="btn-primary">Woonwensen Opslaan</button>
+                <span id="wensen-melding" class="form-hint" style="color: #166534; font-weight: 600;" hidden>✅ Woonwensen succesvol opgeslagen!</span>
+              </div>
+            </form>
+          </div>
+
+          <!-- Actuele Woningmatches Grid -->
+          <div style="margin-top: 2rem;">
+            <h2>✨ Actuele Woningmatches op Jouw Profiel</h2>
+            <p class="account-muted">Op basis van jouw voorkeuren (Appartement/Rijwoning, Amsterdam/Utrecht, tot €450k) zijn de volgende projecten direct beschikbaar voor toewijzing:</p>
+
+            <div class="matches-grid">
+              <div class="match-card">
+                <div class="match-card__img" style="background-image: url('attached_assets/appartement-luxury.jpg');">
+                  <span class="match-card__score">96% Match</span>
+                </div>
+                <div class="match-card__body">
+                  <div>
+                    <h3 class="match-card__title">Luxe Stadsappartement</h3>
+                    <p class="match-card__loc">📍 Amsterdam Nieuw-West</p>
+                    <div class="match-card__specs">
+                      <span>📐 78 m²</span>
+                      <span>🛏️ 3 kamers</span>
+                      <span>🌱 Label A+++</span>
+                    </div>
+                  </div>
+                  <div class="match-card__footer">
+                    <div>
+                      <span style="font-size: 0.72rem; color: var(--muted); text-transform: uppercase;">Woningwaarde</span>
+                      <div class="match-card__price">€ 285.000</div>
+                    </div>
+                    <button type="button" class="btn-secondary btn-sm match-action-btn" data-target="Luxe Stadsappartement Amsterdam">Interesse tonen</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="match-card">
+                <div class="match-card__img" style="background-image: url('attached_assets/rijwoning-modern.jpg');">
+                  <span class="match-card__score">92% Match</span>
+                </div>
+                <div class="match-card__body">
+                  <div>
+                    <h3 class="match-card__title">Moderne Eengezinswoning</h3>
+                    <p class="match-card__loc">📍 Utrecht Leidsche Rijn</p>
+                    <div class="match-card__specs">
+                      <span>📐 124 m²</span>
+                      <span>🛏️ 4 kamers</span>
+                      <span>🌱 Warmtepomp</span>
+                    </div>
+                  </div>
+                  <div class="match-card__footer">
+                    <div>
+                      <span style="font-size: 0.72rem; color: var(--muted); text-transform: uppercase;">Woningwaarde</span>
+                      <div class="match-card__price">€ 395.000</div>
+                    </div>
+                    <button type="button" class="btn-secondary btn-sm match-action-btn" data-target="Moderne Eengezinswoning Utrecht">Interesse tonen</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="match-card">
+                <div class="match-card__img" style="background-image: url('attached_assets/villa-luxury.jpg');">
+                  <span class="match-card__score">88% Match</span>
+                </div>
+                <div class="match-card__body">
+                  <div>
+                    <h3 class="match-card__title">Duurzame Watervilla</h3>
+                    <p class="match-card__loc">📍 Almere Poort</p>
+                    <div class="match-card__specs">
+                      <span>📐 175 m²</span>
+                      <span>🛏️ 5 kamers</span>
+                      <span>🌱 Ruime tuin</span>
+                    </div>
+                  </div>
+                  <div class="match-card__footer">
+                    <div>
+                      <span style="font-size: 0.72rem; color: var(--muted); text-transform: uppercase;">Woningwaarde</span>
+                      <div class="match-card__price">€ 540.000</div>
+                    </div>
+                    <button type="button" class="btn-secondary btn-sm match-action-btn" data-target="Watervilla Almere">Interesse tonen</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: NON-HYPOTHEEK & BORG CALCULATOR -->
+        <div id="tab-borg" class="tab-pane">
+          <div class="calc-box">
+            <h2>💰 Non-Hypotheek & Borg Calculator</h2>
+            <p class="account-muted">Bereken direct hoeveel borgsom vereist is binnen de non-hypotheekstructuur van WoningVrij (€200.000 tot €650.000). Er vindt géén BKR-toetsing plaats.</p>
+
+            <div class="calc-slider-group">
+              <div class="calc-slider-header">
+                <label for="calc-woningwaarde">Woningwaarde (€200k – €650k)</label>
+                <span id="calc-woningwaarde-val" class="calc-slider-val">€ 350.000</span>
+              </div>
+              <input type="range" id="calc-woningwaarde" class="calc-slider" min="200000" max="650000" step="10000" value="350000">
+            </div>
+
+            <div class="calc-slider-group">
+              <div class="calc-slider-header">
+                <label for="calc-borg-pct">Borgpercentage (5% – 15%)</label>
+                <span id="calc-borg-pct-val" class="calc-slider-val">10%</span>
+              </div>
+              <input type="range" id="calc-borg-pct" class="calc-slider" min="5" max="15" step="1" value="10">
+            </div>
+
+            <div class="calc-results-grid">
+              <div class="calc-kpi-card">
+                <span class="calc-kpi-label">Benodigde Eenmalige Borg</span>
+                <span id="calc-res-borg" class="calc-kpi-value">€ 35.000</span>
+                <span class="calc-kpi-note">Betaalbaar bij aanvang bouwtraject</span>
+              </div>
+              <div class="calc-kpi-card">
+                <span class="calc-kpi-label">Indicatieve Maandbedrag</span>
+                <span id="calc-res-maand" class="calc-kpi-value">€ 1.050 /mnd</span>
+                <span class="calc-kpi-note">Non-hypotheek inleg i.p.v. bankrente</span>
+              </div>
+              <div class="calc-kpi-card">
+                <span class="calc-kpi-label">BKR-Toetsing</span>
+                <span class="calc-kpi-value" style="color: #22c55e;">Vrijgesteld</span>
+                <span class="calc-kpi-note">Geen registratie of blokkade</span>
+              </div>
+              <div class="calc-kpi-card">
+                <span class="calc-kpi-label">Vast Contract Vereist</span>
+                <span class="calc-kpi-value" style="color: #22c55e;">Nee</span>
+                <span class="calc-kpi-note">Ook voor ZZP, vermogen & familieborg</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Vergelijkingstabel Bank vs WoningVrij -->
+          <div class="account-card mt-4">
+            <h2>⚖️ Waarom het WoningVrij Model Verschilt van een Bank</h2>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Kenmerk</th>
+                    <th>Traditionele Bankhypotheek</th>
+                    <th>WoningVrij Non-Hypotheek</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>BKR-Check</strong></td>
+                    <td>Strenge toetsing; elke notering blokkeert de aanvraag</td>
+                    <td><strong style="color: #166534;">Geen BKR-check</strong></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Vast Inkomen</strong></td>
+                    <td>Vaste werkgeversverklaring strikt vereist</td>
+                    <td><strong style="color: #166534;">Brede beoordeling</strong> (ook ZZP / flex / vermogen)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Eigen Inleg / Borg</strong></td>
+                    <td>Vaak €50k-€100k + hoge notariskosten & afsluitprovisie</td>
+                    <td><strong style="color: #166534;">5% tot 15% borg</strong> binnen helder traject</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Doorlooptijd tot toewijzing</strong></td>
+                    <td>Maandenlange bureaucratie en bankafwijzingen</td>
+                    <td><strong style="color: #166534;">Directe plaatsing</strong> in 4 rondes (500 plekken)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: DOSSIER & DOCUMENTEN -->
+        <div id="tab-dossier" class="tab-pane">
+          <div class="account-card">
+            <h2>📁 Jouw Beoordelingsdossier</h2>
+            <p class="account-muted">Voor de toewijzing in Ronde 1 beoordelen wij jouw dossier individueel. Hieronder zie je de status van jouw acceptatiedocumenten:</p>
+
+            <div class="dossier-checklist">
+              <div class="dossier-item">
+                <div class="dossier-item-info">
+                  <div class="dossier-item-icon">🪪</div>
+                  <div>
+                    <h4>1. Identiteitsverificatie</h4>
+                    <p class="account-muted" style="margin: 0;">Geldig Nederlands paspoort of ID-kaart.</p>
+                  </div>
+                </div>
+                <span class="badge-status badge-status--green">Geverifieerd ✅</span>
+              </div>
+
+              <div class="dossier-item">
+                <div class="dossier-item-info">
+                  <div class="dossier-item-icon">📄</div>
+                  <div>
+                    <h4>2. Situatietoelichting Financieel</h4>
+                    <p class="account-muted" style="margin: 0;">Inkomensindicatie, onderneming, spaargeld of familieborg.</p>
+                  </div>
+                </div>
+                <span class="badge-status badge-status--gold">In Behandeling ⏳</span>
+              </div>
+
+              <div class="dossier-item">
+                <div class="dossier-item-info">
+                  <div class="dossier-item-icon">🏦</div>
+                  <div>
+                    <h4>3. Borgstelling Reserve (5% - 15%)</h4>
+                    <p class="account-muted" style="margin: 0;">Aantonen benodigde borgsom voor de gekozen woningwaarde.</p>
+                  </div>
+                </div>
+                <span class="badge-status" style="background: rgba(13,27,46,0.06); color: var(--muted);">Gereed voor aanlevering 📋</span>
+              </div>
+            </div>
+
+            <!-- Toelichting Toevoegen Formulier -->
+            <div style="margin-top: 2rem; border-top: 1px solid rgba(13,27,46,0.08); padding-top: 1.5rem;">
+              <h3>Toelichting of Document Notitie Toevoegen</h3>
+              <p class="account-muted">Licht jouw specifieke situatie toe (bijv. freelance inkomsten, spaargeld, overwaarde of garantsteller) om de beoordeling te bespoedigen:</p>
+              <textarea id="dossier-notitie" rows="4" style="width: 100%; padding: 0.85rem; border-radius: var(--r-s); border: 1px solid rgba(13,27,46,0.15); font-family: var(--font-body); font-size: 0.95rem; margin-bottom: 1rem;" placeholder="Bijv.: Ik werk sinds 2 jaar als zelfstandige en heb €35.000 eigen borgreserve beschikbaar via spaargeld..."></textarea>
+              <button type="button" class="btn-primary" id="save-dossier-btn">Dossiertoelichting Verzenden</button>
+              <span id="dossier-melding" class="form-hint" style="color: #166534; font-weight: 600; margin-left: 1rem;" hidden>✅ Toelichting succesvol aan dossier toegevoegd!</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 5: PROFIEL & BEVEILIGING -->
+        <div id="tab-profiel" class="tab-pane">
+          <div class="account-grid">
+            <div class="account-card">
+              <h2>Profiel & Inloggegevens</h2>
+              <dl class="account-details">
+                <dt>Naam</dt><dd id="profiel-naam">Laden…</dd>
+                <dt>E-mailadres</dt><dd id="profiel-email">Laden…</dd>
+                <dt>Inlogmethode</dt><dd id="profiel-provider">Laden…</dd>
+                <dt>E-mail geverifieerd</dt><dd id="profiel-verified">Laden…</dd>
+                <dt>Lid sinds</dt><dd id="profiel-sinds">Laden…</dd>
+              </dl>
+              <div class="account-actions">
+                <button id="verify-btn" class="btn-secondary" type="button" hidden>Verificatiemail opnieuw sturen</button>
+                <button id="reset-btn" class="btn-secondary" type="button">Wachtwoord resetlink aanvragen</button>
+              </div>
+              <p id="account-melding" class="form-melding" hidden></p>
+            </div>
+
+            <div class="account-card">
+              <h2>🔒 Beveiliging & Notificaties</h2>
+              <p class="account-muted">Beheer jouw communicatievoorkeuren voor toewijzingsberichten in Ronde 1.</p>
+              <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                <label style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; cursor: pointer;">
+                  <input type="checkbox" checked> E-mail ontvangen bij statuswijziging van Ronde 1
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; cursor: pointer;">
+                  <input type="checkbox" checked> Notificatie bij nieuwe woningmatches binnen mijn budget
+                </label>
+              </div>
+              <div style="margin-top: 1.8rem; border-top: 1px solid rgba(13,27,46,0.08); padding-top: 1.2rem;">
+                <button id="logout-btn" class="btn-secondary" style="color: #b91c1c; border-color: rgba(185,28,28,0.25);" type="button">Uitloggen uit WoningVrij</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           VIEW 2: WONINGAANBIEDER PORTAAL (PROJECTONTWIKKELAAR / EIGENAAR)
+           ============================================================ -->
+      <section id="view-aanbieder" class="portal-view" hidden>
+        <div class="admin-stats-grid mb-4">
+          <div class="stat-card">
+            <span class="stat-card__label">Aangemelde Units</span>
+            <span class="stat-card__val">12 Woningen</span>
+            <span class="stat-card__status stat-card__status--green">● Actief in aanbod</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-card__label">Gekoppelde Zoekenden</span>
+            <span class="stat-card__val">48 Deelnemers</span>
+            <span class="stat-card__status stat-card__status--green">● Uit Ronde 1</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-card__label">Reserveringen in Optie</span>
+            <span class="stat-card__val">7 Woningen</span>
+            <span class="stat-card__status stat-card__status--green">● Borg gereserveerd</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-card__label">Partner Status</span>
+            <span class="stat-card__val">Geverifieerd</span>
+            <span class="stat-card__status stat-card__status--green">● Non-hypotheek model</span>
+          </div>
+        </div>
+
+        <div class="account-grid">
+          <!-- Nieuwe Woning Aanmelden Formulier -->
+          <div class="account-card">
+            <h2>➕ Nieuwe Woning of Kavel Aanmelden</h2>
+            <p class="account-muted">Meld nieuwbouwprojecten, kavels of gerenoveerde woningen aan voor toewijzing aan WoningVrij-deelnemers (€200k - €650k):</p>
+
+            <form id="aanbieder-listing-form">
+              <div class="form-group" style="margin-bottom: 1rem;">
+                <label for="woning-titel">Project / Woningnaam</label>
+                <input type="text" id="woning-titel" required placeholder="Bijv. Parkwoningen De Weide" style="width: 100%; padding: 0.8rem; border-radius: var(--r-s); border: 1px solid rgba(13,27,46,0.15);">
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div class="form-group">
+                  <label for="woning-type">Woningtype</label>
+                  <select id="woning-type" style="width: 100%; padding: 0.8rem; border-radius: var(--r-s); border: 1px solid rgba(13,27,46,0.15); background: var(--paper);">
+                    <option value="Appartement">Appartement (€200k - €350k)</option>
+                    <option value="Rijwoning">Rijwoning (€350k - €500k)</option>
+                    <option value="Villa">Villa (€500k - €650k)</option>
+                    <option value="Bouwkavel">Bouwkavel</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="woning-stad">Stad / Regio</label>
+                  <select id="woning-stad" style="width: 100%; padding: 0.8rem; border-radius: var(--r-s); border: 1px solid rgba(13,27,46,0.15); background: var(--paper);">
+                    <option value="Amsterdam">Amsterdam</option>
+                    <option value="Rotterdam">Rotterdam</option>
+                    <option value="Utrecht">Utrecht</option>
+                    <option value="Almere">Almere</option>
+                    <option value="Eindhoven">Eindhoven</option>
+                    <option value="Groningen">Groningen</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div class="form-group">
+                  <label for="woning-prijs">Vraagprijs (€)</label>
+                  <input type="number" id="woning-prijs" min="200000" max="650000" step="5000" value="340000" style="width: 100%; padding: 0.8rem; border-radius: var(--r-s); border: 1px solid rgba(13,27,46,0.15);">
+                </div>
+                <div class="form-group">
+                  <label for="woning-units">Aantal Eenheden</label>
+                  <input type="number" id="woning-units" min="1" max="50" value="4" style="width: 100%; padding: 0.8rem; border-radius: var(--r-s); border: 1px solid rgba(13,27,46,0.15);">
+                </div>
+              </div>
+
+              <button type="submit" class="btn-primary">Woningaanbod Publiceren</button>
+              <span id="aanbieder-form-melding" class="form-hint" style="color: #166534; font-weight: 600; margin-left: 1rem;" hidden>✅ Aanbod geregistreerd en gematcht!</span>
+            </form>
+          </div>
+
+          <!-- Aangemelde Projecten Portfolio -->
+          <div class="account-card">
+            <h2>🏢 Aangemelde Woningen & Projecten</h2>
+            <p class="account-muted">Overzicht van jouw vastgoed dat via de non-hypotheekstructuur wordt aangeboden:</p>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Project</th>
+                    <th>Locatie</th>
+                    <th>Prijsklasse</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="aanbieder-units-table">
+                  <tr>
+                    <td><strong>Residence De Gracht</strong></td>
+                    <td>Amsterdam</td>
+                    <td>€ 310.000</td>
+                    <td><span class="badge-status badge-status--gold">4 van 6 gereserveerd</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Hof van Utrecht</strong></td>
+                    <td>Utrecht</td>
+                    <td>€ 420.000</td>
+                    <td><span class="badge-status badge-status--green">3 gekoppeld</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Kustvilla's Poort</strong></td>
+                    <td>Almere</td>
+                    <td>€ 550.000</td>
+                    <td><span class="badge-status badge-status--green">2 gekoppeld</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           VIEW 3: HOOFDBEHEERDER DASHBOARD (ADMIN - INFO@WONINGVRY.NL)
+           ============================================================ -->
+      <section id="view-admin" class="portal-view" hidden>
         <div class="admin-panel__hero">
           <div class="admin-panel__intro">
-            <h2>👑 WoningVrij Beheerpaneel</h2>
-            <p>Ingelogd als hoofdbeheerder via <code>info@woningvry.nl</code>. Volledige beheerdersrechten en realtime overzicht actief.</p>
+            <h2>👑 WoningVrij Platform Beheerpaneel</h2>
+            <p>Ingelogd met hoofdbeheerdersrechten via <code>info@woningvry.nl</code>. Realtime beheer van de 500 plekken over 4 rondes, dossierbeoordelingen en gebruikersdatabase.</p>
           </div>
           <div class="admin-stats-grid">
             <div class="stat-card">
-              <span class="stat-card__label">Website Live</span>
-              <span class="stat-card__val">WoningVry.nl</span>
-              <span class="stat-card__status stat-card__status--green">● Vercel Actief</span>
+              <span class="stat-card__label">Capaciteit Ronde 1</span>
+              <span class="stat-card__val">348 / 500 Plekken</span>
+              <span class="stat-card__status stat-card__status--green">● 70% Bezetting</span>
             </div>
             <div class="stat-card">
-              <span class="stat-card__label">GitHub Repository</span>
-              <span class="stat-card__val">JamalDrenthe/WoningVry</span>
-              <span class="stat-card__status stat-card__status--green">● Push Geautoriseerd</span>
+              <span class="stat-card__label">Lopende Dossiers</span>
+              <span class="stat-card__val">84 Ter Beoordeling</span>
+              <span class="stat-card__status stat-card__status--green">● Non-BKR toetsing</span>
             </div>
             <div class="stat-card">
-              <span class="stat-card__label">Firebase Project</span>
-              <span class="stat-card__val">woningvry-dev</span>
-              <span class="stat-card__status stat-card__status--green">● Productie DB</span>
+              <span class="stat-card__label">Aangesloten Aanbieders</span>
+              <span class="stat-card__val">12 Partners</span>
+              <span class="stat-card__status stat-card__status--green">● 42 Woningen</span>
             </div>
             <div class="stat-card">
-              <span class="stat-card__label">Google OAuth SSO</span>
-              <span class="stat-card__val">Actief</span>
-              <span class="stat-card__status stat-card__status--green">● Admin Autodetect</span>
+              <span class="stat-card__label">Firebase & Vercel</span>
+              <span class="stat-card__val">Productie Live</span>
+              <span class="stat-card__status stat-card__status--green">● woningvry.nl</span>
             </div>
           </div>
         </div>
 
         <div class="account-grid mt-4">
+          <!-- Gebruikersdatabase -->
           <div class="account-card admin-users-card">
             <div class="card-header-flex">
-              <h2>👥 Geregistreerde Accounts & Demo's</h2>
+              <h2>👥 Geregistreerde Accounts & Deelnemers</h2>
               <button id="refresh-users-btn" type="button" class="btn-secondary btn-sm">Verversen</button>
             </div>
-            <p class="account-muted">Live overzicht van alle gebruikers in de Firestore database (beheerders, zoekenden en aanbieders):</p>
+            <p class="account-muted">Live overzicht van alle gebruikers in de Firestore database:</p>
             <div class="table-wrap">
               <table class="data-table">
                 <thead>
@@ -101,21 +688,22 @@
                     <th>Naam</th>
                     <th>E-mailadres</th>
                     <th>Rol</th>
-                    <th>Status</th>
+                    <th>Ronde Status</th>
                   </tr>
                 </thead>
                 <tbody id="users-table-body">
-                  <tr><td colspan="4">Gebruikerslijst laden...</td></tr>
+                  <tr><td colspan="4">Gebruikerslijst laden uit Firestore...</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
 
+          <!-- Systeem & Demo Toegang -->
           <div class="account-card admin-info-card">
             <h2>⚡ Systeem & Toegangsbeheer</h2>
             <div class="info-block">
               <h4>Actieve Demo Accounts</h4>
-              <p class="account-muted mb-2">Gebruik deze accounts om de ervaring van verschillende rollen te testen:</p>
+              <p class="account-muted mb-2">Gebruik deze accounts om alle rollen 1-op-1 te testen:</p>
               <ul class="demo-spec-list">
                 <li>
                   <strong>Woningzoekende:</strong><br>
@@ -127,79 +715,18 @@
                 </li>
                 <li>
                   <strong>Hoofdbeheerder:</strong><br>
-                  Inloggen met Google via <code>info@woningvry.nl</code> (of 1-klik demo: <code>admin@woningvry.nl</code> / <code>Demo1234!</code>)
+                  Google login via <code>info@woningvry.nl</code> (of <code>admin@woningvry.nl</code> / <code>Demo1234!</code>)
                 </li>
               </ul>
             </div>
             <div class="info-block mt-3">
-              <h4>Reserveringen & Rondes</h4>
-              <p class="account-muted">500 plekken verdeeld over 4 rondes. Nieuwe reserveringen worden automatisch getoetst via het non-hypotheekmodel.</p>
+              <h4>Rondes & Acceptatie Protocol</h4>
+              <p class="account-muted">500 plekken verdeeld over 4 rondes. Beoordelingen vinden plaats op basis van de 5-15% borgstelling zónder bancaire hypotheekvereisten.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- WONINGZOEKENDE DASHBOARD -->
-      <section id="zoekende-panel" class="role-panel" hidden>
-        <div class="account-grid">
-          <div class="account-card">
-            <h2>🎯 Mijn Woonwensen & Zoekprofiel</h2>
-            <dl class="account-details">
-              <dt>Voorkeur type</dt><dd id="zoekende-type">Tussenwoning / Appartement</dd>
-              <dt>Maximale koopprijs</dt><dd id="zoekende-budget">€ 450.000</dd>
-              <dt>Voorkeursregio</dt><dd id="zoekende-locatie">Randstad & Midden-Nederland</dd>
-              <dt>Ronde status</dt><dd><span class="badge-status badge-status--gold">Ronde 1: Ticket ingeschreven</span></dd>
-            </dl>
-          </div>
-
-          <div class="account-card">
-            <h2>📋 Mijn Reservering</h2>
-            <p class="account-muted">Je hebt een reserveringsplek voor Ronde 1 aangevraagd. Er geldt een maximum aantal van 500 plekken per ronde. Ons team beoordeelt je dossier individueel zonder BKR of hypotheektoetsing.</p>
-            <a href="mailto:info@woningvry.nl?subject=Vraag%20over%20reservering%20WoningVrij" class="btn-primary">Reservering details opvragen</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- WONINGAANBIEDER DASHBOARD -->
-      <section id="aanbieder-panel" class="role-panel" hidden>
-        <div class="account-grid">
-          <div class="account-card">
-            <h2>🏢 Aangeboden Woningen & Projecten</h2>
-            <dl class="account-details">
-              <dt>Organisatie</dt><dd id="aanbieder-bedrijf">Vastgoed Partners BV</dd>
-              <dt>Partner status</dt><dd><span class="badge-status badge-status--green">Geverifieerd partner</span></dd>
-              <dt>Aangemelde kavels/units</dt><dd id="aanbieder-units">12 units aangemeld</dd>
-            </dl>
-          </div>
-
-          <div class="account-card">
-            <h2>➕ Nieuwe Woning of Kavel Aanmelden</h2>
-            <p class="account-muted">Wil je nieuwbouwprojecten, kavels of gerenoveerde woningen aanbieden via de non-hypotheekstructuur van WoningVrij?</p>
-            <a href="mailto:info@woningvry.nl?subject=Nieuw%20woningaanbod%20aanmelden%20WoningVrij" class="btn-primary">Aanbod direct indienen</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- PROFIEL DETAILS KAART (VOOR IEDEREEN) -->
-      <div class="account-grid mt-4">
-        <section class="account-card">
-          <h2>Profiel & Inloggegevens</h2>
-          <dl class="account-details">
-            <dt>Naam</dt><dd id="profiel-naam">…</dd>
-            <dt>E-mailadres</dt><dd id="profiel-email">…</dd>
-            <dt>Inlogmethode</dt><dd id="profiel-provider">…</dd>
-            <dt>E-mail geverifieerd</dt><dd id="profiel-verified">…</dd>
-            <dt>Lid sinds</dt><dd id="profiel-sinds">…</dd>
-          </dl>
-          <div class="account-actions">
-            <button id="verify-btn" class="btn-secondary" type="button" hidden>Verificatiemail opnieuw sturen</button>
-            <button id="reset-btn" class="btn-secondary" type="button">Wachtwoord wijzigen</button>
-          </div>
-          <p id="account-melding" class="form-melding" hidden></p>
-        </section>
-      </div>
-
-      <button id="logout-btn" class="auth-link" type="button">Uitloggen</button>
     </div>
   </main>
 
@@ -207,17 +734,215 @@
   <script type="module">
     import {
       auth, db, onAuthStateChanged, sendPasswordResetEmail,
-      sendEmailVerification, signOut, syncUserProfile, getUserProfile,
+      sendEmailVerification, signOut, syncUserProfile, getUserProfile, saveUserProfile,
       collection, getDocs, foutTekst, toonMelding, ADMIN_EMAIL, isAdminEmail,
     } from "./auth.js";
 
     const melding = document.getElementById("account-melding");
     const roleBadge = document.getElementById("role-badge");
-    const adminPanel = document.getElementById("admin-panel");
-    const zoekendePanel = document.getElementById("zoekende-panel");
-    const aanbiederPanel = document.getElementById("aanbieder-panel");
+    const userDisplayName = document.getElementById("user-display-name");
     const refreshUsersBtn = document.getElementById("refresh-users-btn");
 
+    // Views & Tab containers
+    const viewZoekende = document.getElementById("view-zoekende");
+    const viewAanbieder = document.getElementById("view-aanbieder");
+    const viewAdmin = document.getElementById("view-admin");
+
+    const btnViewZoekende = document.getElementById("btn-view-zoekende");
+    const btnViewAanbieder = document.getElementById("btn-view-aanbieder");
+    const btnViewAdmin = document.getElementById("btn-view-admin");
+
+    let currentUser = null;
+    let currentProfile = null;
+
+    // View Switching logic (voor demo en navigatie)
+    function switchPortalView(viewName) {
+      viewZoekende.hidden = (viewName !== "zoekende");
+      viewAanbieder.hidden = (viewName !== "aanbieder");
+      viewAdmin.hidden = (viewName !== "admin");
+
+      btnViewZoekende.classList.toggle("active", viewName === "zoekende");
+      btnViewAanbieder.classList.toggle("active", viewName === "aanbieder");
+      btnViewAdmin.classList.toggle("active", viewName === "admin");
+
+      if (viewName === "admin") {
+        laadGebruikersLijst();
+      }
+    }
+
+    btnViewZoekende.addEventListener("click", () => switchPortalView("zoekende"));
+    btnViewAanbieder.addEventListener("click", () => switchPortalView("aanbieder"));
+    btnViewAdmin.addEventListener("click", () => switchPortalView("admin"));
+
+    // Sub-tab switching voor Woningzoekende
+    document.querySelectorAll(".account-tab").forEach(tabBtn => {
+      tabBtn.addEventListener("click", () => {
+        document.querySelectorAll(".account-tab").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+
+        tabBtn.classList.add("active");
+        const targetId = tabBtn.getAttribute("data-tab");
+        const targetPane = document.getElementById(targetId);
+        if (targetPane) targetPane.classList.add("active");
+      });
+    });
+
+    // Calculator Logica
+    const sliderWoningwaarde = document.getElementById("calc-woningwaarde");
+    const sliderBorgPct = document.getElementById("calc-borg-pct");
+    const valWoningwaarde = document.getElementById("calc-woningwaarde-val");
+    const valBorgPct = document.getElementById("calc-borg-pct-val");
+    const resBorg = document.getElementById("calc-res-borg");
+    const resMaand = document.getElementById("calc-res-maand");
+
+    function updateCalculator() {
+      if (!sliderWoningwaarde || !sliderBorgPct) return;
+      const waarde = parseInt(sliderWoningwaarde.value, 10);
+      const pct = parseInt(sliderBorgPct.value, 10);
+
+      valWoningwaarde.textContent = "€ " + waarde.toLocaleString("nl-NL");
+      valBorgPct.textContent = pct + "%";
+
+      const borgBedrag = Math.round(waarde * (pct / 100));
+      resBorg.textContent = "€ " + borgBedrag.toLocaleString("nl-NL");
+
+      // Indicatieve maandbijdrage non-hypotheek (ca 3.6% op jaarbasis / 12)
+      const maandBedrag = Math.round((waarde - borgBedrag) * 0.038 / 12);
+      resMaand.textContent = "€ " + maandBedrag.toLocaleString("nl-NL") + " /mnd";
+    }
+
+    if (sliderWoningwaarde && sliderBorgPct) {
+      sliderWoningwaarde.addEventListener("input", updateCalculator);
+      sliderBorgPct.addEventListener("input", updateCalculator);
+      updateCalculator();
+    }
+
+    // Woonwensen Editor interacties
+    const budgetSlider = document.getElementById("wensen-budget-slider");
+    const budgetVal = document.getElementById("wensen-budget-val");
+    if (budgetSlider && budgetVal) {
+      budgetSlider.addEventListener("input", () => {
+        budgetVal.textContent = "€ " + parseInt(budgetSlider.value, 10).toLocaleString("nl-NL");
+      });
+    }
+
+    // Selectable type cards
+    document.querySelectorAll(".type-card-select").forEach(card => {
+      card.addEventListener("click", () => {
+        card.classList.toggle("selected");
+      });
+    });
+
+    // Selectable city chips
+    document.querySelectorAll(".city-chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        chip.classList.toggle("active");
+      });
+    });
+
+    // Woonwensen form submit
+    const wensenForm = document.getElementById("wensen-form");
+    if (wensenForm) {
+      wensenForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const selectedTypes = [...document.querySelectorAll(".type-card-select.selected")].map(c => c.getAttribute("data-type")).join(" / ") || "Alle types";
+        const selectedCities = [...document.querySelectorAll(".city-chip.active")].map(c => c.getAttribute("data-city")).join(", ") || "Alle steden";
+        const maxBudget = budgetVal ? budgetVal.textContent : "€ 450.000";
+
+        // Update ticket preview
+        const ticketType = document.getElementById("ticket-field-type");
+        const ticketLoc = document.getElementById("ticket-field-locaties");
+        if (ticketType) ticketType.textContent = selectedTypes;
+        if (ticketLoc) ticketLoc.textContent = selectedCities;
+
+        if (currentUser) {
+          await saveUserProfile(currentUser.uid, {
+            woningType: selectedTypes,
+            locatieVoorkeur: selectedCities,
+            budgetMax: maxBudget,
+          });
+        }
+
+        const meldingEl = document.getElementById("wensen-melding");
+        if (meldingEl) {
+          meldingEl.hidden = false;
+          setTimeout(() => { meldingEl.hidden = true; }, 4000);
+        }
+      });
+    }
+
+    // Dossiertoelichting opslaan
+    const saveDossierBtn = document.getElementById("save-dossier-btn");
+    if (saveDossierBtn) {
+      saveDossierBtn.addEventListener("click", async () => {
+        const notitie = document.getElementById("dossier-notitie")?.value || "";
+        if (currentUser) {
+          await saveUserProfile(currentUser.uid, {
+            dossierNotitie: notitie,
+            dossierStatus: "Toelichting ontvangen - in review",
+          });
+        }
+        const meldingEl = document.getElementById("dossier-melding");
+        if (meldingEl) {
+          meldingEl.hidden = false;
+          setTimeout(() => { meldingEl.hidden = true; }, 4000);
+        }
+      });
+    }
+
+    // Woningaanbieder formulier
+    const aanbiederForm = document.getElementById("aanbieder-listing-form");
+    if (aanbiederForm) {
+      aanbiederForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const titel = document.getElementById("woning-titel")?.value || "Nieuw project";
+        const type = document.getElementById("woning-type")?.value || "Rijwoning";
+        const stad = document.getElementById("woning-stad")?.value || "Amsterdam";
+        const prijs = parseInt(document.getElementById("woning-prijs")?.value || "350000", 10);
+        const units = document.getElementById("woning-units")?.value || "1";
+
+        const table = document.getElementById("aanbieder-units-table");
+        if (table) {
+          const newRow = document.createElement("tr");
+          newRow.innerHTML = `
+            <td><strong>${titel}</strong> (${units}x ${type})</td>
+            <td>${stad}</td>
+            <td>€ ${prijs.toLocaleString("nl-NL")}</td>
+            <td><span class="badge-status badge-status--green">Nieuw gepubliceerd ✅</span></td>
+          `;
+          table.prepend(newRow);
+        }
+
+        const meldingEl = document.getElementById("aanbieder-form-melding");
+        if (meldingEl) {
+          meldingEl.hidden = false;
+          setTimeout(() => { meldingEl.hidden = true; }, 4000);
+        }
+        aanbiederForm.reset();
+      });
+    }
+
+    // Match actieknoppen feedback
+    document.querySelectorAll(".match-action-btn").forEach(btn => {
+      btn.addEventListener("click", function () {
+        const target = this.getAttribute("data-target");
+        this.textContent = "Interesse vastgelegd ✅";
+        this.style.background = "#dcfce7";
+        this.style.color = "#166534";
+        this.style.borderColor = "#86efac";
+        alert(`Jouw interesse voor "${target}" is direct doorgegeven aan het WoningVrij toewijzingsteam!`);
+      });
+    });
+
+    // Print ticket
+    const printTicketBtn = document.getElementById("print-ticket-btn");
+    if (printTicketBtn) {
+      printTicketBtn.addEventListener("click", () => {
+        window.print();
+      });
+    }
+
+    // Gebruikerslijst laden voor beheerder
     async function laadGebruikersLijst() {
       const tbody = document.getElementById("users-table-body");
       if (!tbody) return;
@@ -237,13 +962,12 @@
             <td><strong>${u.displayName || "Onbekend"}</strong></td>
             <td><code>${u.email || "-"}</code></td>
             <td><span class="badge-role ${rolClass}">${rolNaam}</span></td>
-            <td>${u.status || "Actief"}</td>
+            <td>${u.status || "Ingeschreven Ronde 1"}</td>
           </tr>`;
         });
         tbody.innerHTML = html;
       } catch (err) {
         console.error("Fout bij laden van gebruikerslijst:", err);
-        // Fallback display met vaste accounts
         tbody.innerHTML = `
           <tr><td><strong>WoningVrij Beheer (Admin)</strong></td><td><code>info@woningvry.nl</code></td><td><span class="badge-role badge-role--admin">Admin</span></td><td>Hoofdbeheerder</td></tr>
           <tr><td><strong>Sander de Zoeker (Demo)</strong></td><td><code>zoekende@woningvry.nl</code></td><td><span class="badge-role badge-role--zoekende">Zoekende</span></td><td>Ronde 1 Ingeschreven</td></tr>
@@ -256,22 +980,29 @@
       refreshUsersBtn.addEventListener("click", laadGebruikersLijst);
     }
 
+    // AUTH OBSERVER & DATA INITIALISATIE
     onAuthStateChanged(auth, async (user) => {
-      if (!user) { window.location.href = "login.html"; return; }
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
+      currentUser = user;
 
       // Synchroniseer en haal actueel profiel op
       let profile = await syncUserProfile(user);
       if (!profile) profile = await getUserProfile(user.uid) || {};
+      currentProfile = profile;
 
       const isSuperAdmin = isAdminEmail(user.email) || profile.role === "admin";
+      const displayName = user.displayName || profile.displayName || user.email.split("@")[0];
 
       // Vul profieldata in
-      const displayName = user.displayName || profile.displayName || user.email.split("@")[0];
-      document.getElementById("user-name").textContent = displayName;
+      userDisplayName.textContent = displayName;
+      document.querySelectorAll(".ticket-field-name").forEach(el => el.textContent = displayName);
       document.getElementById("profiel-naam").textContent = displayName;
       document.getElementById("profiel-email").textContent = user.email;
       document.getElementById("profiel-verified").textContent = user.emailVerified ? "Ja" : "Nee";
-      
+
       const providerId = user.providerData?.[0]?.providerId || "password";
       document.getElementById("profiel-provider").textContent = providerId === "google.com" ? "Google OAuth" : "E-mail & Wachtwoord";
 
@@ -279,53 +1010,69 @@
         ? new Date(user.metadata.creationTime).toLocaleDateString("nl-NL", { day: "numeric", month: "long", year: "numeric" })
         : "Onbekend";
 
-      // Rol UI toggles
+      // Rol Badge & Initiële weergave instellen
       if (isSuperAdmin) {
-        roleBadge.textContent = "👑 Hoofdbeheerder (Admin)";
+        roleBadge.textContent = "👑 Hoofdbeheerder";
         roleBadge.className = "badge-role badge-role--admin";
-        adminPanel.hidden = false;
-        zoekendePanel.hidden = true;
-        aanbiederPanel.hidden = true;
-        laadGebruikersLijst();
+        switchPortalView("admin");
       } else if (profile.role === "aanbieder") {
         roleBadge.textContent = "🏢 Woningaanbieder";
         roleBadge.className = "badge-role badge-role--aanbieder";
-        adminPanel.hidden = true;
-        zoekendePanel.hidden = true;
-        aanbiederPanel.hidden = false;
-        if (profile.bedrijfsnaam) document.getElementById("aanbieder-bedrijf").textContent = profile.bedrijfsnaam;
+        switchPortalView("aanbieder");
       } else {
         roleBadge.textContent = "🎯 Woningzoekende";
         roleBadge.className = "badge-role badge-role--zoekende";
-        adminPanel.hidden = true;
-        zoekendePanel.hidden = false;
-        aanbiederPanel.hidden = true;
-        if (profile.woningType) document.getElementById("zoekende-type").textContent = profile.woningType;
-        if (profile.budgetMax) document.getElementById("zoekende-budget").textContent = profile.budgetMax;
-        if (profile.locatieVoorkeur) document.getElementById("zoekende-locatie").textContent = profile.locatieVoorkeur;
+        switchPortalView("zoekende");
       }
 
-      const verifyBtn = document.getElementById("verify-btn");
-      verifyBtn.hidden = user.emailVerified;
-      verifyBtn.addEventListener("click", async () => {
-        try {
-          await sendEmailVerification(user);
-          toonMelding(melding, "Verificatiemail opnieuw verstuurd naar " + user.email + ".", "success");
-        } catch (err) { toonMelding(melding, foutTekst(err)); }
-      });
+      // Pre-fill opgeslagen voorkeuren indien beschikbaar
+      if (profile.woningType) {
+        const ticketType = document.getElementById("ticket-field-type");
+        if (ticketType) ticketType.textContent = profile.woningType;
+      }
+      if (profile.locatieVoorkeur) {
+        const ticketLoc = document.getElementById("ticket-field-locaties");
+        if (ticketLoc) ticketLoc.textContent = profile.locatieVoorkeur;
+      }
+      if (profile.dossierNotitie) {
+        const notitieEl = document.getElementById("dossier-notitie");
+        if (notitieEl) notitieEl.value = profile.dossierNotitie;
+      }
 
-      document.getElementById("reset-btn").addEventListener("click", async () => {
-        try {
-          await sendPasswordResetEmail(auth, user.email);
-          toonMelding(melding, "Wijziglink verstuurd naar " + user.email + ".", "success");
-        } catch (err) { toonMelding(melding, foutTekst(err)); }
-      });
+      // Auth actieknoppen
+      const verifyBtn = document.getElementById("verify-btn");
+      if (verifyBtn) {
+        verifyBtn.hidden = user.emailVerified;
+        verifyBtn.addEventListener("click", async () => {
+          try {
+            await sendEmailVerification(user);
+            toonMelding(melding, "Verificatiemail opnieuw verstuurd naar " + user.email + ".", "success");
+          } catch (err) { toonMelding(melding, foutTekst(err)); }
+        });
+      }
+
+      const resetBtn = document.getElementById("reset-btn");
+      if (resetBtn) {
+        resetBtn.addEventListener("click", async () => {
+          try {
+            await sendPasswordResetEmail(auth, user.email);
+            toonMelding(melding, "Wachtwoord-wijziglink verstuurd naar " + user.email + ".", "success");
+          } catch (err) { toonMelding(melding, foutTekst(err)); }
+        });
+      }
     });
 
-    document.getElementById("logout-btn").addEventListener("click", async () => {
+    // Uitlogknoppen
+    const logoutHandler = async () => {
       await signOut(auth);
       window.location.href = "index.html";
-    });
+    };
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) logoutBtn.addEventListener("click", logoutHandler);
+
+    const navLogoutBtn = document.getElementById("nav-logout-btn");
+    if (navLogoutBtn) navLogoutBtn.addEventListener("click", logoutHandler);
   </script>
 </body>
 </html>
