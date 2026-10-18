@@ -3,7 +3,7 @@
 - **Firebase Project voor live en development:** `woningvry-dev`
 - **Ontwikkeling Firebase Project:** `woningvry-dev`
 - **Gekoppeld beheeraccount:** `info@woningvry.nl` (en `info@jamaldrenthe.com`)
-- **Live website:** [https://www.woningvry.nl](https://www.woningvry.nl) (Vercel)
+- **Live website:** [https://www.woningvry.nl](https://www.woningvry.nl) (Cloudflare)
 - **GitHub Repository:** [JamalDrenthe/WoningVry](https://github.com/JamalDrenthe/WoningVry.git)
 
 ---
@@ -13,7 +13,7 @@
 ### 1. Hoofdbeheerder (Admin)
 - **Account:** `info@woningvry.nl` (primair) / `info@jamaldrenthe.com`
 - **Inlogmethode:** Google OAuth (Single Sign-On) of E-mail/Wachtwoord
-- **Rechten:** Automatisch toegekende rol `admin` in Firestore met toegang tot het **WoningVrij Beheerpaneel** op `account.html`. Kan alle woningzoekenden, woningaanbieders en reserveringen inzien.
+- **Rechten:** Automatisch toegekende rol `admin` in Firestore met toegang tot het **WoningVry Beheerpaneel** op `account.html`. Kan alle woningzoekenden, woningaanbieders en reserveringen inzien.
 
 ### 2. Demo Account: Woningzoekende
 - **E-mail:** `zoekende@woningvry.nl`
@@ -31,12 +31,12 @@
 - **E-mail:** `admin@woningvry.nl`
 - **Wachtwoord:** `Demo1234!`
 - **Rol:** `admin` ("Hoofdbeheerder")
-- **Dashboard:** 1-klik toegang tot het complete WoningVrij beheerpaneel, statistieken en gebruikersoverzicht.
+- **Dashboard:** 1-klik toegang tot het complete WoningVry beheerpaneel, statistieken en gebruikersoverzicht.
 
 ---
 
 ## 🚀 Deployment & CI/CD
-- **Website (Vercel):** Wijzigingen gepusht naar `main` op GitHub worden automatisch live gebouwd en uitgerold op `https://www.woningvry.nl`.
+- **Website (Cloudflare):** Wijzigingen gepusht naar `main` op GitHub worden automatisch live gebouwd en uitgerold op `https://www.woningvry.nl`.
 - **Firestore Rules:**
   ```bash
   firebase deploy --only firestore:rules

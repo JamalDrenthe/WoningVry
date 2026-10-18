@@ -1,8 +1,8 @@
-WoningVrij Website (zonder accountfunctionaliteit)
+WoningVry Website (zonder accountfunctionaliteit)
 
 Doel van de website:
 
-Ontwerp een stijlvolle, informatieve én mobielvriendelijke website voor WoningVrij — een platform dat zakelijke hypotheken aanbiedt aan mensen die normaal geen toegang krijgen tot een woning. Er is geen registratie, geen login, alleen informatieve content die vertrouwen wekt.
+Ontwerp een stijlvolle, informatieve én mobielvriendelijke website voor WoningVry — een platform dat zakelijke hypotheken aanbiedt aan mensen die normaal geen toegang krijgen tot een woning. Er is geen registratie, geen login, alleen informatieve content die vertrouwen wekt.
 
 Techniek & Structuur:
 	•	Gebruik HTML5, CSS3, en JavaScript (zonder frameworks)
@@ -112,7 +112,7 @@ fadeEls.forEach(el => observer.observe(el));
 Inhoud van de Website (index.html):
 
 Gebruik secties zoals:
-	•	Intro: Wat is WoningVrij?
+	•	Intro: Wat is WoningVry?
 	•	Hoe werkt het: uitleg in 3 of 4 stappen
 	•	Voordelen: in cards of iconen
 	•	Steden: 6 blokken met info (Amsterdam, Utrecht, etc.)
@@ -127,4 +127,4 @@ Geen login/accountfunctionaliteit betekent:
 
 Eindinstructie aan Replit AI:
 
-“Gebruik bovenstaande structuur en bouw een responsive website voor WoningVrij zonder accountfunctionaliteit. De site moet stijlvol, helder en direct zijn. Gebruik HTML, CSS en JavaScript (geen frameworks). Geef alles in gescheiden bestanden.
+“Gebruik bovenstaande structuur en bouw een responsive website voor WoningVry zonder accountfunctionaliteit. De site moet stijlvol, helder en direct zijn. Gebruik HTML, CSS en JavaScript (geen frameworks). Geef alles in gescheiden bestanden.

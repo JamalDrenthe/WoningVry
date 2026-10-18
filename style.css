@@ -1,5 +1,5 @@
 /* ============================================================
-   WoningVrij — Premium redesign
+   WoningVry — Premium redesign
    Motion personality: Premium (350–600ms, cubic-bezier(0.4,0,0.2,1))
    ============================================================ */
 
@@ -2750,7 +2750,7 @@ section { padding: var(--space-xl) 0; }
   color: var(--muted);
 }
 
-/* WoningVrij Advantage Tag */
+/* WoningVry Advantage Tag */
 .funda-wv-perk {
   display: inline-flex;
   align-items: center;

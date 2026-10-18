@@ -1,9 +1,9 @@
-WoningVrij (NL/EN)
+WoningVry (NL/EN)
 
 NEDERLANDS:
 
 Opdracht voor Replit AI:
-Bouw een luxe, moderne en mobielvriendelijke website voor WoningVrij — een innovatief platform dat betaalbare woningen aanbiedt via een non-hypotheekstructuur zonder BKR-check. De site is gericht op uitleg, vertrouwen en conversie. Er is geen accountfunctionaliteit nodig.
+Bouw een luxe, moderne en mobielvriendelijke website voor WoningVry — een innovatief platform dat betaalbare woningen aanbiedt via een non-hypotheekstructuur zonder BKR-check. De site is gericht op uitleg, vertrouwen en conversie. Er is geen accountfunctionaliteit nodig.
 
 Ontwerpstijl:
 	•	Zwart-wit, grijstinten, accenten in goud of marineblauw
@@ -15,13 +15,13 @@ Ontwerpstijl:
 Structuur & Inhoud:
 
 1. Home
-	•	Titel: “WoningVrij. Zonder BKR. Zonder hypotheek. Wél een woning.”
+	•	Titel: “WoningVry. Zonder BKR. Zonder hypotheek. Wél een woning.”
 	•	Subtitel: Via een non-hypotheekmodel kom je in aanmerking voor woningen van €200.000 tot €650.000 — van appartement tot villa.
 	•	CTA-knop: “Reserveer jouw woning”
 	•	Achtergrondbeeld: multiculturele groep jongeren (20–35) bij moderne woningen
 
-2. Wat is WoningVrij?
-	•	WoningVrij biedt woningen aan via een alternatief voor de hypotheek: een flexibele non-hypotheekstructuur zonder BKR-check
+2. Wat is WoningVry?
+	•	WoningVry biedt woningen aan via een alternatief voor de hypotheek: een flexibele non-hypotheekstructuur zonder BKR-check
 	•	Criteria zijn soepel en afgestemd op jouw situatie (ook mogelijk zonder vast inkomen of loondienst)
 	•	Je hoeft geen ondernemer te zijn — elke situatie wordt beoordeeld
 
@@ -49,7 +49,7 @@ Let op: 500 plekken beschikbaar, verdeeld over 4 rondes. Wie het eerst komt, wie
 
 6. Contactformulier
 	•	Naam, e-mailadres, woonplaats, interessebericht
-	•	E-mail: info@woningvrij.nl
+	•	E-mail: info@woningvry.nl
 
 Techniek:
 	•	HTML + TailwindCSS (of React indien beschikbaar)
@@ -59,7 +59,7 @@ Techniek:
 ENGLISH VERSION (For Replit AI)
 
 Task for Replit AI:
-Build a luxurious, modern, mobile-optimized website for WoningVrij — a Dutch housing initiative that offers affordable homes through a non-mortgage structure without BKR (credit bureau) checks. The site should explain the model, build trust, and convert interest. No login or user accounts needed.
+Build a luxurious, modern, mobile-optimized website for WoningVry — a Dutch housing initiative that offers affordable homes through a non-mortgage structure without BKR (credit bureau) checks. The site should explain the model, build trust, and convert interest. No login or user accounts needed.
 
 Design:
 	•	Monochrome (black, white, grayscale) with gold/navy accents
@@ -71,13 +71,13 @@ Design:
 Pages/Sections:
 
 1. Home
-	•	Headline: “WoningVrij. No mortgage. No BKR. Still a home.”
+	•	Headline: “WoningVry. No mortgage. No BKR. Still a home.”
 	•	Subtitle: A flexible non-mortgage model to access homes from €200,000 to €650,000 — apartments, townhouses, or villas.
 	•	CTA: “Reserve your spot”
 	•	Background: multicultural young adults (20–35) in front of modern, sustainable Dutch homes
 
-2. What is WoningVrij?
-	•	WoningVrij offers homes without a traditional mortgage, using a flexible non-mortgage system
+2. What is WoningVry?
+	•	WoningVry offers homes without a traditional mortgage, using a flexible non-mortgage system
 	•	No BKR check or credit registration
 	•	No fixed employment required — each situation is reviewed individually
 
@@ -106,4 +106,4 @@ Note: Only 500 places available across 4 rounds. First come, first served.
 
 6. Contact
 	•	Name, email, location, message
-	•	Email: info@woningvrij.n
+	•	Email: info@woningvry.n

@@ -3,7 +3,7 @@
     "providers": {
       "emailPassword": true,
       "googleSignIn": {
-        "oAuthBrandDisplayName": "WoningVrij",
+        "oAuthBrandDisplayName": "WoningVry",
         "supportEmail": "info@woningvry.nl",
         "authorizedRedirectUris": [
           "https://woningvry-dev.firebaseapp.com/__/auth/handler",

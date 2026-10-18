@@ -1,6 +1,6 @@
-# WoningVrij - Wonen Zonder Hypotheek
+# WoningVry - Wonen Zonder Hypotheek
 
-WoningVrij is a modern, responsive landing page for a fictional housing service that offers homes without traditional mortgages or BKR checks. The website showcases a unique non-mortgage model, available properties, locations, and explains the process to potential buyers.
+WoningVry is a modern, responsive landing page for a fictional housing service that offers homes without traditional mortgages or BKR checks. The website showcases a unique non-mortgage model, available properties, locations, and explains the process to potential buyers.
 
 ## 🌟 Features
 
@@ -32,8 +32,8 @@ You need a modern web browser to view the website. No build tools or package man
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/yourusername/woningvrij.git
-    cd woningvrij
+    git clone https://github.com/yourusername/woningvry.git
+    cd woningvry
     ```
 
 2.  **Open the website:**
@@ -50,7 +50,7 @@ You need a modern web browser to view the website. No build tools or package man
 ## 📂 Project Structure
 
 ```
-WoningVrijInzicht/
+WoningVryInzicht/
 ├── index.html          # Main HTML structure
 ├── style.css           # Global styles and responsive design
 ├── script.js           # Interactive functionality (scroll, parallax, nav)

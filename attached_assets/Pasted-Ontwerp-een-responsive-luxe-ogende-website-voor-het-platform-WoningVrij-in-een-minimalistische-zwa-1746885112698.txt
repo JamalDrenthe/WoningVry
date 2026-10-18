@@ -1,4 +1,4 @@
-Ontwerp een responsive, luxe ogende website voor het platform WoningVrij, in een minimalistische zwart-wit-grijs kleurenstijl. Geen felle kleuren. Alles straalt klasse, kalmte en vertrouwen uit — vergelijkbaar met premium merken of moderne architectenbureaus.
+Ontwerp een responsive, luxe ogende website voor het platform WoningVry, in een minimalistische zwart-wit-grijs kleurenstijl. Geen felle kleuren. Alles straalt klasse, kalmte en vertrouwen uit — vergelijkbaar met premium merken of moderne architectenbureaus.
 
 De site is informatief (zonder account/login), mobielvriendelijk, en gericht op doelgroepen die op zoek zijn naar alternatieve woningfinanciering. Gebruik visuele rust, strakke typografie en veel witruimte.
 
@@ -16,7 +16,7 @@ Paginastructuur:
 	•	Hamburger menu rechts (minimalistisch SVG)
 	•	Geen felle hover-effecten
 	2.	Introsectie (hero):
-	•	Grote koptekst: “WoningVrij”
+	•	Grote koptekst: “WoningVry”
 	•	Subtekst: “Zakelijke hypotheken zonder BKR”
 	•	Call to action: “Bekijk hoe het werkt”
 	3.	Hoe het werkt:
@@ -44,4 +44,4 @@ Technische structuur:
 
 Slotinstructie aan Replit:
 
-“Bouw een moderne en luxe ogende website voor WoningVrij in zwart-wit/grijs-stijl met rustige, elegante typografie en veel witruimte. Gebruik HTML/CSS/JS zonder frameworks. Geen felle kleuren, geen accountfuncties. Alleen visueel sterke, informatieve pagina’s.
+“Bouw een moderne en luxe ogende website voor WoningVry in zwart-wit/grijs-stijl met rustige, elegante typografie en veel witruimte. Gebruik HTML/CSS/JS zonder frameworks. Geen felle kleuren, geen accountfuncties. Alleen visueel sterke, informatieve pagina’s.

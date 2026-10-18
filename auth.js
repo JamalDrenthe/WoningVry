@@ -1,4 +1,4 @@
-// Gedeelde Firebase-config en helpers voor WoningVrij auth-pagina's
+// Gedeelde Firebase-config en helpers voor WoningVry auth-pagina's
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import {
   getAuth,
