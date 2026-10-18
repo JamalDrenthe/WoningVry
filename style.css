@@ -2280,3 +2280,632 @@ section { padding: var(--space-xl) 0; }
   .fade-in { opacity: 1; transform: none; }
   .hero__bg { animation: none; }
 }
+
+/* ============================================================
+   Aanbod Pagina (Funda Koop & Huur Style)
+   ============================================================ */
+.aanbod-page {
+  padding-top: 100px;
+  padding-bottom: 5rem;
+  background-color: var(--paper);
+}
+
+.aanbod-header {
+  background: linear-gradient(135deg, #0d1b2e 0%, #152741 100%);
+  border: 1px solid rgba(212, 182, 120, 0.25);
+  border-radius: var(--r-l);
+  padding: 2.2rem 2.5rem;
+  color: #ffffff;
+  box-shadow: 0 16px 40px rgba(13, 27, 46, 0.16);
+  margin-bottom: 2rem;
+}
+
+.aanbod-header__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.aanbod-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+  font-weight: 600;
+  color: #ffffff;
+  margin-top: 0.35rem;
+  margin-bottom: 0.6rem;
+  line-height: 1.2;
+}
+
+.aanbod-header p {
+  color: #cbd5e1;
+  max-width: 680px;
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+.aanbod-header__badges {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.aanbod-stat-pill {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(212, 182, 120, 0.3);
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--r-s);
+  font-size: 0.82rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.aanbod-stat-pill strong {
+  color: var(--gold-bright);
+}
+
+/* Zoekbalk & Filterbox */
+.aanbod-filter-box {
+  background: #ffffff;
+  border: 1px solid rgba(13, 27, 46, 0.1);
+  border-radius: var(--r-m);
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(13, 27, 46, 0.06);
+  margin-bottom: 2rem;
+}
+
+.aanbod-tabs-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid rgba(13, 27, 46, 0.08);
+  margin-bottom: 1.2rem;
+}
+
+.funda-type-pills {
+  display: inline-flex;
+  background: rgba(13, 27, 46, 0.06);
+  padding: 0.25rem;
+  border-radius: 999px;
+  gap: 0.25rem;
+}
+
+.funda-pill-btn {
+  border: none;
+  background: transparent;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all var(--dur-quick) var(--ease-standard);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.funda-pill-btn:hover {
+  color: var(--ink);
+}
+
+.funda-pill-btn.active {
+  background: var(--ink);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(13, 27, 46, 0.2);
+}
+
+.funda-view-toggle {
+  display: inline-flex;
+  gap: 0.35rem;
+  background: rgba(13, 27, 46, 0.04);
+  padding: 0.25rem;
+  border-radius: var(--r-s);
+}
+
+.funda-view-btn {
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--r-s);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all var(--dur-quick);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.funda-view-btn.active {
+  background: #ffffff;
+  border-color: rgba(13, 27, 46, 0.12);
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Tweede rij: Zoekveld en dropdowns */
+.funda-search-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr auto;
+  gap: 0.85rem;
+  align-items: center;
+}
+
+.funda-search-input-wrap {
+  position: relative;
+}
+
+.funda-search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.4rem;
+  border: 1px solid rgba(13, 27, 46, 0.15);
+  border-radius: var(--r-s);
+  font-size: 0.92rem;
+  font-family: var(--font-body);
+  background: #ffffff;
+  color: var(--ink);
+  transition: border-color var(--dur-quick);
+}
+
+.funda-search-input:focus {
+  outline: none;
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(13, 27, 46, 0.1);
+}
+
+.funda-search-icon {
+  position: absolute;
+  left: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.funda-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(13, 27, 46, 0.15);
+  border-radius: var(--r-s);
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+  background: #ffffff;
+  color: var(--ink);
+  cursor: pointer;
+  width: 100%;
+}
+
+.funda-select:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+
+.funda-reset-btn {
+  padding: 0.75rem 1.1rem;
+  border: 1px solid rgba(13, 27, 46, 0.15);
+  background: rgba(13, 27, 46, 0.04);
+  border-radius: var(--r-s);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--dur-quick);
+}
+
+.funda-reset-btn:hover {
+  background: rgba(13, 27, 46, 0.08);
+}
+
+/* Status filtering row (chips) */
+.funda-status-chips {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(13, 27, 46, 0.05);
+}
+
+.funda-chip {
+  border: 1px solid rgba(13, 27, 46, 0.12);
+  background: transparent;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all var(--dur-quick);
+}
+
+.funda-chip:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.funda-chip.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #ffffff;
+}
+
+/* Resultaten Header */
+.aanbod-results-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.4rem;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.aanbod-results-count {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.aanbod-results-count span {
+  color: var(--gold);
+}
+
+/* ============================================================
+   Funda Cards (Lijst & Raster)
+   ============================================================ */
+.funda-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.funda-grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* Card in List View (Klassiek Funda Horizontaal) */
+.funda-card {
+  background: #ffffff;
+  border: 1px solid rgba(13, 27, 46, 0.1);
+  border-radius: var(--r-m);
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(13, 27, 46, 0.05);
+  transition: all var(--dur-std) var(--ease-standard);
+  display: flex;
+  position: relative;
+}
+
+.funda-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(13, 27, 46, 0.12);
+  border-color: rgba(212, 182, 120, 0.5);
+}
+
+/* Foto sectie */
+.funda-card__media {
+  position: relative;
+  width: 340px;
+  min-width: 340px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.9rem;
+}
+
+.funda-badges-top {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+/* Status Badges Funda Style */
+.badge-funda-status {
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--r-s);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.badge-funda-status--verkocht {
+  background: #991b1b;
+  color: #ffffff;
+}
+
+.badge-funda-status--verkocht-ov {
+  background: #c2410c;
+  color: #ffffff;
+}
+
+.badge-funda-status--verhuurd {
+  background: #0f766e;
+  color: #ffffff;
+}
+
+.badge-funda-status--verhuurd-ov {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+.badge-funda-status--beschikbaar {
+  background: #15803d;
+  color: #ffffff;
+}
+
+.badge-funda-model {
+  background: rgba(13, 27, 46, 0.85);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--r-s);
+  font-size: 0.72rem;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.badge-funda-model--koop {
+  border-color: rgba(212, 182, 120, 0.6);
+  color: var(--gold-bright);
+}
+
+.badge-funda-model--huur {
+  border-color: #38bdf8;
+  color: #bae6fd;
+}
+
+/* Card Body */
+.funda-card__body {
+  padding: 1.5rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.funda-card__header {
+  margin-bottom: 0.8rem;
+}
+
+.funda-card__title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.2rem;
+  line-height: 1.25;
+}
+
+.funda-card__loc {
+  font-size: 0.92rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Prijs weergave */
+.funda-card__price-box {
+  margin: 0.7rem 0 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(13, 27, 46, 0.03);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--r-s) var(--r-s) 0;
+}
+
+.funda-card__price {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.1;
+}
+
+.funda-card__price-sub {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+
+.funda-card__price-sub strong {
+  color: #166534;
+}
+
+/* Kenmerken / Specs */
+.funda-card__specs {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(13, 27, 46, 0.06);
+}
+
+.funda-spec-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.funda-spec-item span {
+  color: var(--muted);
+}
+
+/* WoningVrij Advantage Tag */
+.funda-wv-perk {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+}
+
+/* Card Footer */
+.funda-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.funda-card__transactie-meta {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* Grid View Modificaties */
+.funda-grid-container .funda-card {
+  flex-direction: column;
+}
+
+.funda-grid-container .funda-card__media {
+  width: 100%;
+  min-width: 100%;
+  height: 220px;
+}
+
+.funda-grid-container .funda-card__body {
+  padding: 1.25rem 1.4rem;
+}
+
+.funda-grid-container .funda-card__title {
+  font-size: 1.25rem;
+}
+
+/* Detail Modal */
+.funda-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 27, 46, 0.75);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-std) var(--ease-standard);
+}
+
+.funda-modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.funda-modal-card {
+  background: #ffffff;
+  border-radius: var(--r-l);
+  max-width: 780px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+  position: relative;
+  transform: translateY(20px);
+  transition: transform var(--dur-std) var(--ease-standard);
+}
+
+.funda-modal-backdrop.open .funda-modal-card {
+  transform: translateY(0);
+}
+
+.funda-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(13, 27, 46, 0.8);
+  border: none;
+  color: #ffffff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background var(--dur-quick);
+}
+
+.funda-modal-close:hover {
+  background: var(--ink);
+}
+
+.funda-modal-img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+}
+
+.funda-modal-content {
+  padding: 2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 960px) {
+  .funda-card {
+    flex-direction: column;
+  }
+  .funda-card__media {
+    width: 100%;
+    min-width: 100%;
+    height: 220px;
+  }
+  .funda-search-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .funda-search-input-wrap {
+    grid-column: span 2;
+  }
+  .funda-grid-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .funda-search-grid {
+    grid-template-columns: 1fr;
+  }
+  .funda-search-input-wrap {
+    grid-column: span 1;
+  }
+  .funda-grid-container {
+    grid-template-columns: 1fr;
+  }
+  .funda-card__footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .funda-card__footer .btn-secondary,
+  .funda-card__footer .btn-primary {
+    text-align: center;
+  }
+}
+

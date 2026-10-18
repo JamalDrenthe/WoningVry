@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aanbod & Transacties | WoningVrij — Koop & Huur</title>
+  <meta name="description" content="Bekijk het actuele en recent gerealiseerde woningaanbod van WoningVrij: 10 koopwoningen (verkocht) en 10 huurwoningen (verhuurd) zonder bankhypotheek of 4x inkomenseis.">
+  <meta name="theme-color" content="#0d1b2e">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Sticky Header -->
+  <header class="sticky sticky--solid">
+    <div class="container">
+      <nav class="nav">
+        <input type="checkbox" id="nav__checkbox" class="nav__checkbox">
+        <label for="nav__checkbox" class="nav__backdrop" aria-hidden="true"></label>
+        <label for="nav__checkbox" class="nav__toggle" aria-label="Menu navigatie">
+          <svg class="menu" viewBox="0 0 24 24" width="22" height="22">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12h18M3 6h18M3 18h18"></path>
+          </svg>
+          <svg class="close" viewBox="0 0 24 24" width="22" height="22">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M18 6L6 18M6 6l12 12"></path>
+          </svg>
+        </label>
+        <div class="nav__logo">
+          <a href="index.html">
+            <img src="attached_assets/woningvry-logo.svg" alt="WoningVrij Logo" class="logo-image">
+          </a>
+        </div>
+        <ul class="nav__menu">
+          <li><a href="index.html#wat-is">Wat is WoningVrij?</a></li>
+          <li><a href="index.html#hoe-werkt-het">Hoe werkt het</a></li>
+          <li><a href="aanbod.html" class="active" style="color: var(--gold); font-weight: 600;">Aanbod</a></li>
+          <li><a href="index.html#woningen">Woningen & Locaties</a></li>
+          <li><a href="index.html#faq">Veelgestelde vragen</a></li>
+          <li><a href="account.html" class="nav-auth-link"><span>Mijn account</span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="aanbod-page">
+    <div class="container">
+      
+      <!-- HERO BANNER AANBOD & TRANSACTIES -->
+      <section class="aanbod-header">
+        <div class="aanbod-header__top">
+          <div>
+            <span class="eyebrow" style="color: var(--gold-bright);">WoningVrij Woningmarkt Overzicht</span>
+            <h1>Aanbod & Recent Gerealiseerde Woningen</h1>
+            <p>Net als op Funda geven we volledige inzage in onze woningtransacties. Bekijk hieronder 20 representatieve woningen (10 verkocht &amp; 10 verhuurd) die succesvol zijn toegewezen via onze non-hypotheekstructuur en flexibele huur zonder 4x inkomenseis.</p>
+          </div>
+          <div class="aanbod-header__badges">
+            <div class="aanbod-stat-pill">
+              <span>🏡 Koop:</span>
+              <strong>10 Verkocht</strong>
+            </div>
+            <div class="aanbod-stat-pill">
+              <span>🔑 Huur:</span>
+              <strong>10 Verhuurd</strong>
+            </div>
+            <div class="aanbod-stat-pill">
+              <span>📍 Regio's:</span>
+              <strong>7 Steden</strong>
+            </div>
+            <div class="aanbod-stat-pill">
+              <span>🎟️ Ronde 1:</span>
+              <strong>500 Plekken</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FUNDA-STYLE SEARCH & FILTER BAR -->
+      <section class="aanbod-filter-box" aria-label="Filters">
+        <!-- Rij 1: Woonvorm pills & Lijst/Raster toggle -->
+        <div class="aanbod-tabs-row">
+          <div class="funda-type-pills" id="woonvorm-pills">
+            <button type="button" class="funda-pill-btn active" data-type="all">
+              🏢 Alle woningen <span id="count-all" style="opacity: 0.8;">(20)</span>
+            </button>
+            <button type="button" class="funda-pill-btn" data-type="koop">
+              🏡 Koop <span id="count-koop" style="opacity: 0.8;">(10)</span>
+            </button>
+            <button type="button" class="funda-pill-btn" data-type="huur">
+              🔑 Huur <span id="count-huur" style="opacity: 0.8;">(10)</span>
+            </button>
+          </div>
+
+          <div class="funda-view-toggle">
+            <button type="button" class="funda-view-btn active" id="btn-view-list" title="Lijstweergave">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              Lijst
+            </button>
+            <button type="button" class="funda-view-btn" id="btn-view-grid" title="Rasterweergave">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              Raster
+            </button>
+          </div>
+        </div>
+
+        <!-- Rij 2: Zoekbalk & Dropdown filters -->
+        <div class="funda-search-grid">
+          <div class="funda-search-input-wrap">
+            <svg class="funda-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" id="filter-search" class="funda-search-input" placeholder="Zoek op adres, stad, wijk of postcode...">
+          </div>
+
+          <div>
+            <select id="filter-city" class="funda-select" aria-label="Filter op stad">
+              <option value="all">Alle steden</option>
+              <option value="Amsterdam">Amsterdam</option>
+              <option value="Rotterdam">Rotterdam</option>
+              <option value="Utrecht">Utrecht</option>
+              <option value="Almere">Almere</option>
+              <option value="Eindhoven">Eindhoven</option>
+              <option value="Groningen">Groningen</option>
+              <option value="Den Haag">Den Haag</option>
+            </select>
+          </div>
+
+          <div>
+            <select id="filter-property-type" class="funda-select" aria-label="Filter op woningtype">
+              <option value="all">Alle woningtypes</option>
+              <option value="Appartement">Appartement</option>
+              <option value="Eengezinswoning">Eengezinswoning</option>
+              <option value="Loft">Loft / Studio</option>
+              <option value="Villa">Villa / Herenhuis</option>
+            </select>
+          </div>
+
+          <div>
+            <select id="filter-sort" class="funda-select" aria-label="Sorteer resultaten">
+              <option value="default">Aanbevolen volgorde</option>
+              <option value="price-asc">Prijs: laag naar hoog</option>
+              <option value="price-desc">Prijs: hoog naar laag</option>
+              <option value="surface-desc">Woonoppervlakte: groot naar klein</option>
+            </select>
+          </div>
+
+          <div>
+            <button type="button" id="btn-reset-filters" class="funda-reset-btn">Filters wissen</button>
+          </div>
+        </div>
+
+        <!-- Rij 3: Status Quick Chips -->
+        <div class="funda-status-chips" id="status-chips">
+          <span style="font-size: 0.82rem; font-weight: 600; color: var(--muted); align-self: center; margin-right: 0.2rem;">Status filter:</span>
+          <button type="button" class="funda-chip active" data-status="all">Alles tonen</button>
+          <button type="button" class="funda-chip" data-status="verkocht">🏷️ Verkocht</button>
+          <button type="button" class="funda-chip" data-status="verhuurd">🔑 Verhuurd</button>
+          <button type="button" class="funda-chip" data-status="ov">⏳ Onder voorbehoud</button>
+        </div>
+      </section>
+
+      <!-- RESULTS HEADER -->
+      <div class="aanbod-results-bar">
+        <div class="aanbod-results-count">
+          Toont <span id="visible-count">20</span> van de 20 woningen
+        </div>
+        <div style="font-size: 0.85rem; color: var(--muted);">
+          ℹ️ Transactiedata geverifieerd via WoningVrij toewijzingsprotocol (Ronde 1).
+        </div>
+      </div>
+
+      <!-- WONINGEN CONTAINER (LIST OF CARDS) -->
+      <section id="properties-container" class="funda-list-container" aria-label="Woningoverzicht">
+        <!-- Dynamisch gevuld via JavaScript voor real-time filtering -->
+      </section>
+
+      <!-- NO RESULTS PLACEHOLDER -->
+      <div id="no-results-box" style="display: none; text-align: center; padding: 4rem 2rem; background: #ffffff; border-radius: var(--r-m); border: 1px solid rgba(13,27,46,0.1); margin-top: 1rem;">
+        <h3 style="font-family: var(--font-display); font-size: 1.5rem; color: var(--ink); margin-bottom: 0.5rem;">Geen woningen gevonden</h3>
+        <p style="color: var(--muted); max-width: 450px; margin: 0 auto 1.5rem;">Er zijn geen woningen die voldoen aan jouw huidige zoekcriteria. Pas je filters aan of wis alle filters.</p>
+        <button type="button" id="btn-empty-reset" class="btn-primary">Alle filters resetten</button>
+      </div>
+
+      <!-- INSCHRIJVEN CTA BANNER -->
+      <section class="account-card mt-4" style="background: linear-gradient(135deg, #0d1b2e 0%, #152741 100%); color: #ffffff; padding: 2.5rem; border: 1px solid rgba(212,182,120,0.3); text-align: center; margin-top: 3.5rem;">
+        <span class="eyebrow" style="color: var(--gold-bright);">Klaar voor de volgende ronde?</span>
+        <h2 style="color: #ffffff; font-size: 2rem; margin: 0.5rem 0 1rem;">Zelf een Woning Bemachtigen in Ronde 1?</h2>
+        <p style="color: #cbd5e1; max-width: 620px; margin: 0 auto 1.8rem; font-size: 1rem;">Er zijn in totaal 500 plekken beschikbaar in de huidige ronde. Of je nu wilt huren zonder 4x inkomenseis of wilt kopen zonder bankhypotheek: reserveer direct jouw plek.</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <a href="registratie.html" class="btn-primary">Reserveer plek in Ronde 1</a>
+          <a href="account.html" class="btn-secondary" style="color: #ffffff; border-color: rgba(255,255,255,0.3);">Naar Account Centrum</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- DETAIL MODAL -->
+  <div id="funda-modal" class="funda-modal-backdrop" aria-hidden="true" role="dialog">
+    <div class="funda-modal-card">
+      <button type="button" id="modal-close-btn" class="funda-modal-close" aria-label="Sluit modal">✕</button>
+      <img id="modal-img" src="" alt="Woningfoto" class="funda-modal-img">
+      <div class="funda-modal-content">
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 0.6rem;" id="modal-badges"></div>
+        <h2 id="modal-title" style="font-family: var(--font-display); font-size: 1.8rem; color: var(--ink); margin-bottom: 0.2rem;">Adres</h2>
+        <p id="modal-loc" style="color: var(--muted); font-size: 0.95rem; margin-bottom: 1.2rem;">Postcode en Stad</p>
+        
+        <div id="modal-price-box" class="funda-card__price-box">
+          <div id="modal-price" class="funda-card__price">€ 0</div>
+          <div id="modal-price-sub" class="funda-card__price-sub">Indicatie</div>
+        </div>
+
+        <div id="modal-specs" class="funda-card__specs" style="margin-top: 1.2rem;"></div>
+
+        <div style="margin-top: 1.5rem;">
+          <h4 style="font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--ink);">Woningomschrijving &amp; Toewijzing</h4>
+          <p id="modal-desc" style="color: #334155; line-height: 1.7; font-size: 0.95rem; margin-bottom: 1.5rem;"></p>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid rgba(13,27,46,0.08); border-radius: var(--r-s); padding: 1.2rem; margin-bottom: 1.5rem;">
+          <h4 style="font-size: 0.95rem; color: var(--ink); margin-bottom: 0.35rem;">🏆 WoningVrij Toewijzingsvoordeel</h4>
+          <p id="modal-advantage" style="font-size: 0.88rem; color: var(--muted); margin: 0;"></p>
+        </div>
+
+        <div style="display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap;">
+          <button type="button" class="btn-secondary" id="modal-btn-close">Sluiten</button>
+          <a href="registratie.html" class="btn-primary">Vergelijkbare woning reserveren</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img src="attached_assets/woningvry-logo.svg" alt="WoningVrij Logo" class="footer-logo-image">
+          <p>Zonder BKR. Zonder bankhypotheek. Flexibele huur &amp; koop.</p>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Navigatie</h3>
+          <ul>
+            <li><a href="index.html#wat-is">Wat is WoningVrij?</a></li>
+            <li><a href="index.html#hoe-werkt-het">Hoe werkt het</a></li>
+            <li><a href="aanbod.html">Aanbod &amp; Transacties</a></li>
+            <li><a href="index.html#woningen">Woningen &amp; Locaties</a></li>
+            <li><a href="index.html#faq">Veelgestelde vragen</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-legal">
+          <h3>Juridisch</h3>
+          <ul>
+            <li><a href="privacybeleid.html">Privacybeleid</a></li>
+            <li><a href="algemene-voorwaarden.html">Algemene voorwaarden</a></li>
+            <li><a href="cookiebeleid.html">Cookiebeleid</a></li>
+            <li><a href="disclaimer.html">Disclaimer</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 WoningVrij. Alle rechten voorbehouden.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script type="module">
+    import { auth, onAuthStateChanged } from "./auth.js";
+
+    onAuthStateChanged(auth, (user) => {
+      const link = document.querySelector(".nav-auth-link");
+      if (link) {
+        if (user) {
+          link.textContent = "Mijn account";
+          link.href = "account.html";
+        } else {
+          link.textContent = "Inloggen";
+          link.href = "login.html";
+        }
+      }
+    });
+
+    // ============================================================
+    // WONINGVRIJ AANBOD DATABASE: 10 KOOP & 10 HUUR WONINGEN
+    // ============================================================
+    const propertiesData = [
+      // ----------------- 10 KOOP WONINGEN (VERKOCHT / VERKOCHT O.V.) -----------------
+      {
+        id: "koop-1",
+        category: "koop",
+        status: "verkocht-ov",
+        statusLabel: "Verkocht o.v.",
+        address: "Keizersgracht 512",
+        postalCode: "1017 EK",
+        city: "Amsterdam",
+        neighborhood: "Centrum / Grachtengordel",
+        propertyType: "Appartement",
+        priceVal: 445000,
+        priceDisplay: "€ 445.000 k.k.",
+        priceSub: "Non-hypotheek inleg ca. <strong>€ 1.340 /mnd</strong> • Borg 10% (€ 44.500)",
+        surface: 84,
+        rooms: 3,
+        bedrooms: 2,
+        energyLabel: "A+",
+        buildYear: 1895,
+        image: "attached_assets/appartement-luxury.webp",
+        transactedDate: "Recent toegewezen in Ronde 1",
+        description: "Prachtig gerenoveerd monumentaal grachtenappartement met uitzicht over de Keizersgracht. Voorzien van luxe visgraat parketvloer, design woonkeuken met marmeren blad en twee goed bemeten slaapkamers. Volledig gasloos en voorzien van hoogwaardige achterzetbeglazing.",
+        advantage: "Toegewezen aan zelfstandig ondernemer zonder jaarcijfers of bankhypotheek via het WoningVrij non-hypotheekmodel. Borg 10% voldaan bij toewijzing.",
+      },
+      {
+        id: "koop-2",
+        category: "koop",
+        status: "verkocht",
+        statusLabel: "Verkocht",
+        address: "Vleutenseweg 248",
+        postalCode: "3532 HV",
+        city: "Utrecht",
+        neighborhood: "Lombok / West",
+        propertyType: "Eengezinswoning",
+        priceVal: 385000,
+        priceDisplay: "€ 385.000 k.k.",
+        priceSub: "Non-hypotheek inleg ca. <strong>€ 1.160 /mnd</strong> • Borg 10% (€ 38.500)",
+        surface: 118,
+        rooms: 4,
+        bedrooms: 3,
+        energyLabel: "A+++",
+        buildYear: 2021,
+        image: "attached_assets/rijwoning-modern.webp",
+        transactedDate: "Verkocht binnen 14 dagen",
+        description: "Moderne, energie-neutrale tussenwoning in de populaire wijk Lombok. Voorzien van zonnepanelen, vloerverwarming op alle verdiepingen en een zonnige achtertuin op het zuidwesten met stenen berging en achterom.",
+        advantage: "Koper had een historische BKR-codering die elke bank weigerde. WoningVrij heeft het dossier beoordeeld op actuele financiële draagkracht en direct groen licht gegeven.",
+      },
+      {
+        id: "koop-3",
+        category: "koop",
+        status: "verkocht-ov",
+        statusLabel: "Verkocht o.v.",
+        address: "Kralingse Plaslaan 34",
+        postalCode: "3062 DA",
+        city: "Rotterdam",
+        neighborhood: "Kralingen",
+        propertyType: "Appartement",
+        priceVal: 525000,
+        priceDisplay: "€ 525.000 k.k.",
+        priceSub: "Non-hypotheek inleg ca. <strong>€ 1.580 /mnd</strong> • Borg 10% (€ 52.500)",
+        surface: 135,
+        rooms: 4,
+        bedrooms: 3,
+        energyLabel: "A++",
+        buildYear: 2018,
+        image: "attached_assets/locatie-rotterdam.webp",
+        transactedDate: "In optie Ronde 1",
+        description: "Exclusief penthouse met adembenemend uitzicht over de Kralingse Plas en de skyline van Rotterdam. Ruim dakterras van 42 m², privélift naar het penthouse en twee eigen overdekte parkeerplaatsen in de ondergelegen garage.",
+        advantage: "Gefinancierd via familieborgstelling binnen de 5-15% borgregeling van WoningVrij.",
+      },
+      {
+        id: "koop-4",
+        category: "koop",
+        status: "verkocht",
+        statusLabel: "Verkocht",
+        address: "Duinvallei 78",
+        postalCode: "1363 TZ",
+        city: "Almere",
+        neighborhood: "Almere Poort / DUIN",
+        propertyType: "Villa",
+        priceVal: 495000,
+        priceDisplay: "€ 495.000 k.k.",
+        priceSub: "Non-hypotheek inleg ca. <strong>€ 1.490 /mnd</strong> • Borg 10% (€ 49.500)",
+        surface: 165,
+        rooms: 5,
+        bedrooms: 4,
+        energyLabel: "A++++",
+        buildYear: 2023,
+        image: "attached_assets/villa-luxury.webp",
+        transactedDate: "Verkocht in selectieronde",
+        description: "Vrijstaande luxe duinvilla op loopafstand van het strand en het IJmeer. Uitgerust met een geavanceerde bodemwarmtepomp, driedubbel glas en een prachtig aangelegde tuin rondom met veranda.",
+        advantage: "Nieuwbouwproject direct toegewezen via onze aangesloten partner-ontwikkelaar zonder lotingsstress of bankgarantie.",
+      },
+      {
+        id: "koop-5",
+        category: "koop",
+        status: "verkocht",
+        statusLabel: "Verkocht",
+        address: "Stratumsedijk 62",
+        postalCode: "5611 ND",
+        city: "Eindhoven",
+        neighborhood: "Centrum / Stratum",
+        propertyType: "Loft",
+        priceVal: 310000,
+        priceDisplay: "€ 310.000 k.k.",
+        priceSub: "Non-hypotheek inleg ca. <strong>€ 930 /mnd</strong> • Borg 10% (€ 31.000)",
+        surface: 76,
+        rooms: 2,
+        bedrooms: 1,
+        energyLabel: "A",
+        buildYear: 2019,
+        image: "attached_assets/locatie-eindhoven.webp",
+        transactedDate: "Definitief toegewezen",
+        description: "Strakke design loft met plafondhoogte van maar liefst 3,40 meter, industriële betonlook vloer en luxe open kookeiland. Gelegen op loopafstand van het centrum van Eindhoven en het bruisende De Bergen.",
+        advantage: "Toegewezen aan expat-techconsultant zonder vast contract op basis van aantoonbaar inkomen en WoningVrij borg.",
+      },
+      {
+        id: "koop-6",
+        category: "koop",
+        status: "verkocht-ov",
+        statusLabel: "Verkocht o.v.",
+        address: "Hereweg 114",
+        postalCode: "9725 AJ",
+        city: "Groningen",
+        neighborhood: "Helpman / Zuid",
+        propertyType: "Villa",
+        priceVal: 375000,
+        priceDisplay: "€ 375.000 k.k.",
+        priceSub: "Non-hypotheek inleg ca. <strong>€ 1.120 /mnd</strong> • Borg 10% (€ 37.500)",
+        surface: 142,
+        rooms: 5,
+        bedrooms: 4,
+        energyLabel: "B",
+        buildYear: 1932,
+        image: "attached_assets/locatie-groningen.webp",
+        transactedDate: "Onder voorbehoud Ronde 1",
+        description: "Karakteristiek vooroorlogs herenhuis met authentieke glas-in-loodramen, en-suite deuren en diepe achtertuin op het oosten. Dichtbij het Stadspark en het Hoofdstation.",
+        advantage: "Aankoop met flexibele borginleg van 8% gerealiseerd via overwaarde-doorschuif.",
+      },
+      {
+        id: "koop-7",
+        category: "koop",
+        status: "verkocht",
+        statusLabel: "Verkocht",
+        address: "Javastraat 88-2",
+        postalCode: "1094 HP",
+        city: "Amsterdam",
+        neighborhood: "Indische Buurt / Oost",
+        propertyType: "Appartement",
+        priceVal: 340000,
+        priceDisplay: "€ 340.000 k.k.",
+        priceSub: "Non-hypotheek inleg ca. <strong>€ 1.020 /mnd</strong> • Borg 10% (€ 34.000)",
+        surface: 72,
+        rooms: 3,
+        bedrooms: 2,
+        energyLabel: "A",
+        buildYear: 1912,
+        image: "attached_assets/locatie-amsterdam.webp",
+        transactedDate: "Verkocht in 1 ronde",
+        description: "Licht en sfeervol 3-kamerappartement in het hart van de dynamische Indische Buurt. Voorzien van een Frans balkon aan de voorzijde en een woningbreed balkon aan de achterzijde.",
+        advantage: "Geen overbiedingen of gesloten inschrijvingen: vaste eerlijke toewijzing conform het WoningVrij ronde-protocol.",
+      },
+      {
+        id: "koop-8",
+        category: "koop",
+        status: "verkocht-ov",
+        statusLabel: "Verkocht o.v.",
+        address: "Maliesingel 29",
+        postalCode: "3581 BH",
+        city: "Utrecht",
+        neighborhood: "Oost / Singel",
+        propertyType: "Appartement",
+        priceVal: 420000,
+        priceDisplay: "€ 420.000 k.k.",
+        priceSub: "Non-hypotheek inleg ca. <strong>€ 1.260 /mnd</strong> • Borg 10% (€ 42.000)",
+        surface: 95,
+        rooms: 3,
+        bedrooms: 2,
+        energyLabel: "A",
+        buildYear: 2016,
+        image: "attached_assets/locatie-utrecht.webp",
+        transactedDate: "Reservering goedgekeurd",
+        description: "Statig stadsappartement aan de historische Singel van Utrecht. Hoge raampartijen met monumentaal uitzicht op het water, luxe badkamer met vrijstaand ligbad en royale inloopkast.",
+        advantage: "Koper had flexibel inkomen als interim manager en werd binnen 48 uur goedgekeurd door ons acceptatieteam.",
+      },
+      {
+        id: "koop-9",
+        category: "koop",
+        status: "verkocht",
+        statusLabel: "Verkocht",
+        address: "Willemskade 18",
+        postalCode: "3016 DL",
+        city: "Rotterdam",
+        neighborhood: "Scheepvaartkwartier",
+        propertyType: "Appartement",
+        priceVal: 360000,
+        priceDisplay: "€ 360.000 k.k.",
+        priceSub: "Non-hypotheek inleg ca. <strong>€ 1.080 /mnd</strong> • Borg 10% (€ 36.000)",
+        surface: 88,
+        rooms: 3,
+        bedrooms: 2,
+        energyLabel: "A+",
+        buildYear: 2020,
+        image: "attached_assets/20250510_1714_Modern Scandinavian Apartment_simple_compose_01jtxc3ykgf9nre663k3zpmdmn.png",
+        transactedDate: "Verkocht via platform",
+        description: "Moderne havenresidentie in het chique Scheepvaartkwartier met uitzicht op de Maas en de Erasmusbrug. Hoogwaardige afwerking met eiken parket en luxe inbouwapparatuur.",
+        advantage: "Direct gematcht via account centrum op basis van geregistreerde voorkeurstype en stad.",
+      },
+      {
+        id: "koop-10",
+        category: "koop",
+        status: "verkocht-ov",
+        statusLabel: "Verkocht o.v.",
+        address: "Koninginnegracht 45",
+        postalCode: "2514 AB",
+        city: "Den Haag",
+        neighborhood: "Archipelbuurt",
+        propertyType: "Villa",
+        priceVal: 580000,
+        priceDisplay: "€ 580.000 k.k.",
+        priceSub: "Non-hypotheek inleg ca. <strong>€ 1.740 /mnd</strong> • Borg 10% (€ 58.000)",
+        surface: 178,
+        rooms: 6,
+        bedrooms: 4,
+        energyLabel: "B",
+        buildYear: 1905,
+        image: "attached_assets/hero-community.webp",
+        transactedDate: "Onder voorbehoud Ronde 1",
+        description: "Statig herenhuis met uitzicht over de Koninginnegracht. Karakteristieke hoge plafonds van 3,60 meter, originele marmeren schouwen en een zonnige stadstuin.",
+        advantage: "Toegewezen zonder de vereiste van een traditionele banktaxatie of afsluitprovisies van duizenden euro's.",
+      },
+
+      // ----------------- 10 HUUR WONINGEN (VERHUURD / VERHUURD O.V.) -----------------
+      {
+        id: "huur-1",
+        category: "huur",
+        status: "verhuurd",
+        statusLabel: "Verhuurd",
+        address: "Prinsengracht 342-H",
+        postalCode: "1016 HX",
+        city: "Amsterdam",
+        neighborhood: "Jordaan / Negen Straatjes",
+        propertyType: "Appartement",
+        priceVal: 1450,
+        priceDisplay: "€ 1.450 /mnd",
+        priceSub: "Waarborgsom: <strong>€ 1.450 (1 maand)</strong> • Géén 4x bruto inkomenseis",
+        surface: 68,
+        rooms: 2,
+        bedrooms: 1,
+        energyLabel: "A",
+        buildYear: 1905,
+        image: "attached_assets/locatie-amsterdam.webp",
+        transactedDate: "Verhuurd binnen 48 uur",
+        description: "Sfeervol souterrain/bel-etage appartement aan de iconische Prinsengracht nabij de Negen Straatjes. Volledig gemeubileerd met design meubilair, eiken vloer en een rustige patiotuin aan de achterzijde.",
+        advantage: "Huurder voldeed niet aan de reguliere Amsterdamse 4x bruto eis, maar toonde gezonde solvabiliteit en spaargeld via WoningVrij dossier.",
+      },
+      {
+        id: "huur-2",
+        category: "huur",
+        status: "verhuurd-ov",
+        statusLabel: "Verhuurd o.v.",
+        address: "Oudegracht 215-A",
+        postalCode: "3511 NL",
+        city: "Utrecht",
+        neighborhood: "Binnenstad / Werf",
+        propertyType: "Loft",
+        priceVal: 1250,
+        priceDisplay: "€ 1.250 /mnd",
+        priceSub: "Waarborgsom: <strong>€ 1.250 (1 maand)</strong> • BKR-vrijgesteld",
+        surface: 74,
+        rooms: 2,
+        bedrooms: 1,
+        energyLabel: "B",
+        buildYear: 1780,
+        image: "attached_assets/locatie-utrecht.webp",
+        transactedDate: "Onder optie Ronde 1",
+        description: "Unieke werfkelder-loft met directe toegang tot het water van de Oudegracht. Prachtige gewelven, moderne vloerverwarming en een complete design keuken met inbouwapparatuur.",
+        advantage: "Geaccepteerd met 1 maand waarborgsom zonder bemiddelingskosten of administratiekosten.",
+      },
+      {
+        id: "huur-3",
+        category: "huur",
+        status: "verhuurd",
+        statusLabel: "Verhuurd",
+        address: "Witte de Withstraat 94-B",
+        postalCode: "3012 BT",
+        city: "Rotterdam",
+        neighborhood: "Centrum / Cool",
+        propertyType: "Appartement",
+        priceVal: 1150,
+        priceDisplay: "€ 1.150 /mnd",
+        priceSub: "Waarborgsom: <strong>€ 1.150 (1 maand)</strong> • Géén 4x bruto eis",
+        surface: 65,
+        rooms: 2,
+        bedrooms: 1,
+        energyLabel: "A+",
+        buildYear: 2017,
+        image: "attached_assets/locatie-rotterdam.webp",
+        transactedDate: "Verhuurd via toewijzing",
+        description: "Modern stadsappartement midden in de bruisende culturele as van Rotterdam. Uitstekend geïsoleerd met energielabel A+, balkon op het zuidwesten en lift in het complex.",
+        advantage: "Verhuurd aan jonge startende professional op basis van werkcontract en borgstelling via familie.",
+      },
+      {
+        id: "huur-4",
+        category: "huur",
+        status: "verhuurd-ov",
+        statusLabel: "Verhuurd o.v.",
+        address: "Muziekwijk Promenade 12",
+        postalCode: "1312 TA",
+        city: "Almere",
+        neighborhood: "Muziekwijk",
+        propertyType: "Eengezinswoning",
+        priceVal: 1350,
+        priceDisplay: "€ 1.350 /mnd",
+        priceSub: "Met <strong>Huur-naar-Koop optie</strong> • Waarborg: € 1.350",
+        surface: 122,
+        rooms: 4,
+        bedrooms: 3,
+        energyLabel: "A+++",
+        buildYear: 2022,
+        image: "attached_assets/locatie-almere.webp",
+        transactedDate: "In behandeling Ronde 1",
+        description: "Royale gezinswoning met diepe achtertuin op het zuiden, stenen berging en zonnepanelen. Zeer kindvriendelijke omgeving nabij station Almere Muziekwijk en basisscholen.",
+        advantage: "Huurder heeft gekozen voor het Huur-naar-Koop traject: bouwt maandelijks spaarsaldo op richting toekomstig eigendom.",
+      },
+      {
+        id: "huur-5",
+        category: "huur",
+        status: "verhuurd",
+        statusLabel: "Verhuurd",
+        address: "Kastanjelaan 18 (Strijp-S)",
+        postalCode: "5616 LH",
+        city: "Eindhoven",
+        neighborhood: "Strijp-S",
+        propertyType: "Loft",
+        priceVal: 1180,
+        priceDisplay: "€ 1.180 /mnd",
+        priceSub: "Waarborgsom: <strong>€ 1.180</strong> • Vrijgesteld van BKR-check",
+        surface: 78,
+        rooms: 2,
+        bedrooms: 1,
+        energyLabel: "A",
+        buildYear: 2020,
+        image: "attached_assets/locatie-eindhoven.webp",
+        transactedDate: "Verhuurd via WoningVrij",
+        description: "Luxe industriële loft in het iconische voormalige Philips-complex op Strijp-S. Enorme raampartijen, gietvloer met vloerverwarming en gezamenlijk dakterras.",
+        advantage: "Directe acceptatie zonder strenge 3,5x eis, ideaal voor de innovatieve Eindhovense kenniseconomie.",
+      },
+      {
+        id: "huur-6",
+        category: "huur",
+        status: "verhuurd",
+        statusLabel: "Verhuurd",
+        address: "Westerhaven 41-C",
+        postalCode: "9718 AC",
+        city: "Groningen",
+        neighborhood: "Centrum / Binnenstad",
+        propertyType: "Appartement",
+        priceVal: 950,
+        priceDisplay: "€ 950 /mnd",
+        priceSub: "Waarborgsom: <strong>€ 950 (1 maand)</strong> • Géén 4x eis",
+        surface: 58,
+        rooms: 2,
+        bedrooms: 1,
+        energyLabel: "A",
+        buildYear: 2019,
+        image: "attached_assets/locatie-groningen.webp",
+        transactedDate: "Verhuurd in 3 dagen",
+        description: "Compact en energiezuinig stadsappartement aan de Westerhaven. Uitstekend onderhouden, voorzien van moderne keuken met inductiekookplaat en vaatwasser.",
+        advantage: "Geen uitsluiting op tijdelijk contract: dossierbeoordeling op werkelijke huurbetaalcapaciteit.",
+      },
+      {
+        id: "huur-7",
+        category: "huur",
+        status: "verhuurd-ov",
+        statusLabel: "Verhuurd o.v.",
+        address: "Ceintuurbaan 210-3",
+        postalCode: "1072 GC",
+        city: "Amsterdam",
+        neighborhood: "De Pijp / Zuid",
+        propertyType: "Appartement",
+        priceVal: 1550,
+        priceDisplay: "€ 1.550 /mnd",
+        priceSub: "Waarborgsom: <strong>€ 1.550</strong> • Géén onredelijke inkomenseis",
+        surface: 72,
+        rooms: 3,
+        bedrooms: 2,
+        energyLabel: "A",
+        buildYear: 2015,
+        image: "attached_assets/20250510_1719_Luxury Bedroom Oasis_simple_compose_01jtxcemdwfjktph976sg69wpt.png",
+        transactedDate: "Onder voorbehoud toewijzing",
+        description: "Luxe bovenwoning in de populaire wijk De Pijp om de hoek van de Albert Cuypmarkt en het Sarphatipark. Twee ruime slaapkamers, luxe badkamer met inloopdouche en balkon op het zuiden.",
+        advantage: "Verhuurder accepteerde de huurder via WoningVrij platformzekerheid zonder bureaucratische makelaarsdrempels.",
+      },
+      {
+        id: "huur-8",
+        category: "huur",
+        status: "verhuurd",
+        statusLabel: "Verhuurd",
+        address: "Wilhelminapier 55",
+        postalCode: "3072 AP",
+        city: "Rotterdam",
+        neighborhood: "Kop van Zuid",
+        propertyType: "Appartement",
+        priceVal: 1650,
+        priceDisplay: "€ 1.650 /mnd",
+        priceSub: "Met <strong>Huur-naar-Koop optie</strong> • Waarborg: € 1.650",
+        surface: 92,
+        rooms: 3,
+        bedrooms: 2,
+        energyLabel: "A++",
+        buildYear: 2021,
+        image: "attached_assets/appartement-luxury.webp",
+        transactedDate: "Verhuurd via toewijzing",
+        description: "Luxe torenappartement op de 16e verdieping met spectaculair panoramisch uitzicht over de Nieuwe Maas. Inclusief eigen parkeerplek en toegang tot gezamenlijke wellness in het gebouw.",
+        advantage: "Huurder stroomt na 24 maanden door naar aankoop met behulp van opgebouwde spaartegoeden.",
+      },
+      {
+        id: "huur-9",
+        category: "huur",
+        status: "verhuurd-ov",
+        statusLabel: "Verhuurd o.v.",
+        address: "Nachtegaalstraat 67-A",
+        postalCode: "3581 AD",
+        city: "Utrecht",
+        neighborhood: "Buiten Wittevrouwen",
+        propertyType: "Appartement",
+        priceVal: 1380,
+        priceDisplay: "€ 1.380 /mnd",
+        priceSub: "Waarborgsom: <strong>€ 1.380 (1 maand)</strong> • BKR-vrijgesteld",
+        surface: 85,
+        rooms: 3,
+        bedrooms: 2,
+        energyLabel: "A",
+        buildYear: 2018,
+        image: "attached_assets/rijwoning-modern.webp",
+        transactedDate: "Onder voorbehoud Ronde 1",
+        description: "Royale bovenwoning met een riant zonnig dakterras van 20 m² in de populaire wijk Buiten Wittevrouwen. Grote woonkeuken, luxe badkamer en twee ruime slaapkamers.",
+        advantage: "Geen automatische BKR-afwijzing: de huurder had een herstelde notering en werd op basis van actuele liquide middelen direct verwelkomd.",
+      },
+      {
+        id: "huur-10",
+        category: "huur",
+        status: "verhuurd",
+        statusLabel: "Verhuurd",
+        address: "Lange Voorhout 38-B",
+        postalCode: "2514 EJ",
+        city: "Den Haag",
+        neighborhood: "Centrum / Hofkwartier",
+        propertyType: "Appartement",
+        priceVal: 1850,
+        priceDisplay: "€ 1.850 /mnd",
+        priceSub: "Met <strong>Huur-naar-Koop optie</strong> • Waarborg: € 1.850",
+        surface: 110,
+        rooms: 3,
+        bedrooms: 2,
+        energyLabel: "A",
+        buildYear: 1880,
+        image: "attached_assets/villa-luxury.webp",
+        transactedDate: "Definitief verhuurd",
+        description: "Exclusief gerestaureerd monumentaal appartement aan de statige Lange Voorhout. Prachtige ornamenten plafonds, marmeren schouw, en uitzicht op de beroemde lindebomen.",
+        advantage: "Toegewezen aan zelfstandige ondernemer zonder de eis van drie afgesloten belastingjaren.",
+      }
+    ];
+
+    // ============================================================
+    // RENDERING & INTERACTIEVE LOGICA
+    // ============================================================
+    const container = document.getElementById("properties-container");
+    const countEl = document.getElementById("visible-count");
+    const noResultsBox = document.getElementById("no-results-box");
+
+    // Filter controls
+    const filterSearch = document.getElementById("filter-search");
+    const filterCity = document.getElementById("filter-city");
+    const filterPropertyType = document.getElementById("filter-property-type");
+    const filterSort = document.getElementById("filter-sort");
+    const btnResetFilters = document.getElementById("btn-reset-filters");
+    const btnEmptyReset = document.getElementById("btn-empty-reset");
+
+    // Layout toggles
+    const btnViewList = document.getElementById("btn-view-list");
+    const btnViewGrid = document.getElementById("btn-view-grid");
+    let currentLayout = "list"; // "list" | "grid"
+
+    // Active filters
+    let activeWoonvorm = "all"; // "all" | "koop" | "huur"
+    let activeStatus = "all";   // "all" | "verkocht" | "verhuurd" | "ov"
+
+    function renderProperties() {
+      const query = (filterSearch.value || "").toLowerCase().trim();
+      const selectedCity = filterCity.value;
+      const selectedType = filterPropertyType.value;
+      const selectedSort = filterSort.value;
+
+      // Filteren
+      let filtered = propertiesData.filter(item => {
+        // Woonvorm filter
+        if (activeWoonvorm !== "all" && item.category !== activeWoonvorm) return false;
+
+        // Status filter
+        if (activeStatus === "verkocht" && !item.status.startsWith("verkocht")) return false;
+        if (activeStatus === "verhuurd" && !item.status.startsWith("verhuurd")) return false;
+        if (activeStatus === "ov" && !item.status.endsWith("-ov")) return false;
+
+        // Stad filter
+        if (selectedCity !== "all" && item.city !== selectedCity) return false;
+
+        // Type filter
+        if (selectedType !== "all" && item.propertyType !== selectedType) return false;
+
+        // Tekstueel zoekfilter
+        if (query) {
+          const matchText = `${item.address} ${item.city} ${item.postalCode} ${item.neighborhood} ${item.propertyType} ${item.description}`.toLowerCase();
+          if (!matchText.includes(query)) return false;
+        }
+
+        return true;
+      });
+
+      // Sorteren
+      if (selectedSort === "price-asc") {
+        filtered.sort((a, b) => a.priceVal - b.priceVal);
+      } else if (selectedSort === "price-desc") {
+        filtered.sort((a, b) => b.priceVal - a.priceVal);
+      } else if (selectedSort === "surface-desc") {
+        filtered.sort((a, b) => b.surface - a.surface);
+      }
+
+      // Update counters
+      countEl.textContent = filtered.length;
+
+      // Lege staat tonen indien 0 resultaten
+      if (filtered.length === 0) {
+        container.innerHTML = "";
+        noResultsBox.style.display = "block";
+        return;
+      }
+      noResultsBox.style.display = "none";
+
+      // Render cards
+      let html = "";
+      filtered.forEach(item => {
+        const isKoop = (item.category === "koop");
+        const statusClass = item.status === "verkocht" 
+          ? "badge-funda-status--verkocht" 
+          : (item.status === "verkocht-ov" 
+            ? "badge-funda-status--verkocht-ov" 
+            : (item.status === "verhuurd" ? "badge-funda-status--verhuurd" : "badge-funda-status--verhuurd-ov"));
+
+        const modelBadgeClass = isKoop ? "badge-funda-model--koop" : "badge-funda-model--huur";
+        const modelBadgeLabel = isKoop ? "🏡 Koop (Non-Hypotheek)" : "🔑 Flexibele Huur";
+
+        html += `
+          <article class="funda-card" data-id="${item.id}">
+            <div class="funda-card__media" style="background-image: url('${item.image}');">
+              <div class="funda-badges-top">
+                <span class="badge-funda-status ${statusClass}">${item.statusLabel}</span>
+                <span class="badge-funda-model ${modelBadgeClass}">${modelBadgeLabel}</span>
+              </div>
+            </div>
+
+            <div class="funda-card__body">
+              <div>
+                <div class="funda-card__header">
+                  <h3 class="funda-card__title">${item.address}</h3>
+                  <div class="funda-card__loc">
+                    📍 ${item.postalCode} ${item.city} (${item.neighborhood})
+                  </div>
+                </div>
+
+                <div class="funda-card__price-box">
+                  <div class="funda-card__price">${item.priceDisplay}</div>
+                  <div class="funda-card__price-sub">${item.priceSub}</div>
+                </div>
+
+                <div class="funda-card__specs">
+                  <div class="funda-spec-item" title="Woonoppervlakte">
+                    <span>📐</span> ${item.surface} m²
+                  </div>
+                  <div class="funda-spec-item" title="Kamers">
+                    <span>🛏️</span> ${item.rooms} kamers (${item.bedrooms} slpk)
+                  </div>
+                  <div class="funda-spec-item" title="Energielabel">
+                    <span>🌱</span> Label ${item.energyLabel}
+                  </div>
+                  <div class="funda-spec-item" title="Woningtype">
+                    <span>🏢</span> ${item.propertyType}
+                  </div>
+                </div>
+
+                <div class="funda-wv-perk">
+                  <span>⚡ WoningVrij:</span> ${item.advantage}
+                </div>
+              </div>
+
+              <div class="funda-card__footer">
+                <span class="funda-card__transactie-meta">📅 ${item.transactedDate}</span>
+                <button type="button" class="btn-secondary btn-sm btn-open-modal" data-id="${item.id}">
+                  Bekijk woningdetails &amp; toewijzing
+                </button>
+              </div>
+            </div>
+          </article>
+        `;
+      });
+
+      container.innerHTML = html;
+
+      // Event listeners toevoegen aan de modal buttons
+      container.querySelectorAll(".btn-open-modal").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-id");
+          openPropertyModal(id);
+        });
+      });
+    }
+
+    // Modal openen en vullen
+    const modal = document.getElementById("funda-modal");
+    const modalCloseBtn = document.getElementById("modal-close-btn");
+    const modalBtnClose = document.getElementById("modal-btn-close");
+
+    function openPropertyModal(id) {
+      const item = propertiesData.find(p => p.id === id);
+      if (!item) return;
+
+      document.getElementById("modal-img").src = item.image;
+      document.getElementById("modal-title").textContent = item.address;
+      document.getElementById("modal-loc").textContent = `📍 ${item.postalCode} ${item.city} — ${item.neighborhood} (Bouwjaar ${item.buildYear})`;
+      document.getElementById("modal-price").textContent = item.priceDisplay;
+      document.getElementById("modal-price-sub").innerHTML = item.priceSub;
+      document.getElementById("modal-desc").textContent = item.description;
+      document.getElementById("modal-advantage").textContent = item.advantage;
+
+      const isKoop = item.category === "koop";
+      const statusClass = item.status === "verkocht" ? "badge-funda-status--verkocht" : (item.status === "verkocht-ov" ? "badge-funda-status--verkocht-ov" : (item.status === "verhuurd" ? "badge-funda-status--verhuurd" : "badge-funda-status--verhuurd-ov"));
+
+      document.getElementById("modal-badges").innerHTML = `
+        <span class="badge-funda-status ${statusClass}">${item.statusLabel}</span>
+        <span class="badge-funda-model ${isKoop ? 'badge-funda-model--koop' : 'badge-funda-model--huur'}">${isKoop ? 'Koop (Non-Hypotheek)' : 'Flexibele Huur'}</span>
+      `;
+
+      document.getElementById("modal-specs").innerHTML = `
+        <div class="funda-spec-item"><span>📐</span> ${item.surface} m² gebruiksoppervlak</div>
+        <div class="funda-spec-item"><span>🛏️</span> ${item.rooms} kamers (${item.bedrooms} slaapkamers)</div>
+        <div class="funda-spec-item"><span>🌱</span> Energielabel ${item.energyLabel}</div>
+        <div class="funda-spec-item"><span>🏗️</span> Bouwjaar ${item.buildYear}</div>
+      `;
+
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    modalCloseBtn.addEventListener("click", closeModal);
+    modalBtnClose.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+    });
+
+    // Woonvorm pills interacties (Alles / Koop / Huur)
+    document.querySelectorAll("#woonvorm-pills .funda-pill-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#woonvorm-pills .funda-pill-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeWoonvorm = btn.getAttribute("data-type");
+        renderProperties();
+      });
+    });
+
+    // Status chips interacties (Alles / Verkocht / Verhuurd / OV)
+    document.querySelectorAll("#status-chips .funda-chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        document.querySelectorAll("#status-chips .funda-chip").forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        activeStatus = chip.getAttribute("data-status");
+        renderProperties();
+      });
+    });
+
+    // Inputs en dropdown triggers
+    filterSearch.addEventListener("input", renderProperties);
+    filterCity.addEventListener("change", renderProperties);
+    filterPropertyType.addEventListener("change", renderProperties);
+    filterSort.addEventListener("change", renderProperties);
+
+    // Reset filters
+    function resetAllFilters() {
+      filterSearch.value = "";
+      filterCity.value = "all";
+      filterPropertyType.value = "all";
+      filterSort.value = "default";
+
+      activeWoonvorm = "all";
+      document.querySelectorAll("#woonvorm-pills .funda-pill-btn").forEach(b => {
+        b.classList.toggle("active", b.getAttribute("data-type") === "all");
+      });
+
+      activeStatus = "all";
+      document.querySelectorAll("#status-chips .funda-chip").forEach(c => {
+        c.classList.toggle("active", c.getAttribute("data-status") === "all");
+      });
+
+      renderProperties();
+    }
+
+    btnResetFilters.addEventListener("click", resetAllFilters);
+    btnEmptyReset.addEventListener("click", resetAllFilters);
+
+    // Layout switchers (Lijst vs Raster)
+    btnViewList.addEventListener("click", () => {
+      btnViewList.classList.add("active");
+      btnViewGrid.classList.remove("active");
+      container.className = "funda-list-container";
+    });
+
+    btnViewGrid.addEventListener("click", () => {
+      btnViewGrid.classList.add("active");
+      btnViewList.classList.remove("active");
+      container.className = "funda-grid-container";
+    });
+
+    // Initiële render
+    renderProperties();
+  </script>
+</body>
+</html>

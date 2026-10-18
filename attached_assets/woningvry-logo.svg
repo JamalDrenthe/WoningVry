@@ -1,79 +1,78 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 68" fill="none" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 64" fill="none" width="100%" height="100%">
   <defs>
-    <!-- Premium Champagne Gold Gradients with multi-stop metallic depth -->
-    <linearGradient id="wv-gold-main" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#F2DEB4"/>
-      <stop offset="30%" stop-color="#D4B678"/>
-      <stop offset="70%" stop-color="#B9975B"/>
-      <stop offset="100%" stop-color="#8C6831"/>
+    <!-- Multi-stop luxury metallic gold gradient -->
+    <linearGradient id="wv-gold-metallic" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5E5C9"/>
+      <stop offset="25%" stop-color="#E1C48F"/>
+      <stop offset="60%" stop-color="#C5A362"/>
+      <stop offset="100%" stop-color="#936F31"/>
     </linearGradient>
 
-    <linearGradient id="wv-gold-light" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FFF2D6"/>
+    <!-- Subtle secondary gold sheen for depth -->
+    <linearGradient id="wv-gold-sheen" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#B38F4D"/>
+      <stop offset="50%" stop-color="#EED8B3"/>
       <stop offset="100%" stop-color="#D4B678"/>
     </linearGradient>
 
-    <linearGradient id="wv-gold-dark" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#805B22"/>
-      <stop offset="100%" stop-color="#C29F5F"/>
+    <!-- Dark navy accent -->
+    <linearGradient id="wv-navy-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14243C"/>
+      <stop offset="100%" stop-color="#0D1B2E"/>
     </linearGradient>
 
-    <filter id="wv-shadow" x="-15%" y="-15%" width="130%" height="130%">
-      <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#000000" flood-opacity="0.4"/>
+    <!-- Refined drop shadow -->
+    <filter id="wv-clean-shadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.3"/>
     </filter>
   </defs>
 
-  <!-- 'WV' Architectural Monogram & Roof Emblem -->
-  <g transform="translate(6, 6)" filter="url(#wv-shadow)">
-    <!-- Roof Eave Left to Apex -->
-    <path d="M4 22 L27 3 L32 7.5 L12.5 24 Z" fill="url(#wv-gold-light)"/>
+  <!-- ==================== ARCHITECTURAL EMBLEM ==================== -->
+  <g transform="translate(4, 5)" filter="url(#wv-clean-shadow)">
+    <!-- Sleek Rounded Diamond/Shield Base Backdrop -->
+    <rect x="0" y="0" width="54" height="54" rx="12" fill="url(#wv-navy-gradient)"/>
+    <rect x="0.5" y="0.5" width="53" height="53" rx="11.5" stroke="url(#wv-gold-metallic)" stroke-width="1" stroke-opacity="0.45"/>
+
+    <!-- Geometric Architectural Gable (Outer roof) -->
+    <path d="M27 9 L45 23 L41.5 27 L27 15.5 L12.5 27 L9 23 Z" fill="url(#wv-gold-metallic)"/>
+
+    <!-- Interlocking W-V Geometric Ribbons (Zakelijk & Strak) -->
+    <!-- W Left Outer Pillar -->
+    <path d="M12.5 26 L18.5 45 L22.5 45 L16.5 26 Z" fill="url(#wv-gold-sheen)"/>
     
-    <!-- Roof Eave Apex to Right -->
-    <path d="M27 3 L52 22 L45.5 25 L27 9.5 Z" fill="url(#wv-gold-main)"/>
+    <!-- W Center Apex (Connecting to V) -->
+    <path d="M22.5 45 L27 33 L31.5 45 L27.5 45 L27 43.5 L26.5 45 Z" fill="url(#wv-gold-metallic)"/>
     
-    <!-- Architectural Chimney -->
-    <path d="M40 14.5 L40 7.5 L45.5 7.5 L45.5 19 Z" fill="url(#wv-gold-main)"/>
-    <path d="M39 7.5 L46.5 7.5 L46.5 6 L39 6 Z" fill="url(#wv-gold-light)"/>
+    <!-- W Right Outer Pillar -->
+    <path d="M37.5 26 L31.5 45 L35.5 45 L41.5 26 Z" fill="url(#wv-gold-sheen)"/>
 
-    <!-- Interlocking 'W' & 'V' Architectural Ribbon Structure -->
-    <!-- Left W-wing outer stroke -->
-    <path d="M3 24.5 L13 53 L19.5 53 L8.5 24.5 Z" fill="url(#wv-gold-dark)"/>
-    <path d="M8.5 24.5 L19.5 53 L24.5 39 L14 24.5 Z" fill="url(#wv-gold-main)"/>
+    <!-- Center Key / Freedom Chevron (Vrij) -->
+    <path d="M27 21 L34 27 L31.5 29.5 L27 25.5 L22.5 29.5 L20 27 Z" fill="#FFFFFF" opacity="0.95"/>
 
-    <!-- Center V-interlock (Rising Apex) -->
-    <path d="M14 24.5 L24.5 39 L28 47 L21.5 53 Z" fill="url(#wv-gold-light)"/>
-    <path d="M28 47 L35.5 24.5 L30 24.5 L24.5 39 Z" fill="url(#wv-gold-main)"/>
-
-    <!-- Right V-wing / Roofline Bridge Ribbon -->
-    <path d="M30 24.5 L35.5 24.5 L43 44 L38 53 Z" fill="url(#wv-gold-dark)"/>
-    <path d="M38 53 L44 53 L53 24.5 L47 24.5 Z" fill="url(#wv-gold-light)"/>
+    <!-- Precision Gold Core Jewel -->
+    <polygon points="27,27 30,31 27,35 24,31" fill="url(#wv-gold-metallic)"/>
   </g>
 
-  <!-- Typography Wordmark -->
-  <g transform="translate(74, 8)">
-    <!-- WONING (Crisp Architectural White, Optical Kerning) -->
-    <text x="0" y="30" 
-          font-family="'Fraunces', 'Cinzel', Georgia, serif" 
-          font-size="24" 
-          font-weight="600" 
-          letter-spacing="0.12em" 
-          fill="#FFFFFF">WONING</text>
-
-    <!-- VRIJ (Signature Gold Accent, Stylized Italic Serif) -->
-    <text x="135" y="30" 
-          font-family="'Fraunces', 'Cinzel', Georgia, serif" 
-          font-size="24" 
+  <!-- ==================== WORDMARK TYPOGRAPHY ==================== -->
+  <g transform="translate(70, 7)">
+    <!-- Primary Brand Wordmark: WONING (White) + VRIJ (Gold Accent) -->
+    <text x="0" y="29" 
+          font-family="Fraunces, Cinzel, -apple-system, Georgia, serif" 
+          font-size="23" 
           font-weight="700" 
-          font-style="italic"
-          letter-spacing="0.14em" 
-          fill="url(#wv-gold-main)">VRIJ</text>
+          letter-spacing="0.14em">
+      <tspan fill="#FFFFFF">WONING</tspan>
+      <tspan fill="url(#wv-gold-metallic)" font-style="italic" dx="2">VRIJ</tspan>
+    </text>
 
-    <!-- Subtitle (Clean Modern Proportional Subtitle) -->
-    <text x="1" y="46" 
-          font-family="'Plus Jakarta Sans', -apple-system, sans-serif" 
-          font-size="8.5" 
-          font-weight="500" 
-          letter-spacing="0.28em" 
-          fill="#94A3B8">VRIJ WONEN ZONDER HYPOTHEEK</text>
+    <!-- Subtitle: Corporate Proposition Tagline -->
+    <text x="1" y="44" 
+          font-family="Inter, -apple-system, system-ui, sans-serif" 
+          font-size="7.8" 
+          font-weight="600" 
+          letter-spacing="0.26em" 
+          fill="#94A3B8">
+      HUUR &amp; KOOP • ZONDER BANK
+    </text>
   </g>
 </svg>

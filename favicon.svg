@@ -1,13 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <defs>
     <linearGradient id="fav-gold" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#F2DEB4"/>
-      <stop offset="35%" stop-color="#D4B678"/>
-      <stop offset="75%" stop-color="#B9975B"/>
-      <stop offset="100%" stop-color="#8C6831"/>
+      <stop offset="0%" stop-color="#F5E5C9"/>
+      <stop offset="30%" stop-color="#E1C48F"/>
+      <stop offset="70%" stop-color="#C5A362"/>
+      <stop offset="100%" stop-color="#936F31"/>
     </linearGradient>
-    <linearGradient id="fav-light" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FFF5E0"/>
+    <linearGradient id="fav-sheen" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#B38F4D"/>
+      <stop offset="50%" stop-color="#EED8B3"/>
       <stop offset="100%" stop-color="#D4B678"/>
     </linearGradient>
     <filter id="fav-shadow" x="-10%" y="-10%" width="120%" height="120%">
@@ -17,22 +18,27 @@
 
   <!-- Container -->
   <rect width="64" height="64" rx="14" fill="#0D1B2E"/>
-  <rect width="64" height="64" rx="14" stroke="rgba(212, 182, 120, 0.3)" stroke-width="1.5"/>
+  <rect width="64" height="64" rx="14" stroke="url(#fav-gold)" stroke-width="1.2" stroke-opacity="0.5"/>
 
-  <!-- 'WV' Architectural Roof Monogram -->
-  <g transform="translate(4.5, 4.5)" filter="url(#fav-shadow)">
-    <!-- Roof Eaves -->
-    <path d="M4 22 L27 3 L32 7.5 L12.5 24 Z" fill="url(#fav-light)"/>
-    <path d="M27 3 L52 22 L45.5 25 L27 9.5 Z" fill="url(#fav-gold)"/>
-    <!-- Chimney -->
-    <path d="M40 14.5 L40 7.5 L45.5 7.5 L45.5 19 Z" fill="url(#fav-gold)"/>
+  <!-- 'WV' Sleek Architectural Monogram -->
+  <g transform="translate(5, 5)" filter="url(#fav-shadow)">
+    <!-- Geometric Architectural Gable (Outer roof) -->
+    <path d="M27 9 L45 23 L41.5 27 L27 15.5 L12.5 27 L9 23 Z" fill="url(#fav-gold)"/>
+
+    <!-- Interlocking W-V Geometric Ribbons (Zakelijk & Strak) -->
+    <!-- W Left Outer Pillar -->
+    <path d="M12.5 26 L18.5 45 L22.5 45 L16.5 26 Z" fill="url(#fav-sheen)"/>
     
-    <!-- Monogram Ribbons -->
-    <path d="M3 24.5 L13 52 L19.5 52 L8.5 24.5 Z" fill="url(#fav-gold)"/>
-    <path d="M8.5 24.5 L19.5 52 L24.5 38 L14 24.5 Z" fill="url(#fav-light)"/>
-    <path d="M14 24.5 L24.5 38 L28 46 L21.5 52 Z" fill="url(#fav-gold)"/>
-    <path d="M28 46 L35.5 24.5 L30 24.5 L24.5 38 Z" fill="url(#fav-light)"/>
-    <path d="M30 24.5 L35.5 24.5 L43 43 L38 52 Z" fill="url(#fav-gold)"/>
-    <path d="M38 52 L44 52 L53 24.5 L47 24.5 Z" fill="url(#fav-light)"/>
+    <!-- W Center Apex (Connecting to V) -->
+    <path d="M22.5 45 L27 33 L31.5 45 L27.5 45 L27 43.5 L26.5 45 Z" fill="url(#fav-gold)"/>
+    
+    <!-- W Right Outer Pillar -->
+    <path d="M37.5 26 L31.5 45 L35.5 45 L41.5 26 Z" fill="url(#fav-sheen)"/>
+
+    <!-- Center Key / Freedom Chevron (Vrij) -->
+    <path d="M27 21 L34 27 L31.5 29.5 L27 25.5 L22.5 29.5 L20 27 Z" fill="#FFFFFF" opacity="0.95"/>
+
+    <!-- Precision Gold Core Jewel -->
+    <polygon points="27,27 30,31 27,35 24,31" fill="url(#fav-gold)"/>
   </g>
 </svg>
