@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Account Centrum | WoningVrij</title>
-  <meta name="description" content="Jouw persoonlijke WoningVrij Portaal voor ronde-indeling, woningmatching en non-hypotheekbeoordeling.">
+  <title>Account Centrum | WoningVrij - Huur & Koop</title>
+  <meta name="description" content="Jouw persoonlijke WoningVrij Portaal voor ronde-indeling, woningmatching en non-hypotheekbeoordeling voor huur en koop.">
   <meta name="theme-color" content="#0d1b2e">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
@@ -52,7 +52,7 @@
           <div>
             <span class="eyebrow" style="color: var(--gold-bright);">WoningVrij Member Portaal</span>
             <h1>Welkom terug, <span id="user-display-name">deelnemer</span></h1>
-            <p>Volg jouw traject binnen het non-hypotheekmodel, beheer je woonwensen over 6 steden en bekijk jouw actuele positie in de selectierondes.</p>
+            <p>Volg jouw traject binnen het WoningVrij model (huur, koop of huur-naar-koop), beheer je woonwensen over 6 steden en bekijk jouw actuele positie in de selectierondes.</p>
           </div>
           <div class="capacity-card">
             <div class="capacity-header">
@@ -102,7 +102,7 @@
             🏡 Woonwensen & Matches
           </button>
           <button type="button" class="account-tab" data-tab="tab-borg">
-            💰 Non-Hypotheek & Borg Calculator
+            💰 Huur & Koop Calculator
           </button>
           <button type="button" class="account-tab" data-tab="tab-dossier">
             📁 Dossier & Documenten
@@ -124,20 +124,20 @@
             </div>
             <div class="traject-step traject-step--completed">
               <span class="traject-step__num">02</span>
-              <h4>Locatie & Type Keuze</h4>
-              <p>Woonwensen en steden (Amsterdam/Utrecht) geregistreerd.</p>
-              <span class="step-status-tag" style="color: #166534;">✅ Ingevuld (€450k)</span>
+              <h4>Locatie & Woonvorm Keuze</h4>
+              <p>Woonwensen, gewenste woonvorm (huur/koop) en steden geregistreerd.</p>
+              <span class="step-status-tag" style="color: #166534;">✅ Ingevuld</span>
             </div>
             <div class="traject-step traject-step--current">
               <span class="traject-step__num">03</span>
               <h4>Gegevens & Beoordeling</h4>
-              <p>Individuele situatiebeoordeling zónder BKR-toetsing door acceptatieteam.</p>
+              <p>Individuele situatiebeoordeling zónder BKR-toetsing en géén 4x bruto inkomenseis bij huur.</p>
               <span class="step-status-tag" style="color: #854d0e;">⏳ In Behandeling</span>
             </div>
             <div class="traject-step traject-step--upcoming">
               <span class="traject-step__num">04</span>
-              <h4>Voorstel & Bouwtraject</h4>
-              <p>Samenstelling non-hypotheekovereenkomst en start bouw (6-12 mnd).</p>
+              <h4>Voorstel & Sleuteloverdracht</h4>
+              <p>Samenstelling huurovereenkomst of non-hypotheek koopcontract (6-12 mnd).</p>
               <span class="step-status-tag" style="color: var(--muted);">🏁 Volgende stap</span>
             </div>
           </div>
@@ -162,6 +162,10 @@
                   <strong>#WV-2026-R1-0142</strong>
                 </div>
                 <div class="ticket-field">
+                  <span>Woonvorm</span>
+                  <strong id="ticket-field-woonvorm">Huur & Koop</strong>
+                </div>
+                <div class="ticket-field">
                   <span>Voorkeurstype</span>
                   <strong id="ticket-field-type">Appartement / Rijwoning</strong>
                 </div>
@@ -170,11 +174,11 @@
                   <strong id="ticket-field-locaties">Amsterdam, Utrecht</strong>
                 </div>
                 <div class="ticket-field">
-                  <span>Borgindicatie</span>
-                  <strong>10% (€35.000)</strong>
+                  <span>Borg / Waarborg</span>
+                  <strong id="ticket-field-borg">10% / 1-2 mnd huur</strong>
                 </div>
                 <div class="ticket-field">
-                  <span>BKR Check</span>
+                  <span>BKR & 4x Eis</span>
                   <strong style="color: #4ade80;">VRIJGESTELD</strong>
                 </div>
               </div>
@@ -216,31 +220,39 @@
         <div id="tab-wensen" class="tab-pane">
           <div class="account-card">
             <h2>🏡 Pas jouw Woonwensen aan</h2>
-            <p class="account-muted">Selecteer jouw gewenste woningtype, steden en budget. Ons systeem matcht je automatisch met passend aanbod.</p>
+            <p class="account-muted">Selecteer jouw gewenste woonvorm (huur, koop of beide), woningtype, steden en budget. Ons systeem matcht je automatisch met passend aanbod.</p>
 
             <form id="wensen-form">
+              <!-- Woonvorm Keuze -->
+              <label class="form-hint" style="font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted);">1. Gewenste Woonvorm</label>
+              <div class="model-toggle-pills" id="wensen-woonvorm-pills">
+                <button type="button" class="model-pill active" data-woonvorm="beide">🔄 Beide (Huur & Koop / Huur-naar-Koop)</button>
+                <button type="button" class="model-pill" data-woonvorm="huur">🔑 Huren (zonder 4x inkomenseis)</button>
+                <button type="button" class="model-pill" data-woonvorm="koop">🏡 Kopen (Non-Hypotheek)</button>
+              </div>
+
               <!-- Type Woning -->
-              <label class="form-hint" style="font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted);">1. Gewenst Woningtype</label>
+              <label class="form-hint" style="font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted);">2. Gewenst Woningtype</label>
               <div class="type-selector-grid">
                 <div class="type-card-select selected" data-type="Appartementen">
                   <h4>🏢 Appartementen</h4>
                   <p>Centrum of stadsrand, 50-100 m², 2-3 kamers.</p>
-                  <span class="price-tag">Vanaf €200.000</span>
+                  <span class="price-tag">Huur v.a. €750/m • Koop v.a. €200k</span>
                 </div>
                 <div class="type-card-select selected" data-type="Rijtjeshuizen">
                   <h4>🏘️ Rijtjeshuizen</h4>
                   <p>Comfortabele gezinswoningen, 100-150 m², 4-5 kamers.</p>
-                  <span class="price-tag">Vanaf €350.000</span>
+                  <span class="price-tag">Huur v.a. €1.250/m • Koop v.a. €350k</span>
                 </div>
                 <div class="type-card-select" data-type="Villa's">
                   <h4>🏡 Villa's</h4>
                   <p>Vrijstaand met ruime tuin, 150-250 m², 5+ kamers.</p>
-                  <span class="price-tag">Vanaf €500.000</span>
+                  <span class="price-tag">Huur v.a. €1.850/m • Koop v.a. €500k</span>
                 </div>
               </div>
 
               <!-- Steden -->
-              <label class="form-hint" style="font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted);">2. Voorkeurssteden (klik om te selecteren)</label>
+              <label class="form-hint" style="font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted);">3. Voorkeurssteden (klik om te selecteren)</label>
               <div class="city-chips-wrap">
                 <button type="button" class="city-chip active" data-city="Amsterdam">Amsterdam</button>
                 <button type="button" class="city-chip" data-city="Rotterdam">Rotterdam</button>
@@ -250,16 +262,24 @@
                 <button type="button" class="city-chip" data-city="Groningen">Groningen</button>
               </div>
 
-              <!-- Budget Slider -->
-              <div class="calc-slider-group">
+              <!-- Budget Sliders (Huur & Koop) -->
+              <div id="wensen-budget-huur-group" class="calc-slider-group">
                 <div class="calc-slider-header">
-                  <label for="wensen-budget-slider" style="font-weight: 600; font-size: 0.88rem;">3. Maximale Woningwaarde</label>
+                  <label for="wensen-huurbudget-slider" style="font-weight: 600; font-size: 0.88rem;">4a. Maximaal Huurbudget per Maand</label>
+                  <span id="wensen-huurbudget-val" class="calc-slider-val">€ 1.450 /mnd</span>
+                </div>
+                <input type="range" id="wensen-huurbudget-slider" class="calc-slider" min="750" max="2500" step="50" value="1450">
+              </div>
+
+              <div id="wensen-budget-koop-group" class="calc-slider-group">
+                <div class="calc-slider-header">
+                  <label for="wensen-budget-slider" style="font-weight: 600; font-size: 0.88rem;">4b. Maximale Koop Woningwaarde</label>
                   <span id="wensen-budget-val" class="calc-slider-val">€ 450.000</span>
                 </div>
                 <input type="range" id="wensen-budget-slider" class="calc-slider" min="200000" max="650000" step="10000" value="450000">
               </div>
 
-              <div style="display: flex; align-items: center; gap: 1rem;">
+              <div style="display: flex; align-items: center; gap: 1rem; margin-top: 1.2rem;">
                 <button type="submit" class="btn-primary">Woonwensen Opslaan</button>
                 <span id="wensen-melding" class="form-hint" style="color: #166534; font-weight: 600;" hidden>✅ Woonwensen succesvol opgeslagen!</span>
               </div>
@@ -269,7 +289,7 @@
           <!-- Actuele Woningmatches Grid -->
           <div style="margin-top: 2rem;">
             <h2>✨ Actuele Woningmatches op Jouw Profiel</h2>
-            <p class="account-muted">Op basis van jouw voorkeuren (Appartement/Rijwoning, Amsterdam/Utrecht, tot €450k) zijn de volgende projecten direct beschikbaar voor toewijzing:</p>
+            <p class="account-muted">Op basis van jouw voorkeuren (Huur & Koop, Appartement/Rijwoning, Amsterdam/Utrecht) zijn de volgende woningen direct beschikbaar voor toewijzing:</p>
 
             <div class="matches-grid">
               <div class="match-card">
@@ -278,6 +298,10 @@
                 </div>
                 <div class="match-card__body">
                   <div>
+                    <div style="margin-bottom: 0.4rem; display: flex; gap: 0.4rem;">
+                      <span class="badge-tag-huur">🔑 Huur</span>
+                      <span class="badge-tag-koop">🏡 Koop</span>
+                    </div>
                     <h3 class="match-card__title">Luxe Stadsappartement</h3>
                     <p class="match-card__loc">📍 Amsterdam Nieuw-West</p>
                     <div class="match-card__specs">
@@ -288,8 +312,8 @@
                   </div>
                   <div class="match-card__footer">
                     <div>
-                      <span style="font-size: 0.72rem; color: var(--muted); text-transform: uppercase;">Woningwaarde</span>
-                      <div class="match-card__price">€ 285.000</div>
+                      <span style="font-size: 0.72rem; color: var(--muted); text-transform: uppercase;">Huur / Koop</span>
+                      <div class="match-card__price">€ 1.150 <span style="font-size:0.75rem; font-weight:normal; color:var(--muted);">/mnd</span> <span style="font-size:0.8rem; color:var(--gold); font-weight:600; display:block;">• Koop € 285.000</span></div>
                     </div>
                     <button type="button" class="btn-secondary btn-sm match-action-btn" data-target="Luxe Stadsappartement Amsterdam">Interesse tonen</button>
                   </div>
@@ -302,6 +326,10 @@
                 </div>
                 <div class="match-card__body">
                   <div>
+                    <div style="margin-bottom: 0.4rem; display: flex; gap: 0.4rem;">
+                      <span class="badge-tag-huur">🔑 Huur</span>
+                      <span class="badge-tag-koop">🏡 Koop</span>
+                    </div>
                     <h3 class="match-card__title">Moderne Eengezinswoning</h3>
                     <p class="match-card__loc">📍 Utrecht Leidsche Rijn</p>
                     <div class="match-card__specs">
@@ -312,8 +340,8 @@
                   </div>
                   <div class="match-card__footer">
                     <div>
-                      <span style="font-size: 0.72rem; color: var(--muted); text-transform: uppercase;">Woningwaarde</span>
-                      <div class="match-card__price">€ 395.000</div>
+                      <span style="font-size: 0.72rem; color: var(--muted); text-transform: uppercase;">Huur / Koop</span>
+                      <div class="match-card__price">€ 1.480 <span style="font-size:0.75rem; font-weight:normal; color:var(--muted);">/mnd</span> <span style="font-size:0.8rem; color:var(--gold); font-weight:600; display:block;">• Koop € 395.000</span></div>
                     </div>
                     <button type="button" class="btn-secondary btn-sm match-action-btn" data-target="Moderne Eengezinswoning Utrecht">Interesse tonen</button>
                   </div>
@@ -326,6 +354,10 @@
                 </div>
                 <div class="match-card__body">
                   <div>
+                    <div style="margin-bottom: 0.4rem; display: flex; gap: 0.4rem;">
+                      <span class="badge-tag-huur">🔄 Huur-naar-Koop</span>
+                      <span class="badge-tag-koop">🏡 Koop</span>
+                    </div>
                     <h3 class="match-card__title">Duurzame Watervilla</h3>
                     <p class="match-card__loc">📍 Almere Poort</p>
                     <div class="match-card__specs">
@@ -336,8 +368,8 @@
                   </div>
                   <div class="match-card__footer">
                     <div>
-                      <span style="font-size: 0.72rem; color: var(--muted); text-transform: uppercase;">Woningwaarde</span>
-                      <div class="match-card__price">€ 540.000</div>
+                      <span style="font-size: 0.72rem; color: var(--muted); text-transform: uppercase;">Huur / Koop</span>
+                      <div class="match-card__price">€ 2.100 <span style="font-size:0.75rem; font-weight:normal; color:var(--muted);">/mnd</span> <span style="font-size:0.8rem; color:var(--gold); font-weight:600; display:block;">• Koop € 540.000</span></div>
                     </div>
                     <button type="button" class="btn-secondary btn-sm match-action-btn" data-target="Watervilla Almere">Interesse tonen</button>
                   </div>
@@ -347,84 +379,140 @@
           </div>
         </div>
 
-        <!-- TAB 3: NON-HYPOTHEEK & BORG CALCULATOR -->
+        <!-- TAB 3: HUUR & KOOP CALCULATOR -->
         <div id="tab-borg" class="tab-pane">
           <div class="calc-box">
-            <h2>💰 Non-Hypotheek & Borg Calculator</h2>
-            <p class="account-muted">Bereken direct hoeveel borgsom vereist is binnen de non-hypotheekstructuur van WoningVrij (€200.000 tot €650.000). Er vindt géén BKR-toetsing plaats.</p>
+            <h2>💰 Huur & Koop Draagkracht Calculator</h2>
+            <p class="account-muted">Bereken direct jouw indicatie voor flexibele huur óf non-hypotheek koop. Bij WoningVrij geldt géén BKR-uitsluiting en géén 4x bruto inkomenseis.</p>
 
-            <div class="calc-slider-group">
-              <div class="calc-slider-header">
-                <label for="calc-woningwaarde">Woningwaarde (€200k – €650k)</label>
-                <span id="calc-woningwaarde-val" class="calc-slider-val">€ 350.000</span>
-              </div>
-              <input type="range" id="calc-woningwaarde" class="calc-slider" min="200000" max="650000" step="10000" value="350000">
+            <!-- Mode Selector Switch -->
+            <div class="model-toggle-pills" id="calc-mode-pills" style="margin-bottom: 1.5rem;">
+              <button type="button" class="model-pill active" id="calc-mode-koop-btn" data-calcmode="koop">🏡 Koop Non-Hypotheek</button>
+              <button type="button" class="model-pill" id="calc-mode-huur-btn" data-calcmode="huur">🔑 Flexibele Huur & Waarborg</button>
             </div>
 
-            <div class="calc-slider-group">
-              <div class="calc-slider-header">
-                <label for="calc-borg-pct">Borgpercentage (5% – 15%)</label>
-                <span id="calc-borg-pct-val" class="calc-slider-val">10%</span>
+            <!-- KOOP CONTROLS -->
+            <div id="calc-controls-koop">
+              <div class="calc-slider-group">
+                <div class="calc-slider-header">
+                  <label for="calc-woningwaarde">Woningwaarde (€200k – €650k)</label>
+                  <span id="calc-woningwaarde-val" class="calc-slider-val">€ 350.000</span>
+                </div>
+                <input type="range" id="calc-woningwaarde" class="calc-slider" min="200000" max="650000" step="10000" value="350000">
               </div>
-              <input type="range" id="calc-borg-pct" class="calc-slider" min="5" max="15" step="1" value="10">
+
+              <div class="calc-slider-group">
+                <div class="calc-slider-header">
+                  <label for="calc-borg-pct">Borgpercentage (5% – 15%)</label>
+                  <span id="calc-borg-pct-val" class="calc-slider-val">10%</span>
+                </div>
+                <input type="range" id="calc-borg-pct" class="calc-slider" min="5" max="15" step="1" value="10">
+              </div>
+
+              <div class="calc-results-grid" id="calc-results-koop">
+                <div class="calc-kpi-card">
+                  <span class="calc-kpi-label">Benodigde Eenmalige Borg</span>
+                  <span id="calc-res-borg" class="calc-kpi-value">€ 35.000</span>
+                  <span class="calc-kpi-note">Betaalbaar bij aanvang bouwtraject</span>
+                </div>
+                <div class="calc-kpi-card">
+                  <span class="calc-kpi-label">Indicatieve Maandbedrag</span>
+                  <span id="calc-res-maand" class="calc-kpi-value">€ 1.050 /mnd</span>
+                  <span class="calc-kpi-note">Non-hypotheek inleg i.p.v. bankrente</span>
+                </div>
+                <div class="calc-kpi-card">
+                  <span class="calc-kpi-label">BKR-Toetsing</span>
+                  <span class="calc-kpi-value" style="color: #22c55e;">Vrijgesteld</span>
+                  <span class="calc-kpi-note">Geen registratie of bancaire blokkade</span>
+                </div>
+                <div class="calc-kpi-card">
+                  <span class="calc-kpi-label">Vast Contract Vereist</span>
+                  <span class="calc-kpi-value" style="color: #22c55e;">Nee</span>
+                  <span class="calc-kpi-note">Ook voor ZZP, vermogen & familieborg</span>
+                </div>
+              </div>
             </div>
 
-            <div class="calc-results-grid">
-              <div class="calc-kpi-card">
-                <span class="calc-kpi-label">Benodigde Eenmalige Borg</span>
-                <span id="calc-res-borg" class="calc-kpi-value">€ 35.000</span>
-                <span class="calc-kpi-note">Betaalbaar bij aanvang bouwtraject</span>
+            <!-- HUUR CONTROLS -->
+            <div id="calc-controls-huur" hidden>
+              <div class="calc-slider-group">
+                <div class="calc-slider-header">
+                  <label for="calc-huur-bedrag">Maandhuur (€750 – €2.500 /mnd)</label>
+                  <span id="calc-huur-bedrag-val" class="calc-slider-val">€ 1.250 /mnd</span>
+                </div>
+                <input type="range" id="calc-huur-bedrag" class="calc-slider" min="750" max="2500" step="25" value="1250">
               </div>
-              <div class="calc-kpi-card">
-                <span class="calc-kpi-label">Indicatieve Maandbedrag</span>
-                <span id="calc-res-maand" class="calc-kpi-value">€ 1.050 /mnd</span>
-                <span class="calc-kpi-note">Non-hypotheek inleg i.p.v. bankrente</span>
+
+              <div class="calc-slider-group">
+                <div class="calc-slider-header">
+                  <label for="calc-waarborg-mnd">Waarborgsom (1 tot 2 maanden huur)</label>
+                  <span id="calc-waarborg-mnd-val" class="calc-slider-val">1 maand</span>
+                </div>
+                <input type="range" id="calc-waarborg-mnd" class="calc-slider" min="1" max="2" step="1" value="1">
               </div>
-              <div class="calc-kpi-card">
-                <span class="calc-kpi-label">BKR-Toetsing</span>
-                <span class="calc-kpi-value" style="color: #22c55e;">Vrijgesteld</span>
-                <span class="calc-kpi-note">Geen registratie of blokkade</span>
-              </div>
-              <div class="calc-kpi-card">
-                <span class="calc-kpi-label">Vast Contract Vereist</span>
-                <span class="calc-kpi-value" style="color: #22c55e;">Nee</span>
-                <span class="calc-kpi-note">Ook voor ZZP, vermogen & familieborg</span>
+
+              <div class="calc-results-grid" id="calc-results-huur">
+                <div class="calc-kpi-card">
+                  <span class="calc-kpi-label">Benodigde Waarborgsom</span>
+                  <span id="calc-res-waarborg" class="calc-kpi-value">€ 1.250</span>
+                  <span class="calc-kpi-note">100% terugvorderbaar bij vertrek</span>
+                </div>
+                <div class="calc-kpi-card">
+                  <span class="calc-kpi-label">Geen 4x Inkomenseis</span>
+                  <span class="calc-kpi-value" style="color: #22c55e;">Geen 4x Eis</span>
+                  <span class="calc-kpi-note">Toetsing op werkelijke draagkracht</span>
+                </div>
+                <div class="calc-kpi-card">
+                  <span class="calc-kpi-label">BKR-Toetsing Huur</span>
+                  <span class="calc-kpi-value" style="color: #22c55e;">Vrijgesteld</span>
+                  <span class="calc-kpi-note">Geen automatische uitsluiting</span>
+                </div>
+                <div class="calc-kpi-card">
+                  <span class="calc-kpi-label">Optie Huur-naar-Koop</span>
+                  <span class="calc-kpi-value" style="color: #22c55e;">Mogelijk</span>
+                  <span class="calc-kpi-note">Doorgroei naar eigendom optioneel</span>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Vergelijkingstabel Bank vs WoningVrij -->
+          <!-- Vergelijkingstabel Traditioneel vs WoningVrij -->
           <div class="account-card mt-4">
-            <h2>⚖️ Waarom het WoningVrij Model Verschilt van een Bank</h2>
+            <h2>⚖️ Waarom het WoningVrij Model Verschilt van Bank & Verhuurder</h2>
             <div class="table-wrap">
               <table class="data-table">
                 <thead>
                   <tr>
                     <th>Kenmerk</th>
-                    <th>Traditionele Bankhypotheek</th>
-                    <th>WoningVrij Non-Hypotheek</th>
+                    <th>Traditionele Markt (Bank & Verhuurder)</th>
+                    <th>WoningVrij Huur & Koop Model</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
+                    <td><strong>Inkomenseis</strong></td>
+                    <td>Strikte 3,5x - 4x bruto eis bij huur; vaste werkgeversverklaring bij koop</td>
+                    <td><strong style="color: #166534;">Geen 4x eis</strong> (ook voor ZZP, flex & vermogen)</td>
+                  </tr>
+                  <tr>
                     <td><strong>BKR-Check</strong></td>
-                    <td>Strenge toetsing; elke notering blokkeert de aanvraag</td>
-                    <td><strong style="color: #166534;">Geen BKR-check</strong></td>
+                    <td>Strenge toetsing; elke notering blokkeert huur én koop</td>
+                    <td><strong style="color: #166534;">Geen BKR-afwijzing</strong> voor huur en koop</td>
                   </tr>
                   <tr>
-                    <td><strong>Vast Inkomen</strong></td>
-                    <td>Vaste werkgeversverklaring strikt vereist</td>
-                    <td><strong style="color: #166534;">Brede beoordeling</strong> (ook ZZP / flex / vermogen)</td>
+                    <td><strong>Borg / Waarborg</strong></td>
+                    <td>Vaak €50k-€100k eigen geld bij koop; 3+ maanden borg bij huur</td>
+                    <td><strong style="color: #166534;">1-2 mnd waarborg (huur)</strong> of 5-15% borg (koop)</td>
                   </tr>
                   <tr>
-                    <td><strong>Eigen Inleg / Borg</strong></td>
-                    <td>Vaak €50k-€100k + hoge notariskosten & afsluitprovisie</td>
-                    <td><strong style="color: #166534;">5% tot 15% borg</strong> binnen helder traject</td>
+                    <td><strong>Doorgroei & Flexibiliteit</strong></td>
+                    <td>Huur is verloren geld; koper zit 30 jaar vast aan bankrente</td>
+                    <td><strong style="color: #166534;">Huur-naar-Koop optie</strong> & non-hypotheek opbouw</td>
                   </tr>
                   <tr>
                     <td><strong>Doorlooptijd tot toewijzing</strong></td>
-                    <td>Maandenlange bureaucratie en bankafwijzingen</td>
-                    <td><strong style="color: #166534;">Directe plaatsing</strong> in 4 rondes (500 plekken)</td>
+                    <td>Maandenlange bureaucratie en afwijzingen</td>
+                    <td><strong style="color: #166534;">Directe toewijzing</strong> in 4 rondes (500 plekken)</td>
                   </tr>
                 </tbody>
               </table>
@@ -561,13 +649,22 @@
                 <input type="text" id="woning-titel" required placeholder="Bijv. Parkwoningen De Weide" style="width: 100%; padding: 0.8rem; border-radius: var(--r-s); border: 1px solid rgba(13,27,46,0.15);">
               </div>
 
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div class="form-group">
+                  <label for="woning-bestemming">Woonvorm Bestemming</label>
+                  <select id="woning-bestemming" style="width: 100%; padding: 0.8rem; border-radius: var(--r-s); border: 1px solid rgba(13,27,46,0.15); background: var(--paper);">
+                    <option value="Huur & Koop">Huur & Koop (Beide)</option>
+                    <option value="Huur">Uitsluitend Huur</option>
+                    <option value="Koop">Uitsluitend Koop</option>
+                    <option value="Huur-naar-Koop">Huur-naar-Koop</option>
+                  </select>
+                </div>
                 <div class="form-group">
                   <label for="woning-type">Woningtype</label>
                   <select id="woning-type" style="width: 100%; padding: 0.8rem; border-radius: var(--r-s); border: 1px solid rgba(13,27,46,0.15); background: var(--paper);">
-                    <option value="Appartement">Appartement (€200k - €350k)</option>
-                    <option value="Rijwoning">Rijwoning (€350k - €500k)</option>
-                    <option value="Villa">Villa (€500k - €650k)</option>
+                    <option value="Appartement">Appartement</option>
+                    <option value="Rijwoning">Rijwoning</option>
+                    <option value="Villa">Villa</option>
                     <option value="Bouwkavel">Bouwkavel</option>
                   </select>
                 </div>
@@ -586,8 +683,8 @@
 
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                 <div class="form-group">
-                  <label for="woning-prijs">Vraagprijs (€)</label>
-                  <input type="number" id="woning-prijs" min="200000" max="650000" step="5000" value="340000" style="width: 100%; padding: 0.8rem; border-radius: var(--r-s); border: 1px solid rgba(13,27,46,0.15);">
+                  <label for="woning-prijs">Vraagprijs / Indicatie (€)</label>
+                  <input type="text" id="woning-prijs" required value="€ 1.250/m of € 340.000" placeholder="Bijv. € 1.250/m of € 340.000" style="width: 100%; padding: 0.8rem; border-radius: var(--r-s); border: 1px solid rgba(13,27,46,0.15);">
                 </div>
                 <div class="form-group">
                   <label for="woning-units">Aantal Eenheden</label>
@@ -603,13 +700,14 @@
           <!-- Aangemelde Projecten Portfolio -->
           <div class="account-card">
             <h2>🏢 Aangemelde Woningen & Projecten</h2>
-            <p class="account-muted">Overzicht van jouw vastgoed dat via de non-hypotheekstructuur wordt aangeboden:</p>
+            <p class="account-muted">Overzicht van jouw vastgoed dat via de WoningVrij structuur wordt aangeboden:</p>
             <div class="table-wrap">
               <table class="data-table">
                 <thead>
                   <tr>
                     <th>Project</th>
                     <th>Locatie</th>
+                    <th>Bestemming</th>
                     <th>Prijsklasse</th>
                     <th>Status</th>
                   </tr>
@@ -618,19 +716,22 @@
                   <tr>
                     <td><strong>Residence De Gracht</strong></td>
                     <td>Amsterdam</td>
-                    <td>€ 310.000</td>
+                    <td><span class="badge-tag-huur">Huur</span> <span class="badge-tag-koop">Koop</span></td>
+                    <td>€ 1.150/m • € 310.000</td>
                     <td><span class="badge-status badge-status--gold">4 van 6 gereserveerd</span></td>
                   </tr>
                   <tr>
                     <td><strong>Hof van Utrecht</strong></td>
                     <td>Utrecht</td>
+                    <td><span class="badge-tag-koop">Koop</span></td>
                     <td>€ 420.000</td>
                     <td><span class="badge-status badge-status--green">3 gekoppeld</span></td>
                   </tr>
                   <tr>
                     <td><strong>Kustvilla's Poort</strong></td>
                     <td>Almere</td>
-                    <td>€ 550.000</td>
+                    <td><span class="badge-tag-huur">Huur-naar-Koop</span></td>
+                    <td>€ 2.100/m • € 550.000</td>
                     <td><span class="badge-status badge-status--green">2 gekoppeld</span></td>
                   </tr>
                 </tbody>
@@ -787,7 +888,23 @@
       });
     });
 
-    // Calculator Logica
+    // Calculator Logica (Koop & Huur)
+    const calcModePills = document.querySelectorAll("#calc-mode-pills .model-pill");
+    const calcControlsKoop = document.getElementById("calc-controls-koop");
+    const calcControlsHuur = document.getElementById("calc-controls-huur");
+
+    calcModePills.forEach(pill => {
+      pill.addEventListener("click", () => {
+        calcModePills.forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        const mode = pill.getAttribute("data-calcmode");
+        const isHuur = (mode === "huur");
+        if (calcControlsKoop) calcControlsKoop.hidden = isHuur;
+        if (calcControlsHuur) calcControlsHuur.hidden = !isHuur;
+      });
+    });
+
+    // Koop Calculator
     const sliderWoningwaarde = document.getElementById("calc-woningwaarde");
     const sliderBorgPct = document.getElementById("calc-borg-pct");
     const valWoningwaarde = document.getElementById("calc-woningwaarde-val");
@@ -806,7 +923,7 @@
       const borgBedrag = Math.round(waarde * (pct / 100));
       resBorg.textContent = "€ " + borgBedrag.toLocaleString("nl-NL");
 
-      // Indicatieve maandbijdrage non-hypotheek (ca 3.6% op jaarbasis / 12)
+      // Indicatieve maandbijdrage non-hypotheek (ca 3.8% op jaarbasis / 12)
       const maandBedrag = Math.round((waarde - borgBedrag) * 0.038 / 12);
       resMaand.textContent = "€ " + maandBedrag.toLocaleString("nl-NL") + " /mnd";
     }
@@ -817,12 +934,63 @@
       updateCalculator();
     }
 
+    // Huur Calculator
+    const sliderHuurBedrag = document.getElementById("calc-huur-bedrag");
+    const sliderWaarborgMnd = document.getElementById("calc-waarborg-mnd");
+    const valHuurBedrag = document.getElementById("calc-huur-bedrag-val");
+    const valWaarborgMnd = document.getElementById("calc-waarborg-mnd-val");
+    const resWaarborg = document.getElementById("calc-res-waarborg");
+
+    function updateHuurCalculator() {
+      if (!sliderHuurBedrag || !sliderWaarborgMnd) return;
+      const huur = parseInt(sliderHuurBedrag.value, 10);
+      const mnd = parseInt(sliderWaarborgMnd.value, 10);
+
+      valHuurBedrag.textContent = "€ " + huur.toLocaleString("nl-NL") + " /mnd";
+      valWaarborgMnd.textContent = mnd + (mnd === 1 ? " maand" : " maanden");
+
+      const waarborgBedrag = huur * mnd;
+      if (resWaarborg) resWaarborg.textContent = "€ " + waarborgBedrag.toLocaleString("nl-NL");
+    }
+
+    if (sliderHuurBedrag && sliderWaarborgMnd) {
+      sliderHuurBedrag.addEventListener("input", updateHuurCalculator);
+      sliderWaarborgMnd.addEventListener("input", updateHuurCalculator);
+      updateHuurCalculator();
+    }
+
     // Woonwensen Editor interacties
+    let selectedWoonvorm = "beide";
+    const woonvormPills = document.querySelectorAll("#wensen-woonvorm-pills .model-pill");
+    const huurBudgetGroup = document.getElementById("wensen-budget-huur-group");
+    const koopBudgetGroup = document.getElementById("wensen-budget-koop-group");
+
+    woonvormPills.forEach(pill => {
+      pill.addEventListener("click", () => {
+        woonvormPills.forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        selectedWoonvorm = pill.getAttribute("data-woonvorm");
+
+        if (huurBudgetGroup && koopBudgetGroup) {
+          huurBudgetGroup.style.display = (selectedWoonvorm === "koop") ? "none" : "block";
+          koopBudgetGroup.style.display = (selectedWoonvorm === "huur") ? "none" : "block";
+        }
+      });
+    });
+
     const budgetSlider = document.getElementById("wensen-budget-slider");
     const budgetVal = document.getElementById("wensen-budget-val");
     if (budgetSlider && budgetVal) {
       budgetSlider.addEventListener("input", () => {
         budgetVal.textContent = "€ " + parseInt(budgetSlider.value, 10).toLocaleString("nl-NL");
+      });
+    }
+
+    const huurBudgetSlider = document.getElementById("wensen-huurbudget-slider");
+    const huurBudgetVal = document.getElementById("wensen-huurbudget-val");
+    if (huurBudgetSlider && huurBudgetVal) {
+      huurBudgetSlider.addEventListener("input", () => {
+        huurBudgetVal.textContent = "€ " + parseInt(huurBudgetSlider.value, 10).toLocaleString("nl-NL") + " /mnd";
       });
     }
 
@@ -847,19 +1015,32 @@
         e.preventDefault();
         const selectedTypes = [...document.querySelectorAll(".type-card-select.selected")].map(c => c.getAttribute("data-type")).join(" / ") || "Alle types";
         const selectedCities = [...document.querySelectorAll(".city-chip.active")].map(c => c.getAttribute("data-city")).join(", ") || "Alle steden";
-        const maxBudget = budgetVal ? budgetVal.textContent : "€ 450.000";
+        const maxKoopBudget = budgetVal ? budgetVal.textContent : "€ 450.000";
+        const maxHuurBudget = huurBudgetVal ? huurBudgetVal.textContent : "€ 1.450 /mnd";
 
         // Update ticket preview
+        const ticketWoonvorm = document.getElementById("ticket-field-woonvorm");
         const ticketType = document.getElementById("ticket-field-type");
         const ticketLoc = document.getElementById("ticket-field-locaties");
+        const ticketBorg = document.getElementById("ticket-field-borg");
+
+        const woonvormLabel = selectedWoonvorm === "huur" ? "Huur" : (selectedWoonvorm === "koop" ? "Koop (Non-Hypotheek)" : "Huur & Koop");
+        if (ticketWoonvorm) ticketWoonvorm.textContent = woonvormLabel;
         if (ticketType) ticketType.textContent = selectedTypes;
         if (ticketLoc) ticketLoc.textContent = selectedCities;
+        if (ticketBorg) {
+          if (selectedWoonvorm === "huur") ticketBorg.textContent = "1-2 mnd waarborg";
+          else if (selectedWoonvorm === "koop") ticketBorg.textContent = "10% (€35k - €50k)";
+          else ticketBorg.textContent = "10% koop / 1-2 mnd huur";
+        }
 
         if (currentUser) {
           await saveUserProfile(currentUser.uid, {
+            woonvorm: selectedWoonvorm,
             woningType: selectedTypes,
             locatieVoorkeur: selectedCities,
-            budgetMax: maxBudget,
+            huurBudgetMax: maxHuurBudget,
+            budgetMax: maxKoopBudget,
           });
         }
 
@@ -896,10 +1077,17 @@
       aanbiederForm.addEventListener("submit", (e) => {
         e.preventDefault();
         const titel = document.getElementById("woning-titel")?.value || "Nieuw project";
+        const bestemming = document.getElementById("woning-bestemming")?.value || "Huur & Koop";
         const type = document.getElementById("woning-type")?.value || "Rijwoning";
         const stad = document.getElementById("woning-stad")?.value || "Amsterdam";
-        const prijs = parseInt(document.getElementById("woning-prijs")?.value || "350000", 10);
+        const prijs = document.getElementById("woning-prijs")?.value || "€ 1.250/m of € 340.000";
         const units = document.getElementById("woning-units")?.value || "1";
+
+        const badgeHtml = (bestemming === "Huur")
+          ? `<span class="badge-tag-huur">Huur</span>`
+          : (bestemming === "Koop"
+            ? `<span class="badge-tag-koop">Koop</span>`
+            : `<span class="badge-tag-huur">Huur</span> <span class="badge-tag-koop">Koop</span>`);
 
         const table = document.getElementById("aanbieder-units-table");
         if (table) {
@@ -907,7 +1095,8 @@
           newRow.innerHTML = `
             <td><strong>${titel}</strong> (${units}x ${type})</td>
             <td>${stad}</td>
-            <td>€ ${prijs.toLocaleString("nl-NL")}</td>
+            <td>${badgeHtml}</td>
+            <td>${prijs}</td>
             <td><span class="badge-status badge-status--green">Nieuw gepubliceerd ✅</span></td>
           `;
           table.prepend(newRow);
@@ -1026,6 +1215,28 @@
       }
 
       // Pre-fill opgeslagen voorkeuren indien beschikbaar
+      if (profile.woonvorm) {
+        selectedWoonvorm = profile.woonvorm;
+        woonvormPills.forEach(p => p.classList.toggle("active", p.getAttribute("data-woonvorm") === selectedWoonvorm));
+        if (huurBudgetGroup && koopBudgetGroup) {
+          huurBudgetGroup.style.display = (selectedWoonvorm === "koop") ? "none" : "block";
+          koopBudgetGroup.style.display = (selectedWoonvorm === "huur") ? "none" : "block";
+        }
+        const ticketWoonvorm = document.getElementById("ticket-field-woonvorm");
+        if (ticketWoonvorm) {
+          ticketWoonvorm.textContent = selectedWoonvorm === "huur" ? "Huur" : (selectedWoonvorm === "koop" ? "Koop (Non-Hypotheek)" : "Huur & Koop");
+        }
+      }
+      if (profile.huurBudgetMax && huurBudgetVal && huurBudgetSlider) {
+        huurBudgetVal.textContent = profile.huurBudgetMax;
+        const num = parseInt(profile.huurBudgetMax.replace(/[^0-9]/g, ""), 10);
+        if (!isNaN(num)) huurBudgetSlider.value = num;
+      }
+      if (profile.budgetMax && budgetVal && budgetSlider) {
+        budgetVal.textContent = profile.budgetMax;
+        const num = parseInt(profile.budgetMax.replace(/[^0-9]/g, ""), 10);
+        if (!isNaN(num)) budgetSlider.value = num;
+      }
       if (profile.woningType) {
         const ticketType = document.getElementById("ticket-field-type");
         if (ticketType) ticketType.textContent = profile.woningType;
