@@ -23,4 +23,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy . --project-name=woningvrij --branch=main --commit-dirty=true
+          command: pages deploy . --project-name=woningvry --branch=main --commit-dirty=true
