@@ -9,14 +9,36 @@
   <meta property="og:description" content="Zowel voor flexibele huur als koop via een non-hypotheekmodel van €200.000 tot €650.000.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.woningvry.nl">
+  <meta property="og:image" content="https://www.woningvry.nl/attached_assets/woningvry-logo.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="WoningVry | Wonen Zonder Hypotheek & Flexibele Huur">
+  <meta name="twitter:description" content="Flexibele huur zonder 4x inkomenseis én non-hypotheek koop in 6 steden.">
+  <meta name="twitter:image" content="https://www.woningvry.nl/attached_assets/woningvry-logo.png">
+
   <meta name="theme-color" content="#0d1b2e">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link rel="manifest" href="manifest.json">
   <link rel="preload" as="image" href="attached_assets/hero-community.jpg">
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Schema.org Organization & WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "RealEstateAgent",
+    "name": "WoningVry",
+    "url": "https://www.woningvry.nl",
+    "logo": "https://www.woningvry.nl/attached_assets/woningvry-logo.png",
+    "description": "Innovatief platform voor flexibele huur zonder 4x inkomenseis en koop zonder bankhypotheek in Nederland.",
+    "areaServed": "NL"
+  }
+  </script>
 </head>
 <body>
   <a href="#wat-is" class="skip-link">Direct naar inhoud</a>
@@ -480,6 +502,17 @@
       const link = document.querySelector(".nav-auth-link");
       if (link) { link.textContent = "Mijn account"; link.href = "account.html"; }
     });
+  </script>
+
+  <!-- PWA Service Worker Registratie -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => {
+          console.warn('SW registration failed:', err);
+        });
+      });
+    }
   </script>
 </body>
 </html>

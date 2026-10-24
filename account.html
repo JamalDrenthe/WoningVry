@@ -8,6 +8,7 @@
   <meta name="theme-color" content="#0d1b2e">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -101,6 +102,9 @@
           </button>
           <button type="button" class="account-tab" data-tab="tab-wensen">
             🏡 Woonwensen & Matches
+          </button>
+          <button type="button" class="account-tab" data-tab="tab-favorieten">
+            ❤️ Mijn Favorieten <span id="fav-count-badge" class="badge-pill-count">0</span>
           </button>
           <button type="button" class="account-tab" data-tab="tab-borg">
             💰 Huur & Koop Calculator
@@ -212,6 +216,23 @@
                   </div>
                   <p>500 nieuwe plekken voor nieuwbouwprojecten in Almere, Eindhoven en Groningen (Q1 2027).</p>
                 </div>
+              </div>
+            </div>
+
+            <!-- MIJN BEZICHTIGINGSAANVRAGEN & STATUS -->
+            <div class="account-card" style="grid-column: 1 / -1; margin-top: 1rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <h2>📅 Mijn Bezichtigingsaanvragen &amp; Status</h2>
+                <a href="aanbod.html" class="btn-secondary btn-sm">Bekijk meer woningen</a>
+              </div>
+              <p class="account-muted">Hier zie je jouw ingediende bezichtigingsverzoeken en de actuele status van jouw toewijzingsreacties.</p>
+              
+              <div id="user-viewings-container" class="viewings-list">
+                <!-- Dynamisch gevuld via JS -->
+              </div>
+              <div id="user-viewings-empty" style="text-align: center; padding: 2rem; background: #f8fafc; border-radius: var(--r-s); border: 1px dashed rgba(13,27,46,0.12);">
+                <p style="color: var(--muted); margin-bottom: 0.8rem; font-size: 0.9rem;">Je hebt nog geen bezichtigingen aangevraagd in Ronde 1.</p>
+                <a href="aanbod.html" class="btn-primary btn-sm">Ontdek Woningaanbod</a>
               </div>
             </div>
           </div>
@@ -377,6 +398,66 @@
                 </div>
               </div>
             </div>
+
+            <!-- WONINGALERT NOTIFICATIES MODULE -->
+            <div class="alert-card-wrap">
+              <div class="alert-header">
+                <div>
+                  <span class="eyebrow" style="color: var(--gold-bright);">Directe Notificaties</span>
+                  <h3 style="font-family: var(--font-display); font-size: 1.35rem; color: var(--ink); margin: 0.2rem 0;">🔔 Woningalert per E-mail</h3>
+                  <p style="color: var(--muted); font-size: 0.88rem; margin: 0;">Ontvang direct een melding zodra er een nieuwe woning in jouw voorkeurssteden beschikbaar komt in Ronde 1.</p>
+                </div>
+                <div>
+                  <label class="alert-toggle-label">
+                    <input type="checkbox" id="alert-active-toggle" style="display: none;">
+                    <span class="alert-toggle-switch"></span>
+                    <span id="alert-status-label" style="font-size: 0.88rem;">Alert Inactief</span>
+                  </label>
+                </div>
+              </div>
+
+              <div style="margin-top: 1rem;">
+                <label style="font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted);">Alerts ontvangen voor steden:</label>
+                <div class="alert-cities-chips" id="alert-cities-chips">
+                  <button type="button" class="alert-city-chip active" data-city="Amsterdam">Amsterdam</button>
+                  <button type="button" class="alert-city-chip active" data-city="Utrecht">Utrecht</button>
+                  <button type="button" class="alert-city-chip" data-city="Rotterdam">Rotterdam</button>
+                  <button type="button" class="alert-city-chip" data-city="Almere">Almere</button>
+                  <button type="button" class="alert-city-chip" data-city="Eindhoven">Eindhoven</button>
+                  <button type="button" class="alert-city-chip" data-city="Groningen">Groningen</button>
+                  <button type="button" class="alert-city-chip" data-city="Den Haag">Den Haag</button>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.2rem;">
+                <button type="button" class="btn-primary btn-sm" id="btn-save-alert-prefs">Alert Instellingen Opslaan</button>
+                <span id="alert-save-feedback" style="color: #166534; font-size: 0.85rem; font-weight: 600;" hidden>✅ Opgeslagen!</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: MIJN FAVORIETEN -->
+        <div id="tab-favorieten" class="tab-pane">
+          <div class="account-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+              <div>
+                <h2>❤️ Mijn Opgeslagen Woningen</h2>
+                <p class="account-muted">Overzicht van alle woningen die je als favoriet hebt gemarkeerd.</p>
+              </div>
+              <a href="aanbod.html" class="btn-secondary btn-sm">Naar volledig aanbod</a>
+            </div>
+
+            <div id="favorites-container" class="fav-properties-grid">
+              <!-- Dynamisch gevuld via JS -->
+            </div>
+
+            <div id="favorites-empty-box" style="display: none; text-align: center; padding: 3rem 1.5rem; background: #f8fafc; border-radius: var(--r-m); margin-top: 1.5rem; border: 1px dashed rgba(13,27,46,0.15);">
+              <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🤍</div>
+              <h3 style="font-family: var(--font-display); font-size: 1.3rem; color: var(--ink); margin-bottom: 0.35rem;">Nog geen woningen opgeslagen</h3>
+              <p style="color: var(--muted); font-size: 0.9rem; max-width: 420px; margin: 0 auto 1.25rem;">Klik op het hartje bij een woning op de aanbodpagina of woningdetailpagina om deze direct in jouw account te bewaren.</p>
+              <a href="aanbod.html" class="btn-primary">Bekijk Woningaanbod</a>
+            </div>
           </div>
         </div>
 
@@ -524,8 +605,20 @@
         <!-- TAB 4: DOSSIER & DOCUMENTEN -->
         <div id="tab-dossier" class="tab-pane">
           <div class="account-card">
-            <h2>📁 Jouw Beoordelingsdossier</h2>
-            <p class="account-muted">Voor de toewijzing in Ronde 1 beoordelen wij jouw dossier individueel. Hieronder zie je de status van jouw acceptatiedocumenten:</p>
+            <h2>📁 Jouw Beoordelingsdossier &amp; Documentenkluis</h2>
+            <p class="account-muted">Voor de toewijzing in Ronde 1 beoordelen wij jouw dossier individueel. Upload hieronder jouw documenten om direct naar 100% goedkeuring te gaan:</p>
+
+            <!-- Dossier Volledigheid Progressie -->
+            <div style="background: #f8fafc; border: 1px solid rgba(13,27,46,0.08); border-radius: var(--r-s); padding: 1.25rem; margin-bottom: 1.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-weight: 600; color: var(--ink); font-size: 0.95rem;">Dossier Volledigheid voor Toewijzing:</span>
+                <strong id="dossier-progress-pct" style="color: var(--gold); font-size: 1.15rem;">66% Voltooid</strong>
+              </div>
+              <div class="capacity-bar-wrap" style="height: 10px;">
+                <div id="dossier-progress-bar" class="capacity-bar-fill" style="width: 66%; background: var(--gold);"></div>
+              </div>
+              <p style="font-size: 0.8rem; color: var(--muted); margin: 0.5rem 0 0;">Tip: Upload ten minste een ID-bewijs en inkomens- of vermogensoverzicht voor voorrangsbeoordeling.</p>
+            </div>
 
             <div class="dossier-checklist">
               <div class="dossier-item">
@@ -559,6 +652,25 @@
                   </div>
                 </div>
                 <span class="badge-status" style="background: rgba(13,27,46,0.06); color: var(--muted);">Gereed voor aanlevering 📋</span>
+              </div>
+            </div>
+
+            <!-- DOCUMENT UPLOAD DROPZONE -->
+            <div class="document-upload-dropzone" id="dossier-dropzone">
+              <input type="file" id="dossier-file-input" multiple accept=".pdf,.png,.jpg,.jpeg" style="display: none;">
+              <div class="dropzone-icon">📁</div>
+              <h4>Sleep documenten hierheen of klik om te uploaden</h4>
+              <p>Ondersteunt PDF, JPG, PNG (max 10MB). Documenten worden versleuteld opgeslagen in jouw WoningVry acceptatiekluis.</p>
+              <div style="margin-top: 1rem;">
+                <button type="button" class="btn-secondary btn-sm" id="btn-trigger-upload">📤 Kies bestand van computer</button>
+              </div>
+            </div>
+
+            <!-- GEÜPLOADE DOCUMENTEN OVERZICHT -->
+            <div style="margin-bottom: 2rem;">
+              <h4 style="font-size: 1rem; color: var(--ink); margin-bottom: 0.6rem;">Veilig Opgeslagen Documenten</h4>
+              <div id="uploaded-docs-container" class="uploaded-docs-list">
+                <!-- Dynamisch gevuld via JS -->
               </div>
             </div>
 
@@ -834,6 +946,7 @@
 
   <script src="script.js"></script>
   <script type="module">
+    import { getFavorites, getFavoriteProperties, toggleFavorite, getViewings, getAlertPrefs, saveAlertPrefs } from "./properties-data.js";
     import {
       auth, db, onAuthStateChanged, sendPasswordResetEmail,
       sendEmailVerification, signOut, syncUserProfile, getUserProfile, saveUserProfile,
@@ -886,6 +999,9 @@
         const targetId = tabBtn.getAttribute("data-tab");
         const targetPane = document.getElementById(targetId);
         if (targetPane) targetPane.classList.add("active");
+        if (targetId === "tab-favorieten") renderFavorites();
+        if (targetId === "tab-dossier") renderDocsVault();
+        if (targetId === "tab-traject") renderViewingsList();
       });
     });
 
@@ -1274,6 +1390,265 @@
       }
     });
 
+
+    // ============================================================
+    // VERRIJKING: FAVORIETEN BEHEER
+    // ============================================================
+    function renderFavorites() {
+      const favs = getFavoriteProperties();
+      const container = document.getElementById("favorites-container");
+      const emptyBox = document.getElementById("favorites-empty-box");
+      const badge = document.getElementById("fav-count-badge");
+
+      if (badge) badge.textContent = favs.length;
+      if (!container) return;
+
+      if (favs.length === 0) {
+        container.innerHTML = "";
+        if (emptyBox) emptyBox.style.display = "block";
+        return;
+      }
+
+      if (emptyBox) emptyBox.style.display = "none";
+      container.innerHTML = favs.map(p => {
+        const isKoop = p.category === "koop";
+        return `
+          <article class="fav-card">
+            <div class="fav-card-media" style="background-image: url('${p.image}');">
+              <span class="badge-funda-model ${isKoop ? 'badge-funda-model--koop' : 'badge-funda-model--huur'}">
+                ${isKoop ? '🏡 Koop' : '🔑 Huur'}
+              </span>
+            </div>
+            <div class="fav-card-body">
+              <h3>${p.address}</h3>
+              <div class="loc">📍 ${p.postalCode} ${p.city} (${p.neighborhood})</div>
+              <div class="price">${p.priceDisplay}</div>
+              <div style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.8rem;">
+                📐 ${p.surface} m² • 🛏️ ${p.rooms} kamers • Label ${p.energyLabel}
+              </div>
+              <div class="fav-card-footer">
+                <a href="woning.html?id=${p.id}" class="btn-primary btn-sm">Woning bekijken</a>
+                <button type="button" class="btn-remove-doc btn-remove-fav" data-id="${p.id}" title="Verwijderen uit favorieten">✕</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      container.querySelectorAll(".btn-remove-fav").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-id");
+          toggleFavorite(id);
+          renderFavorites();
+        });
+      });
+    }
+
+    window.addEventListener("woningvry:favorites-changed", renderFavorites);
+
+    // ============================================================
+    // VERRIJKING: BEZICHTIGINGSAANVRAGEN
+    // ============================================================
+    function renderViewingsList() {
+      const viewings = getViewings();
+      const container = document.getElementById("user-viewings-container");
+      const emptyBox = document.getElementById("user-viewings-empty");
+      if (!container) return;
+
+      if (viewings.length === 0) {
+        container.innerHTML = "";
+        if (emptyBox) emptyBox.style.display = "block";
+        return;
+      }
+
+      if (emptyBox) emptyBox.style.display = "none";
+      container.innerHTML = viewings.map(v => `
+        <div class="viewing-card-item">
+          <div>
+            <h4>${v.propertyTitle || 'Woningreactie'}</h4>
+            <div class="viewing-meta">
+              📅 Datum: <strong>${v.preferredDate || 'In overleg'}</strong> • Dagdeel: <strong>${v.preferredTime || 'Flexibel'}</strong>
+              <span style="display:block; font-size:0.75rem; color:var(--muted); margin-top:0.2rem;">Referentie: ${v.id.toUpperCase()}</span>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <span class="badge-status badge-status--gold">${v.status || 'In behandeling'} ⏳</span>
+            <a href="woning.html?id=${v.propertyId}" class="btn-secondary btn-sm">Details</a>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    // ============================================================
+    // VERRIJKING: DOCUMENTENKLUIS & VOLLEDIGHEIDS PROGRESSIE
+    // ============================================================
+    const DOCS_KEY = "woningvry_user_documents";
+    function getStoredDocs() {
+      try {
+        const raw = localStorage.getItem(DOCS_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return [
+        { id: "doc-1", name: "Paspoort_Identiteitsbewijs_NL.pdf", size: "2.4 MB", date: "14 okt 2026", status: "Geverifieerd ✅" },
+        { id: "doc-2", name: "Inkomensindicatie_Belasting_2025.pdf", size: "1.8 MB", date: "16 okt 2026", status: "In behandeling ⏳" }
+      ];
+    }
+
+    function saveDocs(docs) {
+      localStorage.setItem(DOCS_KEY, JSON.stringify(docs));
+      renderDocsVault();
+    }
+
+    function renderDocsVault() {
+      const docs = getStoredDocs();
+      const container = document.getElementById("uploaded-docs-container");
+      const pctEl = document.getElementById("dossier-progress-pct");
+      const barEl = document.getElementById("dossier-progress-bar");
+
+      // Bereken percentage: 1 doc = 33%, 2 docs = 66%, 3+ docs = 100%
+      const pct = Math.min(100, Math.round((docs.length / 3) * 100));
+      if (pctEl) pctEl.textContent = pct + "% Voltooid" + (pct === 100 ? " 🎉 (Compleet)" : "");
+      if (barEl) {
+        barEl.style.width = pct + "%";
+        barEl.style.background = pct === 100 ? "#16a34a" : "var(--gold)";
+      }
+
+      if (!container) return;
+      if (docs.length === 0) {
+        container.innerHTML = "<p style='color:var(--muted); font-size:0.88rem;'>Nog geen documenten geüpload. Upload je ID of inkomensindicatie om toewijzing te versnellen.</p>";
+        return;
+      }
+
+      container.innerHTML = docs.map(d => `
+        <div class="uploaded-doc-item">
+          <div class="doc-info">
+            <span class="doc-info-icon">📄</span>
+            <div>
+              <div class="doc-title">${d.name}</div>
+              <div class="doc-meta">${d.size} • Geüpload op ${d.date}</div>
+            </div>
+          </div>
+          <div class="doc-actions">
+            <span class="badge-status" style="background:rgba(13,27,46,0.06); font-size:0.8rem;">${d.status}</span>
+            <button type="button" class="btn-remove-doc" data-docid="${d.id}" title="Verwijder document">🗑️</button>
+          </div>
+        </div>
+      `).join("");
+
+      container.querySelectorAll(".btn-remove-doc").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-docid");
+          const updated = getStoredDocs().filter(item => item.id !== id);
+          saveDocs(updated);
+        });
+      });
+    }
+
+    const triggerUploadBtn = document.getElementById("btn-trigger-upload");
+    const dropzone = document.getElementById("dossier-dropzone");
+    const fileInput = document.getElementById("dossier-file-input");
+
+    if (triggerUploadBtn && fileInput) {
+      triggerUploadBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        fileInput.click();
+      });
+    }
+
+    if (dropzone && fileInput) {
+      dropzone.addEventListener("click", () => fileInput.click());
+      dropzone.addEventListener("dragover", (e) => { e.preventDefault(); dropzone.classList.add("dragover"); });
+      dropzone.addEventListener("dragleave", () => dropzone.classList.remove("dragover"));
+      dropzone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropzone.classList.remove("dragover");
+        if (e.dataTransfer.files && e.dataTransfer.files.length) {
+          handleIncomingFiles(e.dataTransfer.files);
+        }
+      });
+
+      fileInput.addEventListener("change", () => {
+        if (fileInput.files && fileInput.files.length) {
+          handleIncomingFiles(fileInput.files);
+          fileInput.value = "";
+        }
+      });
+    }
+
+    function handleIncomingFiles(fileList) {
+      const current = getStoredDocs();
+      for (let i = 0; i < fileList.length; i++) {
+        const file = fileList[i];
+        const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+        current.push({
+          id: "doc-" + Date.now() + "-" + i,
+          name: file.name,
+          size: sizeMb > 0 ? sizeMb + " MB" : "< 1 MB",
+          date: new Date().toLocaleDateString("nl-NL", { day: "numeric", month: "short", year: "numeric" }),
+          status: "Geüpload - In review ⏳"
+        });
+      }
+      saveDocs(current);
+      alert("✅ Document(en) succesvol toegevoegd aan jouw WoningVry acceptatiekluis!");
+    }
+
+    // ============================================================
+    // VERRIJKING: WONINGALERT NOTIFICATIES
+    // ============================================================
+    function setupWoningAlert() {
+      const toggle = document.getElementById("alert-active-toggle");
+      const statusLabel = document.getElementById("alert-status-label");
+      const chips = document.querySelectorAll("#alert-cities-chips .alert-city-chip");
+      const saveBtn = document.getElementById("btn-save-alert-prefs");
+      const feedback = document.getElementById("alert-save-feedback");
+
+      const prefs = getAlertPrefs();
+      if (toggle) {
+        toggle.checked = prefs.active;
+        if (statusLabel) {
+          statusLabel.textContent = prefs.active ? "Alert Actief 🔔" : "Alert Inactief 🔕";
+          statusLabel.style.color = prefs.active ? "#166534" : "var(--muted)";
+        }
+        toggle.addEventListener("change", () => {
+          if (statusLabel) {
+            statusLabel.textContent = toggle.checked ? "Alert Actief 🔔" : "Alert Inactief 🔕";
+            statusLabel.style.color = toggle.checked ? "#166534" : "var(--muted)";
+          }
+        });
+      }
+
+      chips.forEach(chip => {
+        const city = chip.getAttribute("data-city");
+        chip.classList.toggle("active", (prefs.cities || []).includes(city));
+        chip.addEventListener("click", () => {
+          chip.classList.toggle("active");
+        });
+      });
+
+      if (saveBtn) {
+        saveBtn.addEventListener("click", () => {
+          const selectedCities = [];
+          document.querySelectorAll("#alert-cities-chips .alert-city-chip.active").forEach(c => {
+            selectedCities.push(c.getAttribute("data-city"));
+          });
+          saveAlertPrefs({
+            active: toggle ? toggle.checked : true,
+            cities: selectedCities
+          });
+          if (feedback) {
+            feedback.hidden = false;
+            setTimeout(() => { feedback.hidden = true; }, 3500);
+          }
+        });
+      }
+    }
+
+    // Initialisaties
+    renderFavorites();
+    renderViewingsList();
+    renderDocsVault();
+    setupWoningAlert();
+
     // Uitlogknoppen
     const logoutHandler = async () => {
       await signOut(auth);
@@ -1285,6 +1660,16 @@
 
     const navLogoutBtn = document.getElementById("nav-logout-btn");
     if (navLogoutBtn) navLogoutBtn.addEventListener("click", logoutHandler);
+  </script>
+  <!-- PWA Service Worker Registratie -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => {
+          console.warn('SW registration failed:', err);
+        });
+      });
+    }
   </script>
 </body>
 </html>

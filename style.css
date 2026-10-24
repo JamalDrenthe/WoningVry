@@ -2909,3 +2909,1061 @@ section { padding: var(--space-xl) 0; }
   }
 }
 
+/* ============================================================
+   WONINGDETAILPAGINA & RICH PROPERTY VIEW (woning.html)
+   ============================================================ */
+.woning-page-main {
+  padding-top: 5.5rem;
+  padding-bottom: 5rem;
+}
+
+.woning-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.woning-breadcrumbs a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color var(--dur-quick);
+}
+
+.woning-breadcrumbs a:hover {
+  color: var(--gold);
+}
+
+.woning-breadcrumbs .sep {
+  opacity: 0.4;
+}
+
+.woning-breadcrumbs .active {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.woning-top-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.woning-badges-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.badge-status-available {
+  background: #dcfce7;
+  color: #15803d;
+  font-weight: 700;
+  border: 1px solid rgba(22, 101, 52, 0.2);
+}
+
+.badge-status-progress {
+  background: #fef9c3;
+  color: #854d0e;
+  font-weight: 700;
+  border: 1px solid rgba(133, 77, 14, 0.2);
+}
+
+.badge-energy-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--r-pill);
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid rgba(4, 120, 87, 0.2);
+}
+
+.woning-action-buttons {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.btn-action-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: #ffffff;
+  border: 1px solid rgba(13, 27, 46, 0.15);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  transition: all var(--dur-quick);
+  box-shadow: var(--shadow-s);
+}
+
+.btn-action-pill:hover {
+  background: #f8fafc;
+  border-color: var(--gold);
+  transform: translateY(-1px);
+}
+
+.btn-action-pill.active {
+  background: #fef2f2;
+  border-color: #f87171;
+  color: #b91c1c;
+}
+
+.btn-card-fav {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  cursor: pointer;
+  z-index: 5;
+  transition: transform var(--dur-quick), background var(--dur-quick);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-card-fav:hover {
+  transform: scale(1.1);
+  background: #ffffff;
+}
+
+/* Galerij */
+.woning-gallery-section {
+  background: #000000;
+  border-radius: var(--r-l);
+  overflow: hidden;
+  box-shadow: var(--shadow-m);
+  margin-bottom: 2.5rem;
+}
+
+.woning-gallery-main {
+  position: relative;
+  width: 100%;
+  height: clamp(320px, 50vw, 540px);
+  background: #0b1320;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.woning-gallery-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-counter-badge {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(13, 27, 46, 0.75);
+  color: #ffffff;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--r-pill);
+  font-size: 0.8rem;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+}
+
+.gallery-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--dur-quick);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  user-select: none;
+}
+
+.gallery-nav-btn:hover {
+  background: #ffffff;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.gallery-nav-prev { left: 16px; }
+.gallery-nav-next { right: 16px; }
+
+.woning-gallery-thumbs {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #0b1320;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.gallery-thumb {
+  flex: 0 0 90px;
+  height: 60px;
+  border-radius: var(--r-s);
+  overflow: hidden;
+  border: 2px solid transparent;
+  padding: 0;
+  cursor: pointer;
+  background: #1e293b;
+  opacity: 0.65;
+  transition: opacity var(--dur-quick), border-color var(--dur-quick);
+}
+
+.gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-thumb:hover {
+  opacity: 0.9;
+}
+
+.gallery-thumb.active {
+  opacity: 1;
+  border-color: var(--gold-bright);
+}
+
+/* Detail Layout */
+.woning-detail-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.woning-content-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.woning-main-header {
+  background: #ffffff;
+  border: 1px solid rgba(13, 27, 46, 0.08);
+  border-radius: var(--r-m);
+  padding: 2rem;
+  box-shadow: var(--shadow-s);
+}
+
+.woning-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 0.35rem;
+}
+
+.woning-subtitle {
+  color: var(--muted);
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.woning-price-card {
+  background: #f8fafc;
+  border-left: 4px solid var(--gold);
+  padding: 1.25rem 1.5rem;
+  border-radius: 0 var(--r-s) var(--r-s) 0;
+}
+
+.woning-price-primary {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-bottom: 0.25rem;
+}
+
+.woning-price-subtext {
+  font-size: 0.92rem;
+  color: #475569;
+}
+
+.woning-specs-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  background: #ffffff;
+  border: 1px solid rgba(13, 27, 46, 0.08);
+  border-radius: var(--r-m);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-s);
+}
+
+.spec-ribbon-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.spec-ribbon-item .spec-icon {
+  font-size: 1.6rem;
+  width: 42px;
+  height: 42px;
+  background: rgba(185, 151, 91, 0.12);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.spec-ribbon-item strong {
+  display: block;
+  font-size: 1rem;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.spec-ribbon-item span {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.woning-card-block {
+  background: #ffffff;
+  border: 1px solid rgba(13, 27, 46, 0.08);
+  border-radius: var(--r-m);
+  padding: 2rem;
+  box-shadow: var(--shadow-s);
+}
+
+.woning-card-block h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--ink);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(13, 27, 46, 0.08);
+}
+
+.woning-desc-text {
+  color: #334155;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.woning-advantage-box {
+  background: linear-gradient(135deg, rgba(13, 27, 46, 0.96) 0%, rgba(20, 36, 60, 0.98) 100%);
+  color: #ffffff;
+  border: 1px solid rgba(212, 182, 120, 0.35);
+  border-radius: var(--r-m);
+  padding: 2rem;
+  box-shadow: var(--shadow-m);
+}
+
+.woning-advantage-header {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.advantage-badge-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--gold);
+  color: var(--ink);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.woning-advantage-header h3 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  color: #ffffff;
+  margin: 0;
+}
+
+.woning-advantage-header p {
+  color: #cbd5e1;
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+.woning-advantage-content {
+  color: #e2e8f0;
+  line-height: 1.7;
+  font-size: 0.96rem;
+  margin-bottom: 1.2rem;
+}
+
+.woning-advantage-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.advantage-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  color: #f1f5f9;
+}
+
+.advantage-feature-item span {
+  color: var(--gold-bright);
+  font-weight: 700;
+}
+
+.specs-category-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+
+.specs-table-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem 1.5rem;
+}
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(13, 27, 46, 0.06);
+  font-size: 0.9rem;
+}
+
+.spec-lbl {
+  color: var(--muted);
+}
+
+.spec-val {
+  color: var(--ink);
+  font-weight: 600;
+  text-align: right;
+}
+
+.woning-city-pill-info {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(13, 27, 46, 0.08);
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+/* Sidebar & Form */
+.woning-sidebar-col {
+  position: sticky;
+  top: 92px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.woning-sticky-card {
+  background: #ffffff;
+  border: 1px solid rgba(13, 27, 46, 0.1);
+  border-radius: var(--r-m);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-m);
+}
+
+.sidebar-card-header {
+  margin-bottom: 1.25rem;
+}
+
+.sidebar-card-header h3 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  color: var(--ink);
+  margin: 0.2rem 0 0.5rem;
+}
+
+.sidebar-card-header p {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.viewing-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.viewing-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.viewing-form label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.viewing-form input,
+.viewing-form select,
+.viewing-form textarea {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid rgba(13, 27, 46, 0.16);
+  border-radius: var(--r-s);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  transition: border-color var(--dur-quick);
+  background: #ffffff;
+}
+
+.viewing-form input:focus,
+.viewing-form select:focus,
+.viewing-form textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(185, 151, 91, 0.15);
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.viewing-feedback--success {
+  background: #ecfdf5;
+  border: 1px solid #10b981;
+  color: #065f46;
+  padding: 0.85rem;
+  border-radius: var(--r-s);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin-top: 0.5rem;
+}
+
+.sidebar-guarantees {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(13, 27, 46, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.guarantee-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: #334155;
+}
+
+.guarantee-item .icon {
+  color: #166534;
+}
+
+.sidebar-footer-link {
+  margin-top: 1.2rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.sidebar-footer-link a {
+  color: var(--gold);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sidebar-footer-link a:hover {
+  text-decoration: underline;
+}
+
+.woning-info-mini-card {
+  background: #f8fafc;
+  border: 1px solid rgba(13, 27, 46, 0.08);
+  border-radius: var(--r-s);
+  padding: 1.25rem;
+  font-size: 0.85rem;
+}
+
+.woning-info-mini-card h4 {
+  font-size: 0.95rem;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+}
+
+.woning-info-mini-card p {
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.woning-info-mini-card a {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* Vergelijkbare woningen */
+.similar-properties-section {
+  margin-top: 4rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid rgba(13, 27, 46, 0.1);
+}
+
+.section-header-compact {
+  margin-bottom: 1.5rem;
+}
+
+.section-header-compact h2 {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--ink);
+}
+
+.similar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.similar-card {
+  background: #ffffff;
+  border: 1px solid rgba(13, 27, 46, 0.08);
+  border-radius: var(--r-m);
+  overflow: hidden;
+  box-shadow: var(--shadow-s);
+  transition: transform var(--dur-quick), box-shadow var(--dur-quick);
+}
+
+.similar-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-m);
+}
+
+.similar-card-img {
+  width: 100%;
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding: 0.6rem;
+}
+
+.similar-card-body {
+  padding: 1.2rem;
+}
+
+.similar-card-body h4 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--ink);
+  margin-bottom: 0.2rem;
+}
+
+.similar-card-body .loc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+
+.similar-card-body .price {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.35rem;
+}
+
+.similar-card-body .specs {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* Toast popup */
+.toast-popup {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--ink);
+  color: #ffffff;
+  padding: 0.85rem 1.4rem;
+  border-radius: var(--r-pill);
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(212, 182, 120, 0.4);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.toast-popup.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Responsive woning detail */
+@media (max-width: 980px) {
+  .woning-detail-layout {
+    grid-template-columns: 1fr;
+  }
+  .woning-sidebar-col {
+    position: static;
+  }
+  .woning-specs-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .similar-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .specs-table-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-row-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   ACCOUNT VERRIJKINGEN: FAVORIETEN, KLUIS & ALERTS
+   ============================================================ */
+.badge-pill-count {
+  display: inline-block;
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--r-pill);
+  margin-left: 0.35rem;
+}
+
+.document-upload-dropzone {
+  border: 2px dashed rgba(185, 151, 91, 0.45);
+  background: rgba(255, 253, 248, 0.8);
+  border-radius: var(--r-m);
+  padding: 2.2rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--dur-quick);
+  margin-bottom: 1.5rem;
+}
+
+.document-upload-dropzone:hover,
+.document-upload-dropzone.dragover {
+  border-color: var(--gold);
+  background: #ffffff;
+  box-shadow: var(--shadow-s);
+}
+
+.dropzone-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.document-upload-dropzone h4 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--ink);
+  margin-bottom: 0.35rem;
+}
+
+.document-upload-dropzone p {
+  color: var(--muted);
+  font-size: 0.88rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.uploaded-docs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.uploaded-doc-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid rgba(13, 27, 46, 0.1);
+  border-radius: var(--r-s);
+  padding: 0.85rem 1.1rem;
+  box-shadow: var(--shadow-s);
+}
+
+.doc-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.doc-info-icon {
+  font-size: 1.4rem;
+}
+
+.doc-title {
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 0.92rem;
+}
+
+.doc-meta {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.doc-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-remove-doc {
+  background: transparent;
+  border: none;
+  color: #dc2626;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--r-s);
+  transition: background var(--dur-quick);
+}
+
+.btn-remove-doc:hover {
+  background: #fee2e2;
+}
+
+/* Favorieten grid in Account */
+.fav-properties-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+}
+
+.fav-card {
+  background: #ffffff;
+  border: 1px solid rgba(13, 27, 46, 0.1);
+  border-radius: var(--r-m);
+  overflow: hidden;
+  box-shadow: var(--shadow-s);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--dur-quick);
+}
+
+.fav-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-m);
+}
+
+.fav-card-media {
+  height: 180px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding: 0.75rem;
+}
+
+.fav-card-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.fav-card-body h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--ink);
+  margin-bottom: 0.2rem;
+}
+
+.fav-card-body .loc {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 0.8rem;
+}
+
+.fav-card-body .price {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.8rem;
+}
+
+.fav-card-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(13, 27, 46, 0.08);
+}
+
+/* Woningalert module */
+.alert-card-wrap {
+  background: #ffffff;
+  border: 1px solid rgba(13, 27, 46, 0.1);
+  border-radius: var(--r-m);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-s);
+  margin-top: 1.5rem;
+}
+
+.alert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.alert-toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.alert-toggle-switch {
+  position: relative;
+  width: 48px;
+  height: 26px;
+  background: #cbd5e1;
+  border-radius: 999px;
+  transition: background 0.2s;
+  display: inline-block;
+}
+
+.alert-toggle-switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+input[type="checkbox"]:checked + .alert-toggle-switch {
+  background: #10b981;
+}
+
+input[type="checkbox"]:checked + .alert-toggle-switch::after {
+  transform: translateX(22px);
+}
+
+.alert-cities-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.alert-city-chip {
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(13, 27, 46, 0.15);
+  background: #f8fafc;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--dur-quick);
+}
+
+.alert-city-chip.active {
+  background: var(--ink);
+  color: var(--gold-bright);
+  border-color: var(--ink);
+}
+
+/* Bezichtigingen lijst in traject tab */
+.viewings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.viewing-card-item {
+  background: #ffffff;
+  border: 1px solid rgba(13, 27, 46, 0.1);
+  border-radius: var(--r-s);
+  padding: 1.1rem 1.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  box-shadow: var(--shadow-s);
+}
+
+.viewing-card-item h4 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--ink);
+  margin-bottom: 0.2rem;
+}
+
+.viewing-meta {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+
+

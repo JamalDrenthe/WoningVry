@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Woningdetails | WoningVry — Huur & Koop</title>
+  <meta id="meta-desc" name="description" content="Bekijk deze woning op WoningVry: beschikbaar of gerealiseerd zonder bankhypotheek of 4x bruto inkomenseis. Inclusief fotos, specificaties en toewijzingsvoorwaarden.">
+  <meta name="theme-color" content="#0d1b2e">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="WoningVry">
+  <meta id="og-title" property="og:title" content="Woningdetails | WoningVry — Huur & Koop">
+  <meta id="og-desc" property="og:description" content="Zonder bankhypotheek of 4x bruto inkomenseis. Bekijk kenmerken en toewijzing via WoningVry.">
+  <meta id="og-image" property="og:image" content="https://www.woningvry.nl/attached_assets/woningvry-logo.png">
+  <meta id="og-url" property="og:url" content="https://www.woningvry.nl/woning.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta id="tw-title" name="twitter:title" content="Woningdetails | WoningVry">
+  <meta id="tw-desc" name="twitter:description" content="Zonder bankhypotheek of 4x bruto inkomenseis. Bekijk kenmerken en toewijzing via WoningVry.">
+  <meta id="tw-image" name="twitter:image" content="https://www.woningvry.nl/attached_assets/woningvry-logo.png">
+
+  <!-- Schema.org Structured Data Container -->
+  <script type="application/ld+json" id="schema-jsonld">
+  {
+    "@context": "https://schema.org",
+    "@type": "SingleFamilyResidence",
+    "name": "Woning op WoningVry",
+    "description": "Woning aangeboden via het WoningVry toewijzingsprotocol."
+  }
+  </script>
+</head>
+<body class="woning-detail-body">
+  
+  <!-- Header met vaste achtergrond -->
+  <header class="sticky sticky--solid">
+    <div class="container">
+      <nav class="nav">
+        <input type="checkbox" id="nav__checkbox" class="nav__checkbox">
+        <label for="nav__checkbox" class="nav__backdrop" aria-hidden="true"></label>
+        <label for="nav__checkbox" class="nav__toggle" aria-label="Menu navigatie">
+          <svg class="menu" viewBox="0 0 24 24" width="22" height="22">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12h18M3 6h18M3 18h18"></path>
+          </svg>
+          <svg class="close" viewBox="0 0 24 24" width="22" height="22">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M18 6L6 18M6 6l12 12"></path>
+          </svg>
+        </label>
+        <div class="nav__logo">
+          <a href="index.html">
+            <img src="attached_assets/woningvry-logo.svg" alt="WoningVry Logo" class="logo-image">
+          </a>
+        </div>
+        <ul class="nav__menu">
+          <li><a href="index.html#wat-is">Wat is WoningVry?</a></li>
+          <li><a href="index.html#hoe-werkt-het">Hoe werkt het</a></li>
+          <li><a href="aanbod.html" class="active" style="color: var(--gold); font-weight: 600;">Aanbod</a></li>
+          <li><a href="index.html#woningen">Woningen &amp; Locaties</a></li>
+          <li><a href="index.html#faq">Veelgestelde vragen</a></li>
+          <li><a href="account.html" class="nav-auth-link"><span>Mijn account</span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="woning-page-main">
+    <div class="container">
+      
+      <!-- BREADCRUMBS & TOP BAR -->
+      <nav class="woning-breadcrumbs" aria-label="Kruimelpad">
+        <a href="index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="aanbod.html">Aanbod</a>
+        <span class="sep">›</span>
+        <span id="bc-city">Stad</span>
+        <span class="sep">›</span>
+        <span id="bc-address" class="active">Adres</span>
+      </nav>
+
+      <!-- TOP ACTIONS BAR: BADGES, FAVORITE & SHARE -->
+      <div class="woning-top-actions">
+        <div class="woning-badges-row" id="woning-badges">
+          <!-- Dynamisch: Status, Model, Energielabel -->
+        </div>
+        <div class="woning-action-buttons">
+          <button type="button" class="btn-action-pill" id="btn-toggle-favorite" aria-label="Woning opslaan in favorieten">
+            <span class="heart-icon" id="fav-icon">🤍</span>
+            <span id="fav-text">Opslaan in favorieten</span>
+          </button>
+          <button type="button" class="btn-action-pill" id="btn-share-property" aria-label="Deel deze woning">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            <span id="share-text">Delen</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- FOTOGALERIJ HERO COMPONENT -->
+      <section class="woning-gallery-section" aria-label="Woning fotogalerij">
+        <div class="woning-gallery-main">
+          <img id="gallery-main-img" src="" alt="Hoofdfoto woning" class="woning-gallery-main-img" decoding="async">
+          <div class="gallery-counter-badge" id="gallery-counter">1 / 1</div>
+          <button type="button" class="gallery-nav-btn gallery-nav-prev" id="gallery-prev" aria-label="Vorige foto">‹</button>
+          <button type="button" class="gallery-nav-btn gallery-nav-next" id="gallery-next" aria-label="Volgende foto">›</button>
+        </div>
+        <div class="woning-gallery-thumbs" id="gallery-thumbs-row">
+          <!-- Thumbnails gevuld via JS -->
+        </div>
+      </section>
+
+      <!-- HOOFD LAYOUT: TWEE KOLOMMEN (DETAILS LINKS, SIDEBAR FORMULIER RECHTS) -->
+      <div class="woning-detail-layout">
+        
+        <!-- LINKER KOLOM: TITEL, OMSCHRIJVING, VOORDEEL, SPECIFICATIES -->
+        <article class="woning-content-col">
+          
+          <header class="woning-main-header">
+            <h1 id="prop-title" class="woning-title">Adres</h1>
+            <p id="prop-loc" class="woning-subtitle">📍 Postcode, Stad (Wijk)</p>
+            
+            <div class="woning-price-card">
+              <div class="woning-price-primary" id="prop-price">€ 0</div>
+              <div class="woning-price-subtext" id="prop-price-sub">Non-hypotheek inleg</div>
+            </div>
+          </header>
+
+          <!-- HIGHLIGHT SPECS STRIP -->
+          <div class="woning-specs-strip" id="prop-specs-strip">
+            <!-- Dynamisch via JS -->
+          </div>
+
+          <!-- OMSCHRIJVING VAN DE WONING -->
+          <section class="woning-card-block">
+            <h2>Woningomschrijving</h2>
+            <div id="prop-desc" class="woning-desc-text">
+              <!-- Omschrijving -->
+            </div>
+          </section>
+
+          <!-- UNIEK WONINGVRY TOEWIJZINGSVOORDEEL -->
+          <section class="woning-advantage-box">
+            <div class="woning-advantage-header">
+              <span class="advantage-badge-icon">⚡</span>
+              <div>
+                <h3>WoningVry Toewijzingsvoordeel</h3>
+                <p>Waarom deze woning zónder bankbureaucratie wordt toegewezen</p>
+              </div>
+            </div>
+            <p id="prop-advantage" class="woning-advantage-content"></p>
+            <div class="woning-advantage-features" id="prop-features-list">
+              <!-- Bullet points -->
+            </div>
+          </section>
+
+          <!-- VOLLEDIGE SPECIFICATIES & KENMERKEN TABEL -->
+          <section class="woning-card-block">
+            <h2>Uitgebreide Kenmerken &amp; Specificaties</h2>
+            
+            <div class="specs-category-title">📐 Afmetingen &amp; Indeling</div>
+            <div class="specs-table-grid" id="specs-grid-layout">
+              <!-- Rijen gevuld via JS -->
+            </div>
+
+            <div class="specs-category-title" style="margin-top: 1.5rem;">🌱 Energie, Verwarming &amp; Duurzaamheid</div>
+            <div class="specs-table-grid" id="specs-grid-energy">
+              <!-- Rijen gevuld via JS -->
+            </div>
+
+            <div class="specs-category-title" style="margin-top: 1.5rem;">🏡 Buitenruimte &amp; Parkeren</div>
+            <div class="specs-table-grid" id="specs-grid-exterior">
+              <!-- Rijen gevuld via JS -->
+            </div>
+
+            <div class="specs-category-title" style="margin-top: 1.5rem;">💰 Financiële Constructie &amp; VvE</div>
+            <div class="specs-table-grid" id="specs-grid-financial">
+              <!-- Rijen gevuld via JS -->
+            </div>
+          </section>
+
+          <!-- BUURT & LOCATIE -->
+          <section class="woning-card-block">
+            <h2>De Buurt &amp; Voorzieningen</h2>
+            <p id="prop-neighborhood" style="color: var(--text); line-height: 1.7;"></p>
+            <div class="woning-city-pill-info">
+              <span>📍 Regio: <strong id="prop-city-name">Stad</strong></span>
+              <span>🚲 Bereikbaarheid: <strong>Uitstekend (OV &amp; Fiets)</strong></span>
+              <span>🔒 Toewijzing: <strong>Direct notarieel geregeld</strong></span>
+            </div>
+          </section>
+
+        </article>
+
+        <!-- RECHTER KOLOM: STICKY FORMULIER & PARTICIPATIE -->
+        <aside class="woning-sidebar-col">
+          
+          <!-- FORMULIER: PLAN EEN BEZICHTIGING OF MELD INTERESSE -->
+          <div class="woning-sticky-card">
+            <div class="sidebar-card-header">
+              <span class="eyebrow" style="color: var(--gold-bright);">Direct Reageren</span>
+              <h3>Plan Bezichtiging of Meld Interesse</h3>
+              <p>Reageer direct op deze woning binnen Ronde 1. Geen loting, toewijzing volgens dossierbeoordeling.</p>
+            </div>
+
+            <form id="viewing-form" class="viewing-form">
+              <div class="form-group">
+                <label for="view-fullname">Volledige Naam *</label>
+                <input type="text" id="view-fullname" required placeholder="Bijv. Mark de Vries">
+              </div>
+
+              <div class="form-group">
+                <label for="view-email">E-mailadres *</label>
+                <input type="email" id="view-email" required placeholder="naam@voorbeeld.nl">
+              </div>
+
+              <div class="form-group">
+                <label for="view-phone">Telefoonnummer *</label>
+                <input type="tel" id="view-phone" required placeholder="06 - 12 34 56 78">
+              </div>
+
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="view-date">Voorkeursdatum</label>
+                  <input type="date" id="view-date">
+                </div>
+                <div class="form-group">
+                  <label for="view-time">Voorkeursdagdeel</label>
+                  <select id="view-time">
+                    <option value="ochtend">Ochtend (09:00 - 12:00)</option>
+                    <option value="middag" selected>Middag (13:00 - 17:00)</option>
+                    <option value="avond">Avond (18:00 - 20:00)</option>
+                    <option value="zaterdag">Zaterdag flexibel</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="view-message">Vraag of toelichting (optioneel)</label>
+                <textarea id="view-message" rows="2" placeholder="Geef aan of je interesse hebt in huur, koop of huur-naar-koop..."></textarea>
+              </div>
+
+              <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;" id="btn-submit-viewing">
+                Aanvraag Verzenden
+              </button>
+
+              <div id="viewing-success-msg" class="viewing-feedback viewing-feedback--success" style="display: none;">
+                🎉 <strong>Aanvraag succesvol ontvangen!</strong><br>
+                Jouw interesse is geregistreerd onder referentie <span id="viewing-ref-id" style="font-weight: 700; color: #166534;">#WV-BEZ-101</span>. We nemen binnen 24 uur contact op.
+              </div>
+            </form>
+
+            <div class="sidebar-guarantees">
+              <div class="guarantee-item">
+                <span class="icon">✅</span>
+                <span>Géén BKR-blokkade of automatische afwijzing</span>
+              </div>
+              <div class="guarantee-item">
+                <span class="icon">✅</span>
+                <span>Géén 4x bruto inkomenseis bij huurwoningen</span>
+              </div>
+              <div class="guarantee-item">
+                <span class="icon">✅</span>
+                <span>Notariële eigendoms- en huurkoopzekerheid</span>
+              </div>
+            </div>
+
+            <div class="sidebar-footer-link">
+              Nog geen WoningVry ticket? <a href="registratie.html">Reserveer plek in Ronde 1</a>
+            </div>
+          </div>
+
+          <!-- SNELLE REKENTOOL / INDICATIE CARD -->
+          <div class="woning-info-mini-card">
+            <h4>💡 Hoe werkt de toewijzing?</h4>
+            <p>1. Dien je bezichtigingsverzoek of interesse in.<br>
+            2. Vul je dossier aan in het <a href="account.html">Account Centrum</a>.<br>
+            3. Na acceptatie ontvang je binnen 48 uur het toewijzingsvoorstel.</p>
+          </div>
+
+        </aside>
+
+      </div>
+
+      <!-- VERGELIJKBARE WONINGEN CAROUSEL / GRID -->
+      <section class="similar-properties-section">
+        <div class="section-header-compact">
+          <span class="eyebrow" style="color: var(--gold-bright);">Meer Aanbod</span>
+          <h2>Vergelijkbare Woningen in Ons Portfolio</h2>
+        </div>
+        <div class="similar-grid" id="similar-properties-container">
+          <!-- Gevuld via JS -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- TOAST NOTIFICATIE BIJ ACTIES -->
+  <div id="toast-notification" class="toast-popup" aria-live="polite">
+    <span id="toast-message">Melding</span>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img src="attached_assets/woningvry-logo.svg" alt="WoningVry Logo" class="footer-logo-image">
+          <p>Zonder BKR. Zonder bankhypotheek. Flexibele huur &amp; koop.</p>
+        </div>
+        <div class="footer-links">
+          <h3>Navigatie</h3>
+          <ul>
+            <li><a href="index.html#wat-is">Wat is WoningVry?</a></li>
+            <li><a href="index.html#hoe-werkt-het">Hoe werkt het</a></li>
+            <li><a href="aanbod.html">Aanbod &amp; Transacties</a></li>
+            <li><a href="account.html">Account Centrum</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h3>Juridisch</h3>
+          <ul>
+            <li><a href="privacybeleid.html">Privacybeleid</a></li>
+            <li><a href="algemene-voorwaarden.html">Algemene Voorwaarden</a></li>
+            <li><a href="cookiebeleid.html">Cookiebeleid</a></li>
+            <li><a href="disclaimer.html">Disclaimer</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 WoningVry. Alle rechten voorbehouden.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT INTEGRATIE -->
+  <script type="module">
+    import { auth, onAuthStateChanged } from "./auth.js";
+    import { 
+      getPropertyById, 
+      getAllProperties, 
+      isFavorite, 
+      toggleFavorite, 
+      saveViewing 
+    } from "./properties-data.js";
+
+    // 1. Auth state controleren voor nav en formulier auto-fill
+    let currentUser = null;
+    onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+      const link = document.querySelector(".nav-auth-link");
+      if (link) {
+        if (user) {
+          link.innerHTML = `<span>Mijn account</span>`;
+          link.href = "account.html";
+          
+          const nameInput = document.getElementById("view-fullname");
+          const emailInput = document.getElementById("view-email");
+          if (nameInput && !nameInput.value && user.displayName) nameInput.value = user.displayName;
+          if (emailInput && !emailInput.value && user.email) emailInput.value = user.email;
+        } else {
+          link.innerHTML = `<span>Inloggen</span>`;
+          link.href = "login.html";
+        }
+      }
+    });
+
+    // 2. URL Parameter ophalen (?id=...)
+    const params = new URLSearchParams(window.location.search);
+    let propId = params.get("id");
+    let property = getPropertyById(propId);
+
+    // Fallback: indien geen of ongeldige id, kies de eerste actieve woning
+    if (!property) {
+      property = getPropertyById("koop-actief-1") || getAllProperties()[0];
+      propId = property.id;
+    }
+
+    // 3. Pagina vullen met property data
+    function renderPropertyDetails(p) {
+      // Titles en Meta
+      const fullTitle = `${p.address}, ${p.city} | WoningVry`;
+      document.title = fullTitle;
+      document.getElementById("page-title").textContent = fullTitle;
+      document.getElementById("bc-city").textContent = p.city;
+      document.getElementById("bc-address").textContent = p.address;
+      
+      const descMeta = `${p.address} in ${p.city}: ${p.propertyType} van ${p.surface} m², ${p.rooms} kamers. ${p.description.substring(0, 140)}...`;
+      const metaEl = document.getElementById("meta-desc");
+      if (metaEl) metaEl.setAttribute("content", descMeta);
+
+      // OpenGraph & Twitter
+      const ogTitle = document.getElementById("og-title");
+      const ogDesc = document.getElementById("og-desc");
+      const ogImg = document.getElementById("og-image");
+      const ogUrl = document.getElementById("og-url");
+      if (ogTitle) ogTitle.setAttribute("content", fullTitle);
+      if (ogDesc) ogDesc.setAttribute("content", descMeta);
+      if (ogImg) ogImg.setAttribute("content", new URL(p.image, window.location.href).href);
+      if (ogUrl) ogUrl.setAttribute("content", window.location.href);
+
+      // JSON-LD Schema.org Structured Data
+      try {
+        const schema = {
+          "@context": "https://schema.org",
+          "@type": p.propertyType === "Appartement" ? "Apartment" : "SingleFamilyResidence",
+          "name": `${p.address}, ${p.city}`,
+          "description": p.description,
+          "image": new URL(p.image, window.location.href).href,
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": p.address,
+            "addressLocality": p.city,
+            "postalCode": p.postalCode,
+            "addressCountry": "NL"
+          },
+          "floorSize": {
+            "@type": "QuantitativeValue",
+            "value": p.surface,
+            "unitCode": "MTK"
+          },
+          "numberOfRooms": p.rooms,
+          "numberOfBedrooms": p.bedrooms,
+          "offers": {
+            "@type": "Offer",
+            "price": p.priceVal,
+            "priceCurrency": "EUR",
+            "availability": p.status === "beschikbaar" ? "https://schema.org/InStock" : "https://schema.org/SoldOut"
+          }
+        };
+        document.getElementById("schema-jsonld").textContent = JSON.stringify(schema, null, 2);
+      } catch(e) {}
+
+      // Badges
+      const badgesContainer = document.getElementById("woning-badges");
+      const isKoop = p.category === "koop";
+      let statusClass = "badge-funda-status--verkocht";
+      if (p.status === "beschikbaar") statusClass = "badge-status-available";
+      else if (p.status === "in-toewijzing") statusClass = "badge-status-progress";
+      else if (p.status === "verkocht-ov") statusClass = "badge-funda-status--verkocht-ov";
+      else if (p.status === "verhuurd") statusClass = "badge-funda-status--verhuurd";
+      else if (p.status === "verhuurd-ov") statusClass = "badge-funda-status--verhuurd-ov";
+
+      badgesContainer.innerHTML = `
+        <span class="badge-funda-status ${statusClass}">${p.statusLabel}</span>
+        <span class="badge-funda-model ${isKoop ? 'badge-funda-model--koop' : 'badge-funda-model--huur'}">${isKoop ? '🏡 Koop (Non-Hypotheek)' : '🔑 Flexibele Huur'}</span>
+        <span class="badge-energy-pill">🌱 Label ${p.energyLabel}</span>
+      `;
+
+      // Header Teksten
+      document.getElementById("prop-title").textContent = p.address;
+      document.getElementById("prop-loc").textContent = `📍 ${p.postalCode} ${p.city} • Wijk: ${p.neighborhood}`;
+      document.getElementById("prop-price").textContent = p.priceDisplay;
+      document.getElementById("prop-price-sub").innerHTML = p.priceSub;
+
+      // Specs Ribbon
+      const specsStrip = document.getElementById("prop-specs-strip");
+      specsStrip.innerHTML = `
+        <div class="spec-ribbon-item">
+          <span class="spec-icon">📐</span>
+          <div><strong>${p.surface} m²</strong><span>Woonoppervlak</span></div>
+        </div>
+        <div class="spec-ribbon-item">
+          <span class="spec-icon">🛏️</span>
+          <div><strong>${p.rooms} kamers</strong><span>(${p.bedrooms} slpk)</span></div>
+        </div>
+        <div class="spec-ribbon-item">
+          <span class="spec-icon">🌱</span>
+          <div><strong>Label ${p.energyLabel}</strong><span>Duurzaam</span></div>
+        </div>
+        <div class="spec-ribbon-item">
+          <span class="spec-icon">🏛️</span>
+          <div><strong>Bouwjaar ${p.buildYear}</strong><span>${p.propertyType}</span></div>
+        </div>
+      `;
+
+      // Omschrijving & Voordeel
+      document.getElementById("prop-desc").innerHTML = `<p>${p.description}</p>`;
+      document.getElementById("prop-advantage").textContent = p.advantage;
+
+      const featuresList = document.getElementById("prop-features-list");
+      if (p.features && p.features.length) {
+        featuresList.innerHTML = p.features.map(f => `<div class="advantage-feature-item"><span>✓</span> ${f}</div>`).join("");
+      } else {
+        featuresList.innerHTML = "";
+      }
+
+      // Specificaties Tabellen
+      document.getElementById("specs-grid-layout").innerHTML = `
+        <div class="spec-row"><span class="spec-lbl">Woonoppervlakte</span><span class="spec-val">${p.surface} m²</span></div>
+        <div class="spec-row"><span class="spec-lbl">Inhoud</span><span class="spec-val">${p.volume || Math.round(p.surface * 3.1)} m³</span></div>
+        <div class="spec-row"><span class="spec-lbl">Aantal kamers</span><span class="spec-val">${p.rooms} kamers</span></div>
+        <div class="spec-row"><span class="spec-lbl">Aantal slaapkamers</span><span class="spec-val">${p.bedrooms} slaapkamer(s)</span></div>
+        <div class="spec-row"><span class="spec-lbl">Aantal badkamers</span><span class="spec-val">${p.bathrooms || 1} badkamer(s)</span></div>
+        <div class="spec-row"><span class="spec-lbl">Woningtype</span><span class="spec-val">${p.propertyType}</span></div>
+      `;
+
+      document.getElementById("specs-grid-energy").innerHTML = `
+        <div class="spec-row"><span class="spec-lbl">Energielabel</span><span class="spec-val">${p.energyLabel}</span></div>
+        <div class="spec-row"><span class="spec-lbl">Verwarming</span><span class="spec-val">${p.heating || 'Centrale verwarming HR'}</span></div>
+        <div class="spec-row"><span class="spec-lbl">Isolatie</span><span class="spec-val">${p.insulation || 'Volledig geïsoleerd'}</span></div>
+        <div class="spec-row"><span class="spec-lbl">Bouwjaar</span><span class="spec-val">${p.buildYear}</span></div>
+      `;
+
+      document.getElementById("specs-grid-exterior").innerHTML = `
+        <div class="spec-row"><span class="spec-lbl">Buitenruimte / Tuin</span><span class="spec-val">${p.garden || 'Balkon / Terras'}</span></div>
+        <div class="spec-row"><span class="spec-lbl">Parkeren</span><span class="spec-val">${p.parking || 'Openbaar / Parkeervergunning'}</span></div>
+      `;
+
+      document.getElementById("specs-grid-financial").innerHTML = `
+        <div class="spec-row"><span class="spec-lbl">Vraagprijs / Huurprijs</span><span class="spec-val">${p.priceDisplay}</span></div>
+        <div class="spec-row"><span class="spec-lbl">VvE / Servicekosten</span><span class="spec-val">${p.vveCost || 'Inclusief / N.v.t.'}</span></div>
+        <div class="spec-row"><span class="spec-lbl">Toewijzing Model</span><span class="spec-val">${isKoop ? 'WoningVry Non-Hypotheek (geen banklening)' : 'WoningVry Flexibele Huur (geen 4x eis)'}</span></div>
+        <div class="spec-row"><span class="spec-lbl">BKR-Toetsing</span><span class="spec-val" style="color:#166534; font-weight:700;">Vrijgesteld</span></div>
+        <div class="spec-row"><span class="spec-lbl">Status</span><span class="spec-val">${p.statusLabel}</span></div>
+      `;
+
+      // Buurt
+      document.getElementById("prop-neighborhood").textContent = p.neighborhoodInfo || `${p.neighborhood} is een prettige, goed bereikbare woonomgeving in ${p.city} met uitstekende voorzieningen, scholen en openbaar vervoer.`;
+      document.getElementById("prop-city-name").textContent = p.city;
+
+      // Fotogalerij instellen
+      setupGallery(p);
+
+      // Favorieten status knop updaten
+      updateFavoriteButton(p.id);
+
+      // Vergelijkbare woningen renderen
+      renderSimilarProperties(p);
+    }
+
+    // 4. Galerij Logica (Multi-image, thumbnails, prev/next)
+    let currentImageIndex = 0;
+    let galleryImages = [];
+
+    function setupGallery(p) {
+      galleryImages = (p.images && p.images.length) ? p.images : [p.image];
+      currentImageIndex = 0;
+
+      const mainImg = document.getElementById("gallery-main-img");
+      const counter = document.getElementById("gallery-counter");
+      const thumbsContainer = document.getElementById("gallery-thumbs-row");
+
+      function updateActiveImage() {
+        mainImg.src = galleryImages[currentImageIndex];
+        counter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+        
+        thumbsContainer.querySelectorAll(".gallery-thumb").forEach((t, idx) => {
+          if (idx === currentImageIndex) t.classList.add("active");
+          else t.classList.remove("active");
+        });
+      }
+
+      thumbsContainer.innerHTML = galleryImages.map((src, idx) => `
+        <button type="button" class="gallery-thumb ${idx === 0 ? 'active' : ''}" data-idx="${idx}" aria-label="Toon foto ${idx + 1}">
+          <img src="${src}" alt="Thumbnail ${idx + 1}" loading="lazy">
+        </button>
+      `).join("");
+
+      thumbsContainer.querySelectorAll(".gallery-thumb").forEach(thumb => {
+        thumb.addEventListener("click", () => {
+          currentImageIndex = parseInt(thumb.getAttribute("data-idx"), 10);
+          updateActiveImage();
+        });
+      });
+
+      document.getElementById("gallery-prev").onclick = () => {
+        currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+        updateActiveImage();
+      };
+
+      document.getElementById("gallery-next").onclick = () => {
+        currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+        updateActiveImage();
+      };
+
+      updateActiveImage();
+    }
+
+    // 5. Favorieten Knop Logica
+    const btnFav = document.getElementById("btn-toggle-favorite");
+    const favIcon = document.getElementById("fav-icon");
+    const favText = document.getElementById("fav-text");
+
+    function updateFavoriteButton(id) {
+      const active = isFavorite(id);
+      if (active) {
+        favIcon.textContent = "❤️";
+        favText.textContent = "Opgeslagen in favorieten";
+        btnFav.classList.add("active");
+      } else {
+        favIcon.textContent = "🤍";
+        favText.textContent = "Opslaan in favorieten";
+        btnFav.classList.remove("active");
+      }
+    }
+
+    btnFav.addEventListener("click", () => {
+      const added = toggleFavorite(property.id);
+      updateFavoriteButton(property.id);
+      showToast(added ? "❤️ Woning toegevoegd aan jouw favorieten in het account!" : "Woning verwijderd uit jouw favorieten.");
+    });
+
+    // 6. Delen Knop
+    const btnShare = document.getElementById("btn-share-property");
+    btnShare.addEventListener("click", async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: document.title,
+            text: `Bekijk deze woning op WoningVry: ${property.address} in ${property.city}`,
+            url: window.location.href,
+          });
+          return;
+        } catch (err) {}
+      }
+      // Fallback: kopiëren naar klembord
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        showToast("🔗 Link gekopieerd naar klembord!");
+      } catch (err) {
+        prompt("Kopieer de link naar deze woning:", window.location.href);
+      }
+    });
+
+    // 7. Bezichtigingsformulier Verzenden
+    const viewingForm = document.getElementById("viewing-form");
+    const successMsg = document.getElementById("viewing-success-msg");
+    const submitBtn = document.getElementById("btn-submit-viewing");
+
+    viewingForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      
+      const payload = {
+        propertyId: property.id,
+        propertyTitle: `${property.address}, ${property.city}`,
+        propertyPrice: property.priceDisplay,
+        fullName: document.getElementById("view-fullname").value.trim(),
+        email: document.getElementById("view-email").value.trim(),
+        phone: document.getElementById("view-phone").value.trim(),
+        preferredDate: document.getElementById("view-date").value,
+        preferredTime: document.getElementById("view-time").value,
+        message: document.getElementById("view-message").value.trim(),
+        userId: currentUser ? currentUser.uid : null
+      };
+
+      const record = saveViewing(payload);
+      document.getElementById("viewing-ref-id").textContent = record.id.toUpperCase();
+      
+      submitBtn.style.display = "none";
+      successMsg.style.display = "block";
+      showToast("🎉 Bezichtiging aangevraagd! Zie ook jouw Account Centrum.");
+    });
+
+    // 8. Vergelijkbare Woningen
+    function renderSimilarProperties(p) {
+      const container = document.getElementById("similar-properties-container");
+      const all = getAllProperties().filter(item => item.id !== p.id);
+      
+      // Zoek op dezelfde stad of dezelfde categorie
+      let matches = all.filter(item => item.city === p.city);
+      if (matches.length < 3) {
+        const others = all.filter(item => item.category === p.category && item.city !== p.city);
+        matches = matches.concat(others);
+      }
+      matches = matches.slice(0, 3);
+
+      container.innerHTML = matches.map(item => `
+        <article class="similar-card">
+          <div class="similar-card-img" style="background-image: url('${item.image}');">
+            <span class="badge-funda-model ${item.category === 'koop' ? 'badge-funda-model--koop' : 'badge-funda-model--huur'}">${item.category === 'koop' ? '🏡 Koop' : '🔑 Huur'}</span>
+          </div>
+          <div class="similar-card-body">
+            <h4>${item.address}</h4>
+            <p class="loc">📍 ${item.postalCode} ${item.city}</p>
+            <div class="price">${item.priceDisplay}</div>
+            <div class="specs">📐 ${item.surface} m² • 🛏️ ${item.rooms} kamers</div>
+            <a href="woning.html?id=${item.id}" class="btn-secondary btn-sm" style="margin-top: 0.8rem; width: 100%; text-align: center;">Bekijk woning</a>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    // Toast helper
+    function showToast(msg) {
+      const toast = document.getElementById("toast-notification");
+      document.getElementById("toast-message").textContent = msg;
+      toast.classList.add("visible");
+      setTimeout(() => {
+        toast.classList.remove("visible");
+      }, 3500);
+    }
+
+    // Initialiseer weergave
+    renderPropertyDetails(property);
+  </script>
+
+  <!-- PWA Service Worker Registratie -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => {
+          console.warn('SW registration failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
