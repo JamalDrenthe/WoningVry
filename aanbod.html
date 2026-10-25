@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aanbod & Transacties | WoningVry — Koop & Huur</title>
+  <title>Aanbod & Transacties | WoningVry | Koop & Huur</title>
   <meta name="description" content="Bekijk het actuele en recent gerealiseerde woningaanbod van WoningVry: 24 koop- en huurwoningen zonder bankhypotheek of 4x inkomenseis.">
   <meta name="theme-color" content="#0d1b2e">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -12,12 +12,12 @@
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="WoningVry">
-  <meta property="og:title" content="Aanbod & Transacties | WoningVry — Koop & Huur">
+  <meta property="og:title" content="Aanbod & Transacties | WoningVry | Koop & Huur">
   <meta property="og:description" content="Bekijk direct beschikbaar en recent gerealiseerd aanbod zonder hypotheek of 4x bruto inkomenseis.">
   <meta property="og:image" content="https://www.woningvry.nl/attached_assets/woningvry-logo.png">
   <meta property="og:url" content="https://www.woningvry.nl/aanbod.html">
@@ -34,7 +34,7 @@
     "@context": "https://schema.org",
     "@type": "OfferCatalog",
     "name": "WoningVry Woningaanbod",
-    "description": "Woningaanbod en toewijzingen voor huur en non-hypotheek koop in Nederland.",
+    "description": "Woningaanbod en toewijzingen voor huur en hypotheekvrij koop in Nederland.",
     "numberOfItems": 24
   }
   </script>
@@ -80,7 +80,7 @@
           <div>
             <span class="eyebrow" style="color: var(--gold-bright);">WoningVry Woningmarkt Overzicht</span>
             <h1>Aanbod & Recent Gerealiseerde Woningen</h1>
-            <p>Net als op Funda geven we volledige inzage in onze woningtransacties én actueel beschikbaar aanbod. Bekijk hieronder 24 representatieve woningen (koop &amp; huur) die via onze non-hypotheekstructuur en flexibele huur zonder 4x inkomenseis worden aangeboden of succesvol zijn toegewezen.</p>
+            <p>Net als op Funda geven we volledige inzage in onze woningtransacties én actueel beschikbaar aanbod. Bekijk hieronder 24 representatieve woningen (koop &amp; huur) die via onze hypotheekvrije structuur en flexibele huur zonder 4x inkomenseis worden aangeboden of succesvol zijn toegewezen.</p>
           </div>
           <div class="aanbod-header__badges">
             <div class="aanbod-stat-pill">
@@ -404,7 +404,7 @@
         else if (item.status === "verhuurd-ov") statusClass = "badge-funda-status--verhuurd-ov";
 
         const modelBadgeClass = isKoop ? "badge-funda-model--koop" : "badge-funda-model--huur";
-        const modelBadgeLabel = isKoop ? "🏡 Koop (Non-Hypotheek)" : "🔑 Flexibele Huur";
+        const modelBadgeLabel = isKoop ? "🏡 Koop (Hypotheekvrij)" : "🔑 Flexibele Huur";
         const isFav = isFavorite(item.id);
 
         html += `
@@ -505,7 +505,7 @@
 
       document.getElementById("modal-img").src = item.image;
       document.getElementById("modal-title").textContent = item.address;
-      document.getElementById("modal-loc").textContent = `📍 ${item.postalCode} ${item.city} — ${item.neighborhood} (Bouwjaar ${item.buildYear})`;
+      document.getElementById("modal-loc").textContent = `📍 ${item.postalCode} ${item.city}, ${item.neighborhood} (Bouwjaar ${item.buildYear})`;
       document.getElementById("modal-price").textContent = item.priceDisplay;
       document.getElementById("modal-price-sub").innerHTML = item.priceSub;
       document.getElementById("modal-desc").textContent = item.description;
@@ -522,7 +522,7 @@
 
       document.getElementById("modal-badges").innerHTML = `
         <span class="badge-funda-status ${statusClass}">${item.statusLabel}</span>
-        <span class="badge-funda-model ${isKoop ? 'badge-funda-model--koop' : 'badge-funda-model--huur'}">${isKoop ? 'Koop (Non-Hypotheek)' : 'Flexibele Huur'}</span>
+        <span class="badge-funda-model ${isKoop ? 'badge-funda-model--koop' : 'badge-funda-model--huur'}">${isKoop ? 'Koop (Hypotheekvrij)' : 'Flexibele Huur'}</span>
       `;
 
       document.getElementById("modal-specs").innerHTML = `

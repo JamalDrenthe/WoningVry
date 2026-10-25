@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="page-title">Woningdetails | WoningVry — Huur & Koop</title>
+  <title id="page-title">Woningdetails | WoningVry | Huur & Koop</title>
   <meta id="meta-desc" name="description" content="Bekijk deze woning op WoningVry: beschikbaar of gerealiseerd zonder bankhypotheek of 4x bruto inkomenseis. Inclusief fotos, specificaties en toewijzingsvoorwaarden.">
   <meta name="theme-color" content="#0d1b2e">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -12,12 +12,12 @@
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="WoningVry">
-  <meta id="og-title" property="og:title" content="Woningdetails | WoningVry — Huur & Koop">
+  <meta id="og-title" property="og:title" content="Woningdetails | WoningVry | Huur & Koop">
   <meta id="og-desc" property="og:description" content="Zonder bankhypotheek of 4x bruto inkomenseis. Bekijk kenmerken en toewijzing via WoningVry.">
   <meta id="og-image" property="og:image" content="https://www.woningvry.nl/attached_assets/woningvry-logo.png">
   <meta id="og-url" property="og:url" content="https://www.woningvry.nl/woning.html">
@@ -127,7 +127,7 @@
             
             <div class="woning-price-card">
               <div class="woning-price-primary" id="prop-price">€ 0</div>
-              <div class="woning-price-subtext" id="prop-price-sub">Non-hypotheek inleg</div>
+              <div class="woning-price-subtext" id="prop-price-sub">Hypotheekvrije inleg</div>
             </div>
           </header>
 
@@ -215,13 +215,13 @@
               </div>
 
               <div class="form-group">
-                <label for="view-email">E-mailadres *</label>
+                <label for="view-email">Emailadres *</label>
                 <input type="email" id="view-email" required placeholder="naam@voorbeeld.nl">
               </div>
 
               <div class="form-group">
                 <label for="view-phone">Telefoonnummer *</label>
-                <input type="tel" id="view-phone" required placeholder="06 - 12 34 56 78">
+                <input type="tel" id="view-phone" required placeholder="06 12 34 56 78">
               </div>
 
               <div class="form-row-2">
@@ -232,9 +232,9 @@
                 <div class="form-group">
                   <label for="view-time">Voorkeursdagdeel</label>
                   <select id="view-time">
-                    <option value="ochtend">Ochtend (09:00 - 12:00)</option>
-                    <option value="middag" selected>Middag (13:00 - 17:00)</option>
-                    <option value="avond">Avond (18:00 - 20:00)</option>
+                    <option value="ochtend">Ochtend (09:00 tot 12:00)</option>
+                    <option value="middag" selected>Middag (13:00 tot 17:00)</option>
+                    <option value="avond">Avond (18:00 tot 20:00)</option>
                     <option value="zaterdag">Zaterdag flexibel</option>
                   </select>
                 </div>
@@ -242,7 +242,7 @@
 
               <div class="form-group">
                 <label for="view-message">Vraag of toelichting (optioneel)</label>
-                <textarea id="view-message" rows="2" placeholder="Geef aan of je interesse hebt in huur, koop of huur-naar-koop..."></textarea>
+                <textarea id="view-message" rows="2" placeholder="Geef aan of je interesse hebt in huur, koop of huur naar koop..."></textarea>
               </div>
 
               <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;" id="btn-submit-viewing">
@@ -251,14 +251,14 @@
 
               <div id="viewing-success-msg" class="viewing-feedback viewing-feedback--success" style="display: none;">
                 🎉 <strong>Aanvraag succesvol ontvangen!</strong><br>
-                Jouw interesse is geregistreerd onder referentie <span id="viewing-ref-id" style="font-weight: 700; color: #166534;">#WV-BEZ-101</span>. We nemen binnen 24 uur contact op.
+                Jouw interesse is geregistreerd onder referentie <span id="viewing-ref-id" style="font-weight: 700; color: #166534;">#WV BEZ 101</span>. We nemen binnen 24 uur contact op.
               </div>
             </form>
 
             <div class="sidebar-guarantees">
               <div class="guarantee-item">
                 <span class="icon">✅</span>
-                <span>Géén BKR-blokkade of automatische afwijzing</span>
+                <span>Géén BKR blokkade of automatische afwijzing</span>
               </div>
               <div class="guarantee-item">
                 <span class="icon">✅</span>
@@ -449,7 +449,7 @@
 
       badgesContainer.innerHTML = `
         <span class="badge-funda-status ${statusClass}">${p.statusLabel}</span>
-        <span class="badge-funda-model ${isKoop ? 'badge-funda-model--koop' : 'badge-funda-model--huur'}">${isKoop ? '🏡 Koop (Non-Hypotheek)' : '🔑 Flexibele Huur'}</span>
+        <span class="badge-funda-model ${isKoop ? 'badge-funda-model--koop' : 'badge-funda-model--huur'}">${isKoop ? '🏡 Koop (Hypotheekvrij)' : '🔑 Flexibele Huur'}</span>
         <span class="badge-energy-pill">🌱 Label ${p.energyLabel}</span>
       `;
 
@@ -516,7 +516,7 @@
       document.getElementById("specs-grid-financial").innerHTML = `
         <div class="spec-row"><span class="spec-lbl">Vraagprijs / Huurprijs</span><span class="spec-val">${p.priceDisplay}</span></div>
         <div class="spec-row"><span class="spec-lbl">VvE / Servicekosten</span><span class="spec-val">${p.vveCost || 'Inclusief / N.v.t.'}</span></div>
-        <div class="spec-row"><span class="spec-lbl">Toewijzing Model</span><span class="spec-val">${isKoop ? 'WoningVry Non-Hypotheek (geen banklening)' : 'WoningVry Flexibele Huur (geen 4x eis)'}</span></div>
+        <div class="spec-row"><span class="spec-lbl">Toewijzing Model</span><span class="spec-val">${isKoop ? 'WoningVry Hypotheekvrij (geen banklening)' : 'WoningVry Flexibele Huur (geen 4x eis)'}</span></div>
         <div class="spec-row"><span class="spec-lbl">BKR-Toetsing</span><span class="spec-val" style="color:#166534; font-weight:700;">Vrijgesteld</span></div>
         <div class="spec-row"><span class="spec-lbl">Status</span><span class="spec-val">${p.statusLabel}</span></div>
       `;

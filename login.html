@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inloggen | WoningVry</title>
-  <meta name="description" content="Log in op je WoningVry-account.">
+  <meta name="description" content="Log in op je WoningVry account.">
   <meta name="theme-color" content="#0d1b2e">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
   <header class="sticky sticky--solid">
@@ -63,12 +63,12 @@
         </button>
 
         <div class="auth-divider">
-          <span>of met e-mailadres</span>
+          <span>of met emailadres</span>
         </div>
 
         <form id="login-form" novalidate>
           <div class="form-group">
-            <label for="email">E-mailadres</label>
+            <label for="email">Emailadres</label>
             <input type="email" id="email" autocomplete="email" required placeholder="naam@voorbeeld.nl">
           </div>
           <div class="form-group">
@@ -210,7 +210,7 @@
     // Wachtwoord herstel
     resetLink.addEventListener("click", async () => {
       const email = form.email.value.trim();
-      if (!email) return toonMelding(melding, "Vul eerst je e-mailadres in.");
+      if (!email) return toonMelding(melding, "Vul eerst je emailadres in.");
       try {
         await sendPasswordResetEmail(auth, email);
         toonMelding(melding, "Resetlink verstuurd naar " + email + ".", "success");
