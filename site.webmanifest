@@ -1,0 +1,24 @@
+{
+  "name": "WoningVry",
+  "short_name": "WoningVry",
+  "description": "Zonder BKR. Zonder hypotheek. Wél een woning. Flexibele huur en hypotheekvrije koopwoningen.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0d1b2e",
+  "theme_color": "#0d1b2e",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
