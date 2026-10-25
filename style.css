@@ -907,6 +907,273 @@ section { padding: var(--space-xl) 0; }
 }
 .contact-info__item a:hover { color: var(--gold-bright); }
 
+/* ---------- Verbonden Ecosysteem & Partnernetwerk ---------- */
+.ecosystem-section {
+  background: linear-gradient(180deg, #0d1b2e 0%, #08121e 100%);
+  color: #fff;
+  padding: clamp(3.5rem, 7vw, 5.5rem) 0 clamp(3rem, 6vw, 4.5rem);
+  border-top: 1px solid rgba(212, 182, 120, 0.18);
+  position: relative;
+  overflow: hidden;
+}
+
+.ecosystem-section::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(320px, 70vw, 850px);
+  height: 240px;
+  background: radial-gradient(ellipse at center, rgba(212, 182, 120, 0.08) 0%, rgba(13, 27, 46, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ecosystem-section .container {
+  position: relative;
+  z-index: 1;
+}
+
+.ecosystem-header {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto clamp(2.5rem, 5vw, 3.8rem);
+}
+
+.ecosystem-header .eyebrow {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+
+.ecosystem-header h2 {
+  color: #fff;
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.ecosystem-header p {
+  color: var(--muted-on-dark);
+  font-size: clamp(0.95rem, 1.8vw, 1.08rem);
+  line-height: 1.6;
+  margin: 0 auto;
+}
+
+.ecosystem-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1rem, 2vw, 1.35rem);
+  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.ecosystem-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.4rem 1.35rem;
+  background: rgba(13, 27, 46, 0.65);
+  border: 1px solid rgba(212, 182, 120, 0.16);
+  border-radius: var(--r-m);
+  text-decoration: none;
+  color: inherit;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.35);
+  transition: transform var(--dur-quick) var(--ease-standard),
+              border-color var(--dur-quick) var(--ease-standard),
+              background var(--dur-quick) var(--ease-standard),
+              box-shadow var(--dur-quick) var(--ease-standard);
+  position: relative;
+  overflow: hidden;
+}
+
+.ecosystem-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(212, 182, 120, 0.4), transparent);
+  opacity: 0;
+  transition: opacity var(--dur-quick) var(--ease-standard);
+}
+
+.ecosystem-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(212, 182, 120, 0.45);
+  background: rgba(19, 38, 64, 0.85);
+  box-shadow: 0 14px 35px -10px rgba(212, 182, 120, 0.18), 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.ecosystem-card:hover::before {
+  opacity: 1;
+}
+
+.ecosystem-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.1rem;
+}
+
+.ecosystem-icon-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-s);
+  background: linear-gradient(135deg, rgba(212, 182, 120, 0.15) 0%, rgba(212, 182, 120, 0.04) 100%);
+  border: 1px solid rgba(212, 182, 120, 0.28);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-bright);
+  transition: transform var(--dur-quick) var(--ease-standard), border-color var(--dur-quick) var(--ease-standard);
+}
+
+.ecosystem-card:hover .ecosystem-icon-badge {
+  transform: scale(1.06);
+  border-color: var(--gold);
+}
+
+.ecosystem-card-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.22rem 0.55rem;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ecosystem-card-body h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: #fff;
+  margin-bottom: 0.35rem;
+  line-height: 1.3;
+}
+
+.ecosystem-card-desc {
+  font-size: 0.8rem;
+  color: var(--muted-on-dark);
+  line-height: 1.45;
+  margin-bottom: 0.9rem;
+}
+
+.ecosystem-card-domain {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--gold);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 0.75rem;
+  margin-top: auto;
+  width: 100%;
+  transition: gap var(--dur-quick) var(--ease-standard), color var(--dur-quick) var(--ease-standard);
+}
+
+.ecosystem-card:hover .ecosystem-card-domain {
+  color: var(--gold-bright);
+  gap: 0.55rem;
+}
+
+.ecosystem-card-domain svg {
+  flex-shrink: 0;
+  transition: transform var(--dur-quick) var(--ease-standard);
+}
+
+.ecosystem-card:hover .ecosystem-card-domain svg {
+  transform: translate(2px, -2px);
+}
+
+/* Trust stripe / security badges */
+.ecosystem-trust-stripe {
+  padding: 1.5rem 1.8rem;
+  background: rgba(8, 18, 30, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-m);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.ecosystem-trust-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.ecosystem-trust-label svg {
+  color: var(--gold);
+}
+
+.ecosystem-trust-items {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.5vw, 2.2rem);
+  flex-wrap: wrap;
+}
+
+.ecosystem-trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.ecosystem-trust-badge svg {
+  color: var(--gold);
+}
+
+@media (max-width: 1080px) {
+  .ecosystem-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .ecosystem-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+  }
+  .ecosystem-card {
+    padding: 1.15rem 1rem;
+  }
+  .ecosystem-trust-stripe {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .ecosystem-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ---------- Footer ---------- */
 .footer {
   background: #0a1524;
