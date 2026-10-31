@@ -103,25 +103,68 @@
             <label class="form-label-bold">Type account:</label>
             <div class="role-selector">
               <label class="role-option">
-                <input type="radio" name="account_role" value="zoekende" checked>
+                <input type="radio" name="account_role" value="zoekende" id="role-zoekende" checked>
                 <span class="role-option__box">
-                  <span class="role-option__title">Woningzoekende</span>
-                  <span class="role-option__desc">Ik zoek een huur of koopwoning zonder traditionele bankvereisten</span>
+                  <span class="role-option__title">🎯 Woningzoekende</span>
+                  <span class="role-option__desc">Ik zoek een huur- of koopwoning via het innovatieve WoningVry toewijzingsmodel</span>
                 </span>
               </label>
               <label class="role-option">
-                <input type="radio" name="account_role" value="aanbieder">
+                <input type="radio" name="account_role" value="aanbieder" id="role-aanbieder">
                 <span class="role-option__box">
-                  <span class="role-option__title">Woningaanbieder</span>
-                  <span class="role-option__desc">Ik bied huurwoningen, koopwoningen of nieuwbouwprojecten aan</span>
+                  <span class="role-option__title">🏢 Woningaanbieder</span>
+                  <span class="role-option__desc">Ik bied huurwoningen, koopwoningen of transformatieprojecten aan</span>
                 </span>
               </label>
             </div>
           </div>
 
+          <!-- Extra opties voor Woningzoekende -->
+          <div id="zoekende-options-box" class="form-sub-box">
+            <div class="form-group">
+              <label for="zoekende_profiel" class="form-label-bold">Jouw profieltype:</label>
+              <select id="zoekende_profiel" class="form-control" style="width: 100%; padding: 0.75rem; border-radius: var(--r-s); border: 1.5px solid rgba(13,27,46,0.18); background: #fff; font-size: 0.92rem;">
+                <option value="starter" selected>Starter (Eerste woning, geen 4x inkomenseis)</option>
+                <option value="zzp_ondernemer">ZZP'er / Ondernemer (Hypotheekvrij zónder 3 jaar jaarcijfers)</option>
+                <option value="doorstromer">Doorstromer / Gezin (Ruime huur- of koopwoning)</option>
+                <option value="belegger">Particulier Koper (Hypotheekvrij borgmodel)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="zoekende_woonvorm" class="form-label-bold">Gewenste woonvorm:</label>
+              <select id="zoekende_woonvorm" class="form-control" style="width: 100%; padding: 0.75rem; border-radius: var(--r-s); border: 1.5px solid rgba(13,27,46,0.18); background: #fff; font-size: 0.92rem;">
+                <option value="beide" selected>Huur & Koop (Alle opties meenemen)</option>
+                <option value="huur">Vrije Private Huur (Zonder 4x eis)</option>
+                <option value="koop">Hypotheekvrije Koop (€200.000 tot €650.000)</option>
+                <option value="huur-naar-koop">Huur naar Koop Traject</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Extra opties voor Woningaanbieder -->
+          <div id="aanbieder-options-box" class="form-sub-box" style="display: none;">
+            <div class="form-group">
+              <label for="aanbieder_type" class="form-label-bold">Type organisatie / aanbieder:</label>
+              <select id="aanbieder_type" class="form-control" style="width: 100%; padding: 0.75rem; border-radius: var(--r-s); border: 1.5px solid rgba(13,27,46,0.18); background: #fff; font-size: 0.92rem;">
+                <option value="ontwikkelaar" selected>Vastgoedontwikkelaar / Bouwer</option>
+                <option value="particuliere_belegger">Particuliere belegger / Verhuurder</option>
+                <option value="woningcorporatie">Woningcorporatie / Beheerorganisatie</option>
+                <option value="makelaar">Vastgoedadviseur / Makelaar</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="kvk">KvK-nummer (optioneel)</label>
+              <input type="text" id="kvk" placeholder="Bijv. 12345678">
+            </div>
+          </div>
+
           <div class="form-group">
-            <label for="name">Naam / Bedrijfsnaam</label>
-            <input type="text" id="name" autocomplete="name" required placeholder="Je volledige naam">
+            <label for="name" id="name-label">Volledige naam</label>
+            <input type="text" id="name" autocomplete="name" required placeholder="Bijv. Sander de Vries">
+          </div>
+          <div class="form-group">
+            <label for="phone">Telefoonnummer (voor toewijzingscontact)</label>
+            <input type="tel" id="phone" autocomplete="tel" placeholder="Bijv. 06 12345678">
           </div>
           <div class="form-group">
             <label for="email">Emailadres</label>
@@ -137,7 +180,7 @@
             <input type="password" id="password2" autocomplete="new-password" required placeholder="Herhaal je wachtwoord">
           </div>
           <p id="form-melding" class="form-melding" hidden></p>
-          <button type="submit" class="btn-primary auth-submit">Account aanmaken</button>
+          <button type="submit" class="btn-primary auth-submit">Dossier Registreren & Account Aanmaken</button>
         </form>
 
         <p class="auth-switch">Heb je al een account? <a href="login.html">Log hier in</a></p>
@@ -156,6 +199,26 @@
     const form = document.getElementById("register-form");
     const melding = document.getElementById("form-melding");
     const googleBtn = document.getElementById("google-register-btn");
+    const roleZoekende = document.getElementById("role-zoekende");
+    const roleAanbieder = document.getElementById("role-aanbieder");
+    const boxZoekende = document.getElementById("zoekende-options-box");
+    const boxAanbieder = document.getElementById("aanbieder-options-box");
+    const nameLabel = document.getElementById("name-label");
+
+    // Toggle sub-opties afhankelijk van gekozen rol
+    function updateRoleBoxes() {
+      const isAanbieder = roleAanbieder.checked;
+      if (boxZoekende) boxZoekende.style.display = isAanbieder ? "none" : "block";
+      if (boxAanbieder) boxAanbieder.style.display = isAanbieder ? "block" : "none";
+      if (nameLabel) nameLabel.textContent = isAanbieder ? "Bedrijfsnaam / Contactpersoon" : "Volledige naam";
+    }
+
+    if (roleZoekende && roleAanbieder) {
+      roleZoekende.addEventListener("change", updateRoleBoxes);
+      roleAanbieder.addEventListener("change", updateRoleBoxes);
+      updateRoleBoxes();
+    }
+
     let registering = false;
 
     onAuthStateChanged(auth, (user) => {
@@ -165,9 +228,15 @@
     googleBtn.addEventListener("click", async () => {
       googleBtn.disabled = true;
       const chosenRole = document.querySelector('input[name="account_role"]:checked')?.value || "zoekende";
+      const isAanbieder = (chosenRole === "aanbieder");
+      const accountType = isAanbieder 
+        ? (document.getElementById("aanbieder_type")?.value || "ontwikkelaar")
+        : (document.getElementById("zoekende_profiel")?.value || "starter");
+      const woonvorm = isAanbieder ? "beide" : (document.getElementById("zoekende_woonvorm")?.value || "beide");
+
       try {
         registering = true;
-        await signInWithGoogle(chosenRole);
+        await signInWithGoogle(chosenRole, { accountType, woonvorm });
         window.location.href = "account.html";
       } catch (err) {
         registering = false;
@@ -181,8 +250,16 @@
       e.preventDefault();
       const name = form.name.value.trim();
       const email = form.email.value.trim();
+      const phone = form.phone.value.trim();
       const pw = form.password.value;
       const chosenRole = form.account_role.value || "zoekende";
+      const isAanbieder = (chosenRole === "aanbieder");
+
+      const accountType = isAanbieder
+        ? (document.getElementById("aanbieder_type")?.value || "ontwikkelaar")
+        : (document.getElementById("zoekende_profiel")?.value || "starter");
+      const woonvorm = isAanbieder ? "beide" : (document.getElementById("zoekende_woonvorm")?.value || "beide");
+      const kvk = isAanbieder ? (document.getElementById("kvk")?.value.trim() || "") : "";
 
       if (pw !== form.password2.value) {
         return toonMelding(melding, "De wachtwoorden komen niet overeen.");
@@ -194,7 +271,14 @@
         const cred = await createUserWithEmailAndPassword(auth, email, pw);
         await updateProfile(cred.user, { displayName: name });
         await cred.user.reload();
-        await syncUserProfile(cred.user, chosenRole);
+        await syncUserProfile(cred.user, chosenRole, {
+          name,
+          phone,
+          accountType,
+          woonvorm,
+          kvk,
+          bedrijfsnaam: isAanbieder ? name : ""
+        });
         await sendEmailVerification(cred.user);
         window.location.href = "account.html";
       } catch (err) {

@@ -362,12 +362,13 @@
 
   <!-- SCRIPT INTEGRATIE -->
   <script type="module">
-    import { auth, onAuthStateChanged } from "./auth.js";
+    import { auth, onAuthStateChanged, addUserViewing, saveUserFavorites } from "./auth.js";
     import { 
       getPropertyById, 
       getAllProperties, 
       isFavorite, 
       toggleFavorite, 
+      getFavorites,
       saveViewing 
     } from "./properties-data.js";
 
@@ -625,6 +626,9 @@
     btnFav.addEventListener("click", () => {
       const added = toggleFavorite(property.id);
       updateFavoriteButton(property.id);
+      if (currentUser) {
+        saveUserFavorites(currentUser.uid, getFavorites()).catch(() => {});
+      }
       showToast(added ? "❤️ Woning toegevoegd aan jouw favorieten in het account!" : "Woning verwijderd uit jouw favorieten.");
     });
 
@@ -655,7 +659,7 @@
     const successMsg = document.getElementById("viewing-success-msg");
     const submitBtn = document.getElementById("btn-submit-viewing");
 
-    viewingForm.addEventListener("submit", (e) => {
+    viewingForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       
       const payload = {
@@ -674,9 +678,29 @@
       const record = saveViewing(payload);
       document.getElementById("viewing-ref-id").textContent = record.id.toUpperCase();
       
+      if (currentUser) {
+        try {
+          await addUserViewing(currentUser.uid, {
+            id: record.id,
+            propertyId: property.id,
+            propertyTitle: `${property.address}, ${property.city}`,
+            propertyPrice: property.priceDisplay,
+            fullName: payload.fullName,
+            email: payload.email,
+            phone: payload.phone,
+            preferredDate: payload.preferredDate,
+            preferredTime: payload.preferredTime,
+            message: payload.message,
+            status: "In behandeling"
+          });
+        } catch (err) {
+          console.warn("Fout bij opslaan bezichtiging in Firestore:", err);
+        }
+      }
+
       submitBtn.style.display = "none";
       successMsg.style.display = "block";
-      showToast("🎉 Bezichtiging aangevraagd! Zie ook jouw Account Centrum.");
+      showToast("🎉 Bezichtiging aangevraagd en opgeslagen in jouw dossier!");
     });
 
     // 8. Vergelijkbare Woningen

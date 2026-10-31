@@ -724,6 +724,10 @@
               <dl class="account-details">
                 <dt>Naam</dt><dd id="profiel-naam">Laden…</dd>
                 <dt>Emailadres</dt><dd id="profiel-email">Laden…</dd>
+                <dt>Type Account</dt><dd id="profiel-account-type">Laden…</dd>
+                <dt>Dossier Status</dt><dd id="profiel-dossier-status">Laden…</dd>
+                <dt>Telefoonnummer</dt><dd id="profiel-phone">Niet opgegeven</dd>
+                <dt>Woonplaats</dt><dd id="profiel-woonplaats">Niet opgegeven</dd>
                 <dt>Inlogmethode</dt><dd id="profiel-provider">Laden…</dd>
                 <dt>Email geverifieerd</dt><dd id="profiel-verified">Laden…</dd>
                 <dt>Lid sinds</dt><dd id="profiel-sinds">Laden…</dd>
@@ -932,12 +936,13 @@
                   <tr>
                     <th>Naam</th>
                     <th>Emailadres</th>
-                    <th>Rol</th>
+                    <th>Rol &amp; Type</th>
                     <th>Ronde Status</th>
+                    <th>Beheer</th>
                   </tr>
                 </thead>
                 <tbody id="users-table-body">
-                  <tr><td colspan="4">Gebruikerslijst laden uit Firestore...</td></tr>
+                  <tr><td colspan="5">Gebruikerslijst laden uit Firestore...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -981,6 +986,8 @@
     import {
       auth, db, onAuthStateChanged, sendPasswordResetEmail,
       sendEmailVerification, signOut, syncUserProfile, getUserProfile, saveUserProfile,
+      saveUserFavorites, getUserFavorites, addUserViewing, getUserViewings,
+      addAanbiederListing, getAanbiederListings, getAllUsersForAdmin, updateUserStatusByAdmin,
       collection, getDocs, foutTekst, toonMelding, ADMIN_EMAIL, isAdminEmail,
     } from "./auth.js";
 
@@ -1013,6 +1020,9 @@
 
       if (viewName === "admin") {
         laadGebruikersLijst();
+      }
+      if (viewName === "aanbieder") {
+        laadAanbiederListings();
       }
     }
 
@@ -1156,7 +1166,7 @@
       });
     });
 
-    // Woonwensen form submit
+    // Woonwensen form submit - schrijft direct naar Firestore!
     const wensenForm = document.getElementById("wensen-form");
     if (wensenForm) {
       wensenForm.addEventListener("submit", async (e) => {
@@ -1200,7 +1210,7 @@
       });
     }
 
-    // Dossiertoelichting opslaan
+    // Dossiertoelichting opslaan in Firestore
     const saveDossierBtn = document.getElementById("save-dossier-btn");
     if (saveDossierBtn) {
       saveDossierBtn.addEventListener("click", async () => {
@@ -1208,8 +1218,10 @@
         if (currentUser) {
           await saveUserProfile(currentUser.uid, {
             dossierNotitie: notitie,
-            dossierStatus: "Toelichting ontvangen - in review",
+            dossierStatus: "Toelichting ontvangen | In beoordeling",
           });
+          const profielDosStatus = document.getElementById("profiel-dossier-status");
+          if (profielDosStatus) profielDosStatus.textContent = "Toelichting ontvangen | In beoordeling";
         }
         const meldingEl = document.getElementById("dossier-melding");
         if (meldingEl) {
@@ -1219,10 +1231,37 @@
       });
     }
 
-    // Woningaanbieder formulier
+    // Woningaanbieder listings laden uit Firestore
+    async function laadAanbiederListings() {
+      const table = document.getElementById("aanbieder-units-table");
+      if (!table || !currentUser) return;
+      try {
+        const listings = await getAanbiederListings(currentUser.uid);
+        if (listings && listings.length > 0) {
+          table.innerHTML = listings.map(item => {
+            const badgeHtml = (item.bestemming === "Huur")
+              ? `<span class="badge-tag-huur">Huur</span>`
+              : (item.bestemming === "Koop"
+                ? `<span class="badge-tag-koop">Koop</span>`
+                : `<span class="badge-tag-huur">Huur</span> <span class="badge-tag-koop">Koop</span>`);
+            return `<tr>
+              <td><strong>${item.titel}</strong> (${item.units || 1}x ${item.type})</td>
+              <td>${item.stad}</td>
+              <td>${badgeHtml}</td>
+              <td>${item.prijs}</td>
+              <td><span class="badge-status badge-status--green">Gepubliceerd in Firestore ✅</span></td>
+            </tr>`;
+          }).join("");
+        }
+      } catch (err) {
+        console.warn("Fout bij ophalen aanbieder listings:", err);
+      }
+    }
+
+    // Woningaanbieder formulier - schrijft direct naar Firestore!
     const aanbiederForm = document.getElementById("aanbieder-listing-form");
     if (aanbiederForm) {
-      aanbiederForm.addEventListener("submit", (e) => {
+      aanbiederForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const titel = document.getElementById("woning-titel")?.value || "Nieuw project";
         const bestemming = document.getElementById("woning-bestemming")?.value || "Huur & Koop";
@@ -1231,24 +1270,20 @@
         const prijs = document.getElementById("woning-prijs")?.value || "€ 1.250/m of € 340.000";
         const units = document.getElementById("woning-units")?.value || "1";
 
-        const badgeHtml = (bestemming === "Huur")
-          ? `<span class="badge-tag-huur">Huur</span>`
-          : (bestemming === "Koop"
-            ? `<span class="badge-tag-koop">Koop</span>`
-            : `<span class="badge-tag-huur">Huur</span> <span class="badge-tag-koop">Koop</span>`);
+        const btn = aanbiederForm.querySelector("button[type=submit]");
+        if (btn) btn.disabled = true;
 
-        const table = document.getElementById("aanbieder-units-table");
-        if (table) {
-          const newRow = document.createElement("tr");
-          newRow.innerHTML = `
-            <td><strong>${titel}</strong> (${units}x ${type})</td>
-            <td>${stad}</td>
-            <td>${badgeHtml}</td>
-            <td>${prijs}</td>
-            <td><span class="badge-status badge-status--green">Nieuw gepubliceerd ✅</span></td>
-          `;
-          table.prepend(newRow);
+        if (currentUser) {
+          await addAanbiederListing(currentUser.uid, {
+            titel,
+            bestemming,
+            type,
+            stad,
+            prijs,
+            units: parseInt(units, 10) || 1,
+          });
         }
+        await laadAanbiederListings();
 
         const meldingEl = document.getElementById("aanbieder-form-melding");
         if (meldingEl) {
@@ -1256,6 +1291,7 @@
           setTimeout(() => { meldingEl.hidden = true; }, 4000);
         }
         aanbiederForm.reset();
+        if (btn) btn.disabled = false;
       });
     }
 
@@ -1279,37 +1315,69 @@
       });
     }
 
-    // Gebruikerslijst laden voor beheerder
+    // Gebruikerslijst laden voor beheerder uit Firestore
     async function laadGebruikersLijst() {
       const tbody = document.getElementById("users-table-body");
       if (!tbody) return;
-      tbody.innerHTML = "<tr><td colspan='4'>Gebruikers ophalen uit Firestore...</td></tr>";
+      tbody.innerHTML = "<tr><td colspan='5'>Gebruikers ophalen uit Firestore...</td></tr>";
       try {
-        const querySnapshot = await getDocs(collection(db, "users"));
-        if (querySnapshot.empty) {
-          tbody.innerHTML = "<tr><td colspan='4'>Geen gebruikers gevonden in database.</td></tr>";
+        const users = await getAllUsersForAdmin();
+        if (!users || users.length === 0) {
+          tbody.innerHTML = "<tr><td colspan='5'>Geen gebruikers gevonden in database.</td></tr>";
           return;
         }
         let html = "";
-        querySnapshot.forEach((docSnap) => {
-          const u = docSnap.data();
+        users.forEach((u) => {
           const rolClass = u.role === "admin" ? "badge-role--admin" : (u.role === "aanbieder" ? "badge-role--aanbieder" : "badge-role--zoekende");
           const rolNaam = u.role === "admin" ? "Admin" : (u.role === "aanbieder" ? "Aanbieder" : "Zoekende");
+          const subType = u.accountType ? ` • <em>${u.accountType}</em>` : "";
+          const isCurrentSuper = isAdminEmail(currentUser?.email) || currentProfile?.role === "admin";
+
           html += `<tr>
-            <td><strong>${u.displayName || "Onbekend"}</strong></td>
+            <td>
+              <strong>${u.displayName || "Onbekend"}</strong>
+              <div style="font-size: 0.74rem; color: var(--muted);">${u.uid ? u.uid.substring(0, 8) + '...' : ''}</div>
+            </td>
             <td><code>${u.email || "-"}</code></td>
-            <td><span class="badge-role ${rolClass}">${rolNaam}</span></td>
-            <td>${u.status || "Ingeschreven Ronde 1"}</td>
+            <td>
+              <span class="badge-role ${rolClass}">${rolNaam}</span>
+              <span style="font-size: 0.76rem; color: var(--muted); display: block;">${subType}</span>
+            </td>
+            <td><span class="badge-status badge-status--gold">${u.status || "Dossier geregistreerd"}</span></td>
+            <td>
+              ${isCurrentSuper ? `
+                <button type="button" class="btn-secondary btn-sm admin-edit-user-btn" data-uid="${u.uid}" data-name="${u.displayName || ''}" data-status="${u.status || ''}" data-role="${u.role || 'zoekende'}" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;">
+                  ✏️ Wijzig
+                </button>
+              ` : '-'}
+            </td>
           </tr>`;
         });
         tbody.innerHTML = html;
+
+        // Event listeners voor status/rol modificaties door admin
+        document.querySelectorAll(".admin-edit-user-btn").forEach(btn => {
+          btn.addEventListener("click", async () => {
+            const targetUid = btn.getAttribute("data-uid");
+            const targetName = btn.getAttribute("data-name");
+            const curStatus = btn.getAttribute("data-status");
+            const nieuwStatus = prompt(`Nieuwe toewijzingsstatus voor ${targetName}:`, curStatus || "Toegewezen aan Ronde 1");
+            if (nieuwStatus && nieuwStatus.trim() !== curStatus) {
+              btn.disabled = true;
+              const ok = await updateUserStatusByAdmin(targetUid, nieuwStatus.trim());
+              if (ok) {
+                alert(`Status voor ${targetName} succesvol bijgewerkt in Firestore!`);
+                laadGebruikersLijst();
+              } else {
+                alert("Fout bij bijwerken status.");
+                btn.disabled = false;
+              }
+            }
+          });
+        });
       } catch (err) {
         console.error("Fout bij laden van gebruikerslijst:", err);
-        tbody.innerHTML = `
-          <tr><td><strong>WoningVry Beheer (Admin)</strong></td><td><code>info@woningvry.nl</code></td><td><span class="badge-role badge-role--admin">Admin</span></td><td>Hoofdbeheerder</td></tr>
-          <tr><td><strong>Sander de Zoeker (Demo)</strong></td><td><code>zoekende@woningvry.nl</code></td><td><span class="badge-role badge-role--zoekende">Zoekende</span></td><td>Ronde 1 Ingeschreven</td></tr>
-          <tr><td><strong>Vastgoed Partners BV (Demo)</strong></td><td><code>aanbieder@woningvry.nl</code></td><td><span class="badge-role badge-role--aanbieder">Aanbieder</span></td><td>Geverifieerd Partner</td></tr>
-        `;
+        tbody.innerHTML = `<tr><td colspan='5' style="color: #ef4444;">Fout bij laden uit Firestore: ${err.message || err}</td></tr>`;
       }
     }
 
@@ -1325,7 +1393,7 @@
       }
       currentUser = user;
 
-      // Synchroniseer en haal actueel profiel op
+      // Synchroniseer en haal actueel profiel op uit Firestore
       let profile = await syncUserProfile(user);
       if (!profile) profile = await getUserProfile(user.uid) || {};
       currentProfile = profile;
@@ -1340,6 +1408,21 @@
       document.getElementById("profiel-email").textContent = user.email;
       document.getElementById("profiel-verified").textContent = user.emailVerified ? "Ja" : "Nee";
 
+      const profielAccType = document.getElementById("profiel-account-type");
+      if (profielAccType) {
+        const typeLabel = profile.accountType ? profile.accountType.charAt(0).toUpperCase() + profile.accountType.slice(1).replace("_", " ") : (profile.role === 'aanbieder' ? 'Ontwikkelaar' : 'Starter');
+        profielAccType.textContent = isSuperAdmin ? "👑 Hoofdbeheerder" : `${profile.role === 'aanbieder' ? 'Aanbieder' : 'Zoekende'} (${typeLabel})`;
+      }
+
+      const profielDosStatus = document.getElementById("profiel-dossier-status");
+      if (profielDosStatus) profielDosStatus.textContent = profile.dossierStatus || profile.status || "Dossier geregistreerd";
+
+      const profielPhone = document.getElementById("profiel-phone");
+      if (profielPhone) profielPhone.textContent = profile.phone || "Niet opgegeven";
+
+      const profielWoonplaats = document.getElementById("profiel-woonplaats");
+      if (profielWoonplaats) profielWoonplaats.textContent = profile.woonplaats || "Niet opgegeven";
+
       const providerId = user.providerData?.[0]?.providerId || "password";
       document.getElementById("profiel-provider").textContent = providerId === "google.com" ? "Google OAuth" : "Email & Wachtwoord";
 
@@ -1353,16 +1436,18 @@
         roleBadge.className = "badge-role badge-role--admin";
         switchPortalView("admin");
       } else if (profile.role === "aanbieder") {
-        roleBadge.textContent = "🏢 Woningaanbieder";
+        const typeLabel = profile.accountType ? profile.accountType.charAt(0).toUpperCase() + profile.accountType.slice(1).replace("_", " ") : "Ontwikkelaar";
+        roleBadge.textContent = `🏢 Woningaanbieder (${typeLabel})`;
         roleBadge.className = "badge-role badge-role--aanbieder";
         switchPortalView("aanbieder");
       } else {
-        roleBadge.textContent = "🎯 Woningzoekende";
+        const typeLabel = profile.accountType ? profile.accountType.charAt(0).toUpperCase() + profile.accountType.slice(1).replace("_", " ") : "Starter";
+        roleBadge.textContent = `🎯 Woningzoekende (${typeLabel})`;
         roleBadge.className = "badge-role badge-role--zoekende";
         switchPortalView("zoekende");
       }
 
-      // Pre-fill opgeslagen voorkeuren indien beschikbaar
+      // Pre-fill opgeslagen voorkeuren uit Firestore
       if (profile.woonvorm) {
         selectedWoonvorm = profile.woonvorm;
         woonvormPills.forEach(p => p.classList.toggle("active", p.getAttribute("data-woonvorm") === selectedWoonvorm));
@@ -1398,6 +1483,22 @@
         if (notitieEl) notitieEl.value = profile.dossierNotitie;
       }
 
+      // Sync favorieten tussen Firestore en LocalStorage
+      if (profile.favorieten && Array.isArray(profile.favorieten) && profile.favorieten.length > 0) {
+        try {
+          const localFavs = getFavorites();
+          const merged = Array.from(new Set([...localFavs, ...profile.favorieten]));
+          localStorage.setItem("wv_favorites", JSON.stringify(merged));
+        } catch (e) {}
+      }
+
+      // Render lijstweergaves
+      renderFavorites();
+      await renderViewingsList();
+      if (profile.role === "aanbieder") {
+        await laadAanbiederListings();
+      }
+
       // Auth actieknoppen
       const verifyBtn = document.getElementById("verify-btn");
       if (verifyBtn) {
@@ -1420,7 +1521,6 @@
         });
       }
     });
-
 
     // ============================================================
     // VERRIJKING: FAVORIETEN BEHEER
@@ -1459,32 +1559,45 @@
               </div>
               <div class="fav-card-footer">
                 <a href="woning.html?id=${p.id}" class="btn-primary btn-sm">Woning bekijken</a>
-                <button type="button" class="btn-remove-doc btn-remove-fav" data-id="${p.id}" title="Verwijderen uit favorieten">✕</button>
+                <button type="button" class="btn-secondary btn-sm fav-remove-btn" data-id="${p.id}" title="Verwijderen uit favorieten">Verwijder</button>
               </div>
             </div>
           </article>
         `;
       }).join("");
 
-      container.querySelectorAll(".btn-remove-fav").forEach(btn => {
-        btn.addEventListener("click", () => {
+      container.querySelectorAll(".fav-remove-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
           const id = btn.getAttribute("data-id");
           toggleFavorite(id);
+          if (currentUser) {
+            await saveUserFavorites(currentUser.uid, getFavorites());
+          }
           renderFavorites();
         });
       });
     }
 
-    window.addEventListener("woningvry:favorites-changed", renderFavorites);
-
     // ============================================================
-    // VERRIJKING: BEZICHTIGINGSAANVRAGEN
+    // VERRIJKING: BEZICHTIGINGEN / REACTIES LIJST (FIRESTORE SYNC)
     // ============================================================
-    function renderViewingsList() {
-      const viewings = getViewings();
+    async function renderViewingsList() {
       const container = document.getElementById("user-viewings-container");
       const emptyBox = document.getElementById("user-viewings-empty");
       if (!container) return;
+
+      let viewings = [];
+      if (currentUser) {
+        try {
+          const fsViewings = await getUserViewings(currentUser.uid);
+          if (fsViewings && fsViewings.length > 0) viewings = fsViewings;
+        } catch (e) {
+          console.warn("Firestore viewings fallback to local:", e);
+        }
+      }
+      if (viewings.length === 0) {
+        viewings = getViewings();
+      }
 
       if (viewings.length === 0) {
         container.innerHTML = "";
@@ -1499,12 +1612,12 @@
             <h4>${v.propertyTitle || 'Woningreactie'}</h4>
             <div class="viewing-meta">
               📅 Datum: <strong>${v.preferredDate || 'In overleg'}</strong> • Dagdeel: <strong>${v.preferredTime || 'Flexibel'}</strong>
-              <span style="display:block; font-size:0.75rem; color:var(--muted); margin-top:0.2rem;">Referentie: ${v.id.toUpperCase()}</span>
+              <span style="display:block; font-size:0.75rem; color:var(--muted); margin-top:0.2rem;">Referentie: ${(v.id || '').toUpperCase()}</span>
             </div>
           </div>
           <div style="display:flex; align-items:center; gap:0.75rem;">
             <span class="badge-status badge-status--gold">${v.status || 'In behandeling'} ⏳</span>
-            <a href="woning.html?id=${v.propertyId}" class="btn-secondary btn-sm">Details</a>
+            ${v.propertyId ? `<a href="woning.html?id=${v.propertyId}" class="btn-secondary btn-sm">Details</a>` : ''}
           </div>
         </div>
       `).join("");
@@ -1513,138 +1626,146 @@
     // ============================================================
     // VERRIJKING: DOCUMENTENKLUIS & VOLLEDIGHEIDS PROGRESSIE
     // ============================================================
-    const DOCS_KEY = "woningvry_user_documents";
-    function getStoredDocs() {
+    const DOC_STORE_KEY = "wv_uploaded_docs_v1";
+
+    function getUploadedDocs() {
       try {
-        const raw = localStorage.getItem(DOCS_KEY);
+        const raw = localStorage.getItem(DOC_STORE_KEY);
         if (raw) return JSON.parse(raw);
       } catch (e) {}
       return [
-        { id: "doc-1", name: "Paspoort_Identiteitsbewijs_NL.pdf", size: "2.4 MB", date: "14 okt 2026", status: "Geverifieerd ✅" },
-        { id: "doc-2", name: "Inkomensindicatie_Belasting_2025.pdf", size: "1.8 MB", date: "16 okt 2026", status: "In behandeling ⏳" }
+        { id: "doc-1", name: "Kopie_ID_Geanonimiseerd.pdf", type: "Identiteitsbewijs", size: "1.4 MB", date: "24-10-2026", status: "Goedgekeurd ✅" },
+        { id: "doc-2", name: "Jaarcijfers_2024_2025_Concept.pdf", type: "Financieel / Omzet", size: "3.2 MB", date: "25-10-2026", status: "In beoordeling ⏳" },
+        { id: "doc-3", name: "Garantstelling_Familie_Ondertekend.pdf", type: "Borg & Zekerheid", size: "850 KB", date: "25-10-2026", status: "Goedgekeurd ✅" }
       ];
     }
 
-    function saveDocs(docs) {
-      localStorage.setItem(DOCS_KEY, JSON.stringify(docs));
-      renderDocsVault();
+    function saveUploadedDocs(docs) {
+      try {
+        localStorage.setItem(DOC_STORE_KEY, JSON.stringify(docs));
+      } catch (e) {}
     }
 
     function renderDocsVault() {
-      const docs = getStoredDocs();
+      const docs = getUploadedDocs();
       const container = document.getElementById("uploaded-docs-container");
-      const pctEl = document.getElementById("dossier-progress-pct");
-      const barEl = document.getElementById("dossier-progress-bar");
+      const progressText = document.getElementById("dossier-progress-pct");
+      const progressBar = document.getElementById("dossier-progress-bar");
 
-      // Bereken percentage: 1 doc = 33%, 2 docs = 66%, 3+ docs = 100%
-      const pct = Math.min(100, Math.round((docs.length / 3) * 100));
-      if (pctEl) pctEl.textContent = pct + "% Voltooid" + (pct === 100 ? " 🎉 (Compleet)" : "");
-      if (barEl) {
-        barEl.style.width = pct + "%";
-        barEl.style.background = pct === 100 ? "#16a34a" : "var(--gold)";
+      if (progressText && progressBar) {
+        const count = docs.length;
+        const pct = Math.min(100, Math.round((count / 3) * 100));
+        progressText.textContent = pct + "% Voltooid";
+        progressBar.style.width = pct + "%";
+        if (pct === 100) {
+          progressText.style.color = "#166534";
+          progressBar.style.background = "#22c55e";
+        }
       }
 
       if (!container) return;
-      if (docs.length === 0) {
-        container.innerHTML = "<p style='color:var(--muted); font-size:0.88rem;'>Nog geen documenten geüpload. Upload je ID of inkomensindicatie om toewijzing te versnellen.</p>";
-        return;
-      }
-
       container.innerHTML = docs.map(d => `
-        <div class="uploaded-doc-item">
-          <div class="doc-info">
-            <span class="doc-info-icon">📄</span>
+        <div class="uploaded-doc-row">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span style="font-size: 1.5rem;">📄</span>
             <div>
-              <div class="doc-title">${d.name}</div>
-              <div class="doc-meta">${d.size} • Geüpload op ${d.date}</div>
+              <strong>${d.name}</strong>
+              <div style="font-size: 0.75rem; color: var(--muted);">${d.type} • ${d.size} • Geüpload op ${d.date}</div>
             </div>
           </div>
-          <div class="doc-actions">
-            <span class="badge-status" style="background:rgba(13,27,46,0.06); font-size:0.8rem;">${d.status}</span>
-            <button type="button" class="btn-remove-doc" data-docid="${d.id}" title="Verwijder document">🗑️</button>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span class="badge-status ${d.status.includes('Goedgekeurd') ? 'badge-status--green' : 'badge-status--gold'}">${d.status}</span>
+            <button type="button" class="btn-secondary btn-sm doc-delete-btn" data-id="${d.id}" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Verwijder</button>
           </div>
         </div>
       `).join("");
 
-      container.querySelectorAll(".btn-remove-doc").forEach(btn => {
+      container.querySelectorAll(".doc-delete-btn").forEach(btn => {
         btn.addEventListener("click", () => {
-          const id = btn.getAttribute("data-docid");
-          const updated = getStoredDocs().filter(item => item.id !== id);
-          saveDocs(updated);
+          const id = btn.getAttribute("data-id");
+          const updated = docs.filter(x => x.id !== id);
+          saveUploadedDocs(updated);
+          renderDocsVault();
         });
       });
     }
 
-    const triggerUploadBtn = document.getElementById("btn-trigger-upload");
-    const dropzone = document.getElementById("dossier-dropzone");
+    // Upload simulatie
+    const dropzone = document.getElementById("dropzone-area");
     const fileInput = document.getElementById("dossier-file-input");
-
-    if (triggerUploadBtn && fileInput) {
-      triggerUploadBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        fileInput.click();
-      });
-    }
 
     if (dropzone && fileInput) {
       dropzone.addEventListener("click", () => fileInput.click());
-      dropzone.addEventListener("dragover", (e) => { e.preventDefault(); dropzone.classList.add("dragover"); });
-      dropzone.addEventListener("dragleave", () => dropzone.classList.remove("dragover"));
+
+      dropzone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropzone.style.borderColor = "var(--gold)";
+        dropzone.style.background = "#fdfbf7";
+      });
+
+      dropzone.addEventListener("dragleave", () => {
+        dropzone.style.borderColor = "rgba(13,27,46,0.18)";
+        dropzone.style.background = "#f8fafc";
+      });
+
       dropzone.addEventListener("drop", (e) => {
         e.preventDefault();
-        dropzone.classList.remove("dragover");
-        if (e.dataTransfer.files && e.dataTransfer.files.length) {
-          handleIncomingFiles(e.dataTransfer.files);
+        dropzone.style.borderColor = "rgba(13,27,46,0.18)";
+        dropzone.style.background = "#f8fafc";
+        if (e.dataTransfer.files.length > 0) {
+          handleFileUpload(e.dataTransfer.files[0]);
         }
       });
 
       fileInput.addEventListener("change", () => {
-        if (fileInput.files && fileInput.files.length) {
-          handleIncomingFiles(fileInput.files);
-          fileInput.value = "";
+        if (fileInput.files.length > 0) {
+          handleFileUpload(fileInput.files[0]);
         }
       });
     }
 
-    function handleIncomingFiles(fileList) {
-      const current = getStoredDocs();
-      for (let i = 0; i < fileList.length; i++) {
-        const file = fileList[i];
-        const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
-        current.push({
-          id: "doc-" + Date.now() + "-" + i,
-          name: file.name,
-          size: sizeMb > 0 ? sizeMb + " MB" : "< 1 MB",
-          date: new Date().toLocaleDateString("nl-NL", { day: "numeric", month: "short", year: "numeric" }),
-          status: "Geüpload - In review ⏳"
-        });
-      }
-      saveDocs(current);
-      alert("✅ Document(en) succesvol toegevoegd aan jouw WoningVry acceptatiekluis!");
+    function handleFileUpload(file) {
+      const typeSelect = document.getElementById("doc-type-select");
+      const chosenType = typeSelect ? typeSelect.value : "Overig bewijsstuk";
+
+      const newDoc = {
+        id: "doc-" + Date.now(),
+        name: file.name,
+        type: chosenType,
+        size: (file.size / (1024 * 1024)).toFixed(1) + " MB",
+        date: new Date().toLocaleDateString("nl-NL"),
+        status: "In beoordeling ⏳"
+      };
+
+      const docs = getUploadedDocs();
+      docs.push(newDoc);
+      saveUploadedDocs(docs);
+      renderDocsVault();
+
+      alert(`✅ "${file.name}" veilig toegevoegd aan jouw beoordelingsdossier!`);
     }
 
     // ============================================================
-    // VERRIJKING: WONINGALERT NOTIFICATIES
+    // VERRIJKING: WONINGALERT VOORKEUREN
     // ============================================================
     function setupWoningAlert() {
+      const prefs = getAlertPrefs();
       const toggle = document.getElementById("alert-active-toggle");
-      const statusLabel = document.getElementById("alert-status-label");
+      const label = document.getElementById("alert-status-label");
       const chips = document.querySelectorAll("#alert-cities-chips .alert-city-chip");
       const saveBtn = document.getElementById("btn-save-alert-prefs");
       const feedback = document.getElementById("alert-save-feedback");
 
-      const prefs = getAlertPrefs();
-      if (toggle) {
+      if (toggle && label) {
         toggle.checked = prefs.active;
-        if (statusLabel) {
-          statusLabel.textContent = prefs.active ? "Alert Actief 🔔" : "Alert Inactief 🔕";
-          statusLabel.style.color = prefs.active ? "#166534" : "var(--muted)";
-        }
+        label.textContent = prefs.active ? "Alert Actief ✅" : "Alert Inactief";
+        label.style.color = prefs.active ? "#166534" : "var(--muted)";
+        label.style.fontWeight = prefs.active ? "600" : "400";
+
         toggle.addEventListener("change", () => {
-          if (statusLabel) {
-            statusLabel.textContent = toggle.checked ? "Alert Actief 🔔" : "Alert Inactief 🔕";
-            statusLabel.style.color = toggle.checked ? "#166534" : "var(--muted)";
-          }
+          label.textContent = toggle.checked ? "Alert Actief ✅" : "Alert Inactief";
+          label.style.color = toggle.checked ? "#166534" : "var(--muted)";
+          label.style.fontWeight = toggle.checked ? "600" : "400";
         });
       }
 
@@ -1676,7 +1797,6 @@
 
     // Initialisaties
     renderFavorites();
-    renderViewingsList();
     renderDocsVault();
     setupWoningAlert();
 
