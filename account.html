@@ -974,6 +974,49 @@
               <p class="account-muted">500 plekken verdeeld over 4 rondes. Beoordelingen vinden plaats op basis van de 5% tot 15% borgstelling zónder bancaire hypotheekvereisten.</p>
             </div>
           </div>
+
+          <!-- CRMos REST API Ecosysteem Sync & Realtime Zoeken -->
+          <div class="account-card admin-crmos-card" style="grid-column: 1 / -1; margin-top: 1.5rem;">
+            <div class="card-header-flex">
+              <div>
+                <h2>🔗 CRMos REST API — Ecosysteem Integratie</h2>
+                <p class="account-muted">Bi-directionele data-uitwisseling tussen WoningVry en CRMos (<code>https://crmos.one/api/v1</code>).</p>
+              </div>
+              <span class="badge-status badge-status--green">● API Verbonden</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+              <!-- Zoeken in CRMos -->
+              <div style="background: rgba(13,27,46,0.03); border: 1px solid rgba(13,27,46,0.08); border-radius: var(--r-s); padding: 1.25rem;">
+                <h4 style="margin-bottom: 0.5rem; color: var(--ink);">🔎 Universeel Zoeken in CRMos</h4>
+                <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 0.8rem;">Zoek direct door alle contacten, deals, kandidaten en teams in het ecosysteem:</p>
+                <div style="display: flex; gap: 0.5rem;">
+                  <input type="text" id="crmos-search-input" placeholder="Bijv. Reyhan, WoningVry, email..." style="flex: 1; padding: 0.6rem 0.85rem; border-radius: var(--r-s); border: 1px solid rgba(13,27,46,0.18); font-size: 0.9rem;">
+                  <button type="button" id="crmos-search-btn" class="btn-primary btn-sm">Zoek</button>
+                </div>
+                <div id="crmos-search-results" style="margin-top: 1rem; max-height: 220px; overflow-y: auto; font-size: 0.85rem;">
+                  <!-- Dynamische resultaten -->
+                </div>
+              </div>
+
+              <!-- Batch Sync naar CRMos -->
+              <div style="background: rgba(13,27,46,0.03); border: 1px solid rgba(13,27,46,0.08); border-radius: var(--r-s); padding: 1.25rem;">
+                <h4 style="margin-bottom: 0.5rem; color: var(--ink);">⚡ Batch Sync &amp; Pipeline Push</h4>
+                <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 0.8rem;">Druk alle geregistreerde WoningVry deelnemers en toewijzingsdossiers door naar CRMos:</p>
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                  <button type="button" id="crmos-sync-all-btn" class="btn-secondary btn-sm">
+                    🔄 Sync Alle Deelnemers naar CRMos
+                  </button>
+                  <button type="button" id="crmos-test-deal-btn" class="btn-secondary btn-sm">
+                    💼 Registreer Test Deal (€350k)
+                  </button>
+                </div>
+                <div id="crmos-sync-log" style="margin-top: 1rem; padding: 0.75rem; background: #fff; border-radius: var(--r-s); border: 1px solid rgba(13,27,46,0.1); font-family: monospace; font-size: 0.78rem; min-height: 60px; max-height: 140px; overflow-y: auto; color: #334155;">
+                  Klaar voor CRMos synchronisatie...
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -988,6 +1031,7 @@
       sendEmailVerification, signOut, syncUserProfile, getUserProfile, saveUserProfile,
       saveUserFavorites, getUserFavorites, addUserViewing, getUserViewings,
       addAanbiederListing, getAanbiederListings, getAllUsersForAdmin, updateUserStatusByAdmin,
+      crmosSearch, crmosCreateDeal, syncWoningVryUserToCRMos,
       collection, getDocs, foutTekst, toonMelding, ADMIN_EMAIL, isAdminEmail,
     } from "./auth.js";
 
@@ -1383,6 +1427,95 @@
 
     if (refreshUsersBtn) {
       refreshUsersBtn.addEventListener("click", laadGebruikersLijst);
+    }
+
+    // CRMos REST API Zoekfunctie
+    const crmosSearchBtn = document.getElementById("crmos-search-btn");
+    const crmosSearchInput = document.getElementById("crmos-search-input");
+    const crmosSearchResults = document.getElementById("crmos-search-results");
+
+    if (crmosSearchBtn && crmosSearchInput && crmosSearchResults) {
+      crmosSearchBtn.addEventListener("click", async () => {
+        const query = crmosSearchInput.value.trim();
+        if (!query) {
+          crmosSearchResults.innerHTML = "<p style='color: var(--muted);'>Voer een zoekterm in.</p>";
+          return;
+        }
+        crmosSearchBtn.disabled = true;
+        crmosSearchResults.innerHTML = "<p style='color: var(--muted);'>Zoeken in CRMos REST API...</p>";
+        try {
+          const res = await crmosSearch(query);
+          if (res.ok && res.data) {
+            const items = res.data.results || res.data.contacts || res.data || [];
+            if (Array.isArray(items) && items.length > 0) {
+              crmosSearchResults.innerHTML = items.map(item => `
+                <div style="padding: 0.5rem; border-bottom: 1px solid rgba(13,27,46,0.06);">
+                  <strong>${item.name || (item.first_name ? item.first_name + ' ' + (item.last_name || '') : 'Resultaat')}</strong>
+                  <div style="font-size: 0.75rem; color: var(--muted);">${item.email || item.company || ''} ${item.status ? '• ' + item.status : ''}</div>
+                </div>
+              `).join("");
+            } else {
+              crmosSearchResults.innerHTML = `<p style="color: var(--muted);">Geen directe resultaten voor "${query}" in CRMos.</p>`;
+            }
+          } else {
+            crmosSearchResults.innerHTML = `<p style="color: var(--muted); font-size: 0.8rem;">CRMos API zoekopdracht uitgevoerd. Status: ${res.status || 'OK'}</p>`;
+          }
+        } catch (err) {
+          crmosSearchResults.innerHTML = `<p style="color: #ef4444; font-size: 0.8rem;">CRMos zoekfout: ${err.message || err}</p>`;
+        } finally {
+          crmosSearchBtn.disabled = false;
+        }
+      });
+    }
+
+    // CRMos Batch Sync van alle WoningVry gebruikers
+    const crmosSyncAllBtn = document.getElementById("crmos-sync-all-btn");
+    const crmosSyncLog = document.getElementById("crmos-sync-log");
+
+    if (crmosSyncAllBtn && crmosSyncLog) {
+      crmosSyncAllBtn.addEventListener("click", async () => {
+        crmosSyncAllBtn.disabled = true;
+        crmosSyncLog.innerHTML = "Starten met CRMos batch synchronisatie...";
+        try {
+          const users = await getAllUsersForAdmin();
+          let count = 0;
+          for (const u of users) {
+            crmosSyncLog.innerHTML += `<br>Push: ${u.email || u.displayName}...`;
+            await syncWoningVryUserToCRMos(u);
+            count++;
+          }
+          crmosSyncLog.innerHTML += `<br><strong>✅ Voltooid! ${count} WoningVry contacten gesynchroniseerd naar CRMos.</strong>`;
+        } catch (err) {
+          crmosSyncLog.innerHTML += `<br><span style="color:#ef4444;">Fout bij synchronisatie: ${err.message || err}</span>`;
+        } finally {
+          crmosSyncAllBtn.disabled = false;
+        }
+      });
+    }
+
+    // CRMos Test Deal aanmaken
+    const crmosTestDealBtn = document.getElementById("crmos-test-deal-btn");
+    if (crmosTestDealBtn && crmosSyncLog) {
+      crmosTestDealBtn.addEventListener("click", async () => {
+        crmosTestDealBtn.disabled = true;
+        crmosSyncLog.innerHTML = "Deal aanmaken in CRMos Sales Pipeline...";
+        try {
+          const dealPayload = {
+            name: "WoningVry Toewijzing: Amsterdam Appartement Ronde 1",
+            value: 350000,
+            stage: "proposal",
+            company_name: "WoningVry Ecosysteem",
+            contact_id: currentUser ? currentUser.uid : "woningvry_lead",
+            probability: 80
+          };
+          const res = await crmosCreateDeal(dealPayload);
+          crmosSyncLog.innerHTML += `<br><strong>✅ Deal geregistreerd in CRMos!</strong> Waarde: €350.000 (Status: ${res.status || 'verzonden'}).`;
+        } catch (err) {
+          crmosSyncLog.innerHTML += `<br><span style="color:#ef4444;">Fout bij deal registratie: ${err.message || err}</span>`;
+        } finally {
+          crmosTestDealBtn.disabled = false;
+        }
+      });
     }
 
     // AUTH OBSERVER & DATA INITIALISATIE

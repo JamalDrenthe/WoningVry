@@ -28,6 +28,41 @@ import {
   orderBy,
   limit,
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import {
+  syncWoningVryUserToCRMos,
+  syncViewingToCRMos,
+  crmosSearch,
+  crmosGetContacts,
+  crmosGetContactById,
+  crmosGetTeams,
+  crmosGetCompanies,
+  crmosGetDeals,
+  crmosGetCandidates,
+  crmosUpsertContact,
+  crmosCreateContact,
+  crmosUpdateContact,
+  crmosCreateDeal,
+  crmosLogActivity,
+  crmosCreateCandidate,
+} from "./crmos.js";
+
+export {
+  syncWoningVryUserToCRMos,
+  syncViewingToCRMos,
+  crmosSearch,
+  crmosGetContacts,
+  crmosGetContactById,
+  crmosGetTeams,
+  crmosGetCompanies,
+  crmosGetDeals,
+  crmosGetCandidates,
+  crmosUpsertContact,
+  crmosCreateContact,
+  crmosUpdateContact,
+  crmosCreateDeal,
+  crmosLogActivity,
+  crmosCreateCandidate,
+};
 
 export const ADMIN_EMAILS = [
   "info@woningvry.nl",
@@ -131,6 +166,8 @@ export async function syncUserProfile(user, preferredRole = "zoekende", options 
       if (options.woonplaats) profile.woonplaats = options.woonplaats;
 
       await setDoc(userRef, profile);
+      // Synchroniseer direct naar CRMos ecosysteem
+      syncWoningVryUserToCRMos(profile).catch((e) => console.warn("CRMos sync background notice:", e));
       return profile;
     } else {
       const existing = snap.data();
@@ -147,7 +184,10 @@ export async function syncUserProfile(user, preferredRole = "zoekende", options 
       if (options.woonplaats && !existing.woonplaats) updateData.woonplaats = options.woonplaats;
 
       await setDoc(userRef, updateData, { merge: true });
-      return { ...existing, ...updateData };
+      const fullUpdated = { ...existing, ...updateData };
+      // Synchroniseer updates naar CRMos
+      syncWoningVryUserToCRMos(fullUpdated).catch((e) => console.warn("CRMos sync background notice:", e));
+      return fullUpdated;
     }
   } catch (err) {
     console.warn("Fout bij synchroniseren gebruikersprofiel:", err);
@@ -180,6 +220,10 @@ export async function saveUserProfile(uid, data) {
   try {
     const userRef = doc(db, "users", uid);
     await setDoc(userRef, { ...data, updatedAt: serverTimestamp() }, { merge: true });
+    // Synchroniseer verrijking direct naar CRMos (POST /contacts/upsert)
+    getUserProfile(uid).then((p) => {
+      if (p) syncWoningVryUserToCRMos(p).catch(() => {});
+    }).catch(() => {});
     return true;
   } catch (err) {
     console.error("Fout bij opslaan gebruikersprofiel:", err);
@@ -220,6 +264,9 @@ export async function addUserViewing(uid, viewingData) {
     } catch (e) {
       console.warn("Root bezichtiging opslaan (optioneel):", e);
     }
+
+    // Log activiteit en lead direct in CRMos REST API
+    syncViewingToCRMos(payload).catch((e) => console.warn("CRMos viewing sync:", e));
 
     return { id: docRef.id, ...payload };
   } catch (err) {
