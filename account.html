@@ -129,27 +129,50 @@
         <!-- Sub-pages / Tabs Navigatie -->
         <nav class="account-tabs" aria-label="Zoekende tabs">
           <button type="button" class="account-tab active" data-tab="tab-traject">
-            🧭 Mijn Traject & Ronde
+            📊 Dashboard &amp; Traject
           </button>
           <button type="button" class="account-tab" data-tab="tab-wensen">
-            🏡 Woonwensen & Matches
+            🏡 Woonwensen &amp; Matches
           </button>
           <button type="button" class="account-tab" data-tab="tab-favorieten">
             ❤️ Mijn Favorieten <span id="fav-count-badge" class="badge-pill-count">0</span>
           </button>
           <button type="button" class="account-tab" data-tab="tab-borg">
-            💰 Huur & Koop Calculator
+            💰 Huur &amp; Koop Calculator
           </button>
           <button type="button" class="account-tab" data-tab="tab-dossier">
-            📁 Dossier & Documenten
+            📁 Dossier &amp; Documenten
           </button>
           <button type="button" class="account-tab" data-tab="tab-profiel">
-            ⚙️ Profiel & Beveiliging
+            ⚙️ Profiel &amp; Beveiliging
           </button>
         </nav>
 
-        <!-- TAB 1: MIJN TRAJECT & RONDE -->
+        <!-- TAB 1: DASHBOARD & TRAJECT -->
         <div id="tab-traject" class="tab-pane active">
+          <!-- Member Dashboard KPI Cockpit Grid -->
+          <div class="admin-stats-grid mb-4" id="member-kpi-grid">
+            <div class="stat-card">
+              <span class="stat-card__label">Mijn Positie</span>
+              <span class="stat-card__val" id="kpi-ronde-val">Ronde 1</span>
+              <span class="stat-card__status stat-card__status--green">● Positie gereserveerd</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-card__label">Dossier Beoordeling</span>
+              <span class="stat-card__val" id="kpi-dossier-val">66% Voltooid</span>
+              <span class="stat-card__status" style="color: var(--gold-bright);">● In behandeling</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-card__label">Opgeslagen Favorieten</span>
+              <span class="stat-card__val" id="kpi-favs-val">0 Woningen</span>
+              <span class="stat-card__status stat-card__status--green">● Realtime alerts</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-card__label">Geplande Bezichtigingen</span>
+              <span class="stat-card__val" id="kpi-viewings-val">0 Afspraken</span>
+              <span class="stat-card__status stat-card__status--green">● Directe toewijzing</span>
+            </div>
+          </div>
           <!-- 4 Stappen visualizer -->
           <div class="traject-timeline">
             <div class="traject-step traject-step--completed">
@@ -1630,6 +1653,28 @@
       await renderViewingsList();
       if (profile.role === "aanbieder") {
         await laadAanbiederListings();
+      }
+
+      // Update Member Dashboard Cockpit KPIs
+      const kpiRonde = document.getElementById("kpi-ronde-val");
+      if (kpiRonde) kpiRonde.textContent = `Ronde 1 (#WV ${user.uid.substring(0, 4).toUpperCase()})`;
+
+      const kpiDossier = document.getElementById("kpi-dossier-val");
+      if (kpiDossier) kpiDossier.textContent = profile.dossierStatus ? profile.dossierStatus : "66% Voltooid";
+
+      const kpiFavs = document.getElementById("kpi-favs-val");
+      if (kpiFavs) {
+        const favCount = getFavorites().length;
+        kpiFavs.textContent = `${favCount} Woning${favCount === 1 ? '' : 'en'}`;
+      }
+
+      const kpiViewings = document.getElementById("kpi-viewings-val");
+      if (kpiViewings) {
+        try {
+          const vList = await getUserViewings(user.uid);
+          const vCount = vList ? vList.length : 0;
+          kpiViewings.textContent = `${vCount} Afspraak${vCount === 1 ? '' : 'ken'}`;
+        } catch(e) {}
       }
 
       // Auth actieknoppen
