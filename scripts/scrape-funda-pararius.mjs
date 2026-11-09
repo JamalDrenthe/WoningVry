@@ -20,6 +20,9 @@ import {
   appendToGoogleSheetCli,
   exportSheetCli
 } from "../google-sheets-sync.js";
+import {
+  scrapeAllDirectBrokers
+} from "../direct-brokers-scraper.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -310,15 +313,27 @@ async function main() {
     }
   }
 
-  // 3. Voeg de standaard geverifieerde Funda & Pararius woningen toe zodat de feed altijd gevuld is
+  // 3. Scrape direct makelaars & verhuurbedrijven (123Wonen, Vastgoed Unie, Rappange, HB Housing)
+  try {
+    const directBrokerProps = await scrapeAllDirectBrokers({ limitPerBroker: 8 });
+    for (const prop of directBrokerProps) {
+      if (!scrapedList.some((p) => p.id === prop.id || (p.address && prop.address && p.address.toLowerCase() === prop.address.toLowerCase()))) {
+        scrapedList.push(prop);
+      }
+    }
+  } catch (err) {
+    console.warn("⚠️ Directe makelaars scrape waarschuwing:", err.message);
+  }
+
+  // 4. Voeg de standaard geverifieerde Funda & Pararius woningen toe zodat de feed altijd compleet is
   for (const seed of STANDARD_FUNDA_PARARIUS_SEED) {
     const converted = convertToWoningVryProperty(seed);
-    if (!scrapedList.some((p) => p.id === converted.id || p.address === converted.address)) {
+    if (!scrapedList.some((p) => p.id === converted.id || (p.address && converted.address && p.address.toLowerCase() === converted.address.toLowerCase()))) {
       scrapedList.push(converted);
     }
   }
 
-  // 4. Schrijf JSON-feed weg naar public/scraped-listings.json
+  // 5. Schrijf JSON-feed weg naar public/scraped-listings.json
   fs.mkdirSync(path.dirname(SCRAPED_JSON_PATH), { recursive: true });
   fs.writeFileSync(
     SCRAPED_JSON_PATH,
@@ -326,7 +341,7 @@ async function main() {
       {
         updatedAt: new Date().toISOString(),
         count: scrapedList.length,
-        sources: ["Funda", "Pararius"],
+        sources: ["Funda", "Pararius", "123Wonen", "Vastgoed Unie", "Rappange", "HB Housing"],
         listings: scrapedList
       },
       null,
