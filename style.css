@@ -4465,6 +4465,45 @@ section { padding: var(--space-xl) 0; }
   color: var(--muted);
 }
 
+.similar-card__btn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.65rem 1.2rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border-radius: var(--r-pill);
+  text-decoration: none;
+  background: var(--gold-gradient);
+  color: #080d15 !important;
+  border: none;
+  box-shadow: 0 4px 14px rgba(194, 159, 84, 0.35);
+  transition: all var(--dur-quick) var(--ease-standard);
+}
+
+.similar-card__btn svg {
+  stroke: #080d15;
+  transition: transform var(--dur-quick) var(--ease-standard);
+}
+
+.similar-card__btn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(194, 159, 84, 0.5);
+  color: #080d15 !important;
+}
+
+.similar-card__btn:hover svg {
+  transform: translateX(2px);
+}
+
+.similar-card__btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
 /* Toast popup */
 .toast-popup {
   position: fixed;
