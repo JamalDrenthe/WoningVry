@@ -89,14 +89,9 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
+    // Escape toets om hamburger drawer te sluiten
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && navCheckbox.checked) {
-        closeMenu();
-      }
-    });
-
-    window.addEventListener('resize', () => {
-      if (window.innerWidth > 1040 && navCheckbox.checked) {
         closeMenu();
       }
     });
