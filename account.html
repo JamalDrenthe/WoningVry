@@ -40,7 +40,7 @@
   <meta name="twitter:image" content="https://www.woningvry.nl/og-image.png">
   <meta name="twitter:image:alt" content="WoningVry - Zonder BKR. Zonder hypotheek. Wél een woning.">
   <meta name="description" content="Jouw persoonlijke WoningVry Portaal voor ronde-indeling, woningmatching en hypotheekvrije beoordeling voor huur en koop.">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20261109-menu">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1016,10 +1016,13 @@
                 </label>
                 <div style="display: flex; gap: 0.45rem; flex-wrap: wrap;">
                   <button type="button" class="btn-secondary btn-sm scraper-preset-btn" data-url="https://www.funda.nl/detail/koop/amsterdam/appartement-prinsengracht-714-h/43918274/" style="font-size: 0.76rem; padding: 0.25rem 0.6rem;">
-                    Voorbeeld Funda Koop (Amsterdam)
+                    Voorbeeld Funda Koop
+                  </button>
+                  <button type="button" class="btn-secondary btn-sm scraper-preset-btn" data-url="https://www.funda.nl/detail/huur/amsterdam/appartement-weesperzijde-94-hs/43920194/" style="font-size: 0.76rem; padding: 0.25rem 0.6rem;">
+                    Voorbeeld Funda Huur
                   </button>
                   <button type="button" class="btn-secondary btn-sm scraper-preset-btn" data-url="https://www.pararius.nl/appartement-te-huur/rotterdam/pr882190/kop-van-zuid-wilhelminakade" style="font-size: 0.76rem; padding: 0.25rem 0.6rem;">
-                    Voorbeeld Pararius Huur (Rotterdam)
+                    Voorbeeld Pararius Huur
                   </button>
                 </div>
               </div>
@@ -1136,6 +1139,22 @@
                     <label for="scr-year" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Bouwjaar</label>
                     <input type="number" id="scr-year" name="buildYear" value="2021" min="1600" max="2030" style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
                   </div>
+                  <div>
+                    <label for="scr-deposit" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Waarborgsom / Borg (€) *</label>
+                    <input type="number" id="scr-deposit" name="depositAmount" min="0" step="50" placeholder="Conform Funda/Pararius" style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
+                  </div>
+                  <div>
+                    <label for="scr-contract" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Contractduur / Looptijd</label>
+                    <input type="text" id="scr-contract" name="contractTerms" placeholder="Bijv. Min. 12 mnd of Bepaalde tijd" style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
+                  </div>
+                  <div>
+                    <label for="scr-income-req" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Inkomenseis (Aanbieder)</label>
+                    <input type="text" id="scr-income-req" name="incomeRequirement" placeholder="Bijv. 3x de huur" style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
+                  </div>
+                  <div>
+                    <label for="scr-pub-date" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Plaatsingsdatum (Funda/Pararius)</label>
+                    <input type="text" id="scr-pub-date" name="publicationDate" placeholder="Bijv. 09-11-2026 of 12 oktober 2026" style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
+                  </div>
                 </div>
 
                 <div style="margin-top: 0.9rem;">
@@ -1170,6 +1189,9 @@
               <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.6rem;">
                 <h4 style="margin: 0; color: var(--ink); font-size: 1rem;">📡 Actieve Funda &amp; Pararius Woningen in WoningVry (<span id="scraper-active-count">0</span>)</h4>
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                  <button type="button" id="btn-download-sheets-csv" class="btn-primary btn-sm" title="Download direct de meest actuele CSV voor Google Sheets">
+                    📊 Download Google Sheets CSV
+                  </button>
                   <button type="button" id="scraper-sync-defaults-btn" class="btn-secondary btn-sm">
                     🔄 Sync Standaard Funda/Pararius Feed naar Firestore
                   </button>
@@ -1243,17 +1265,27 @@
     </div>
   </main>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=20261109-menu"></script>
   <script type="module">
-    import { getFavorites, getFavoriteProperties, toggleFavorite, getViewings, getAlertPrefs, saveAlertPrefs } from "./properties-data.js";
+    import { 
+      getFavorites, getFavoriteProperties, toggleFavorite, getViewings, getAlertPrefs, saveAlertPrefs,
+      propertiesData, getLocalScrapedProperties, saveLocalScrapedProperty, removeLocalScrapedProperty, mergeScrapedProperties
+    } from "./properties-data.js";
     import {
       auth, db, onAuthStateChanged, sendPasswordResetEmail,
       sendEmailVerification, signOut, syncUserProfile, getUserProfile, saveUserProfile,
       saveUserFavorites, getUserFavorites, addUserViewing, getUserViewings,
       addAanbiederListing, getAanbiederListings, getAllUsersForAdmin, updateUserStatusByAdmin,
+      saveScrapedPropertyToFirestore, getPublicFirestoreListings, deleteFirestoreListing,
       crmosSearch, crmosCreateDeal, syncWoningVryUserToCRMos,
       collection, getDocs, foutTekst, toonMelding, ADMIN_EMAIL, isAdminEmail,
     } from "./auth.js";
+    import {
+      scrapePropertyUrl, parsePropertyHtml, convertToWoningVryProperty, formatEuro
+    } from "./funda-pararius-scraper.js";
+    import {
+      propertiesToCsv
+    } from "./google-sheets-sync.js";
 
     const melding = document.getElementById("account-melding");
     const roleBadge = document.getElementById("role-badge");
@@ -1737,6 +1769,319 @@
         }
       });
     }
+
+    // ============================================================
+    // FUNDA & PARARIUS 1-KLIK SCRAPER LOGICA IN ADMIN DASHBOARD
+    // ============================================================
+    const scraperUrlForm = document.getElementById("scraper-url-form");
+    const scraperTargetUrl = document.getElementById("scraper-target-url");
+    const scraperFetchBtn = document.getElementById("scraper-fetch-btn");
+    const scraperToggleRawBtn = document.getElementById("scraper-toggle-raw-btn");
+    const scraperRawHtmlBox = document.getElementById("scraper-raw-html-box");
+    const scraperRawHtml = document.getElementById("scraper-raw-html");
+    const scraperPreviewPanel = document.getElementById("scraper-preview-panel");
+    const scraperMethodBadge = document.getElementById("scraper-method-badge");
+    const scraperPreviewHeading = document.getElementById("scraper-preview-heading");
+    const scraperPublishForm = document.getElementById("scraper-publish-form");
+    const scraperActiveCount = document.getElementById("scraper-active-count");
+    const scraperListingsTbody = document.getElementById("scraper-listings-tbody");
+    const scraperSyncDefaultsBtn = document.getElementById("scraper-sync-defaults-btn");
+
+    // Inputs in scraper publish formulier
+    const scrAddress = document.getElementById("scr-address");
+    const scrPostal = document.getElementById("scr-postal");
+    const scrCity = document.getElementById("scr-city");
+    const scrNeighborhood = document.getElementById("scr-neighborhood");
+    const scrCategory = document.getElementById("scr-category");
+    const scrType = document.getElementById("scr-type");
+    const scrPrice = document.getElementById("scr-price");
+    const scrSurface = document.getElementById("scr-surface");
+    const scrRooms = document.getElementById("scr-rooms");
+    const scrBedrooms = document.getElementById("scr-bedrooms");
+    const scrEnergy = document.getElementById("scr-energy");
+    const scrYear = document.getElementById("scr-year");
+    const scrDeposit = document.getElementById("scr-deposit");
+    const scrContract = document.getElementById("scr-contract");
+    const scrIncomeReq = document.getElementById("scr-income-req");
+    const scrPubDate = document.getElementById("scr-pub-date");
+    const scrImage = document.getElementById("scr-image");
+    const scrDescription = document.getElementById("scr-description");
+    const scrCalcSummary = document.getElementById("scr-calc-summary");
+    const scrPublishFeedback = document.getElementById("scr-publish-feedback");
+    const scrCopyCodeBtn = document.getElementById("scr-copy-code-btn");
+
+    let currentScrapedObject = null;
+
+    if (scraperToggleRawBtn && scraperRawHtmlBox) {
+      scraperToggleRawBtn.addEventListener("click", () => {
+        const isHidden = scraperRawHtmlBox.hidden;
+        scraperRawHtmlBox.hidden = !isHidden;
+        scraperToggleRawBtn.setAttribute("aria-expanded", String(isHidden));
+      });
+    }
+
+    document.querySelectorAll(".scraper-preset-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (scraperTargetUrl) {
+          scraperTargetUrl.value = btn.getAttribute("data-url") || "";
+          scraperTargetUrl.focus();
+        }
+      });
+    });
+
+    function updateScrCalcSummary() {
+      if (!scrCalcSummary || !scrPrice) return;
+      const price = parseInt(scrPrice.value, 10) || 0;
+      const cat = scrCategory ? scrCategory.value : "koop";
+      const depVal = parseInt(scrDeposit?.value, 10) || (cat === "koop" ? Math.round(price * 0.10) : price);
+      const contract = scrContract?.value ? ` • Looptijd: <strong>${scrContract.value}</strong>` : "";
+      const incReq = scrIncomeReq?.value ? ` • Inkomenseis: <strong>${scrIncomeReq.value}</strong>` : "";
+
+      if (cat === "koop") {
+        scrCalcSummary.innerHTML = `📋 <strong>Voorwaarden Funda:</strong> Vraagprijs <strong>${formatEuro(price)} k.k.</strong> • Waarborgsom / Bankgarantie conform koopakte: <strong>${formatEuro(depVal)}</strong> (10% NVM-standaard).`;
+      } else {
+        scrCalcSummary.innerHTML = `📋 <strong>Voorwaarden Pararius:</strong> Huurprijs <strong>${formatEuro(price)} /mnd</strong> • Waarborgsom: <strong>${formatEuro(depVal)}</strong>${contract}${incReq}.`;
+      }
+    }
+
+    if (scrPrice) scrPrice.addEventListener("input", updateScrCalcSummary);
+    if (scrCategory) scrCategory.addEventListener("change", updateScrCalcSummary);
+    if (scrDeposit) scrDeposit.addEventListener("input", updateScrCalcSummary);
+    if (scrContract) scrContract.addEventListener("input", updateScrCalcSummary);
+    if (scrIncomeReq) scrIncomeReq.addEventListener("input", updateScrCalcSummary);
+
+    // Scrape actie uitvoeren
+    if (scraperUrlForm) {
+      scraperUrlForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const url = (scraperTargetUrl?.value || "").trim();
+        const rawCode = (scraperRawHtml?.value || "").trim();
+
+        if (!url && !rawCode) {
+          alert("Vul een Funda of Pararius link in of plak de broncode.");
+          return;
+        }
+
+        if (scraperFetchBtn) {
+          scraperFetchBtn.disabled = true;
+          scraperFetchBtn.textContent = "⏳ Ophalen & Parsen...";
+        }
+
+        try {
+          let parsedProp = null;
+          let method = "Direct URL Extractie";
+
+          if (rawCode) {
+            parsedProp = parsePropertyHtml(rawCode, url || "https://www.funda.nl");
+            method = "HTML & JSON-LD Broncode";
+          } else {
+            const res = await scrapePropertyUrl(url);
+            parsedProp = res.property;
+            method = res.fetchMethod === "direct" ? "Funda/Pararius Direct" : (res.fetchMethod === "allorigins-proxy" ? "CORS Proxy" : (res.fetchMethod === "jina-reader" ? "Jina Reader" : "URL-Slug Extractie"));
+          }
+
+          if (parsedProp) {
+            currentScrapedObject = parsedProp;
+            scrAddress.value = parsedProp.address || "";
+            scrPostal.value = parsedProp.postalCode || "";
+            scrCity.value = parsedProp.city || "";
+            scrNeighborhood.value = parsedProp.neighborhood || "";
+            scrCategory.value = parsedProp.category || "koop";
+            scrType.value = parsedProp.propertyType || "Appartement";
+            scrPrice.value = parsedProp.priceVal || (parsedProp.category === "koop" ? 385000 : 1350);
+            scrSurface.value = parsedProp.surface || 85;
+            scrRooms.value = parsedProp.rooms || 3;
+            scrBedrooms.value = parsedProp.bedrooms || 2;
+            scrEnergy.value = parsedProp.energyLabel || "A+";
+            scrYear.value = parsedProp.buildYear || 2021;
+            if (scrDeposit) scrDeposit.value = parsedProp.depositAmount || (parsedProp.category === "koop" ? Math.round(parsedProp.priceVal * 0.10) : parsedProp.priceVal);
+            if (scrContract) scrContract.value = parsedProp.contractTerms || "";
+            if (scrIncomeReq) scrIncomeReq.value = parsedProp.incomeRequirement || "";
+            if (scrPubDate) scrPubDate.value = parsedProp.publicationDate || new Date().toISOString().split("T")[0];
+            scrImage.value = (parsedProp.images && parsedProp.images.length > 0) ? parsedProp.images.join(", ") : (parsedProp.image || "");
+            scrDescription.value = parsedProp.description || "";
+
+            scraperPreviewHeading.textContent = `Preview: ${parsedProp.address}, ${parsedProp.city} (${formatEuro(parsedProp.priceVal)})`;
+            scraperMethodBadge.textContent = `● Geëxtraheerd via ${method}`;
+            scraperPreviewPanel.hidden = false;
+            updateScrCalcSummary();
+            scraperPreviewPanel.scrollIntoView({ behavior: "smooth" });
+          }
+        } catch (err) {
+          alert(`Fout bij scrapen: ${err.message || err}`);
+        } finally {
+          if (scraperFetchBtn) {
+            scraperFetchBtn.disabled = false;
+            scraperFetchBtn.textContent = "🔍 Scrape Woningdata";
+          }
+        }
+      });
+    }
+
+    // Publiceren naar Firestore & Lokaal
+    if (scraperPublishForm) {
+      scraperPublishForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const publishBtn = document.getElementById("scr-publish-btn");
+        if (publishBtn) publishBtn.disabled = true;
+
+        const imgs = (scrImage.value || "").split(",").map(s => s.trim()).filter(Boolean);
+        const finalProp = convertToWoningVryProperty({
+          id: currentScrapedObject?.id || `wv-${Date.now()}`,
+          sourcePlatform: currentScrapedObject?.sourcePlatform || "Funda",
+          sourceUrl: currentScrapedObject?.sourceUrl || scraperTargetUrl?.value || "",
+          address: scrAddress.value.trim(),
+          postalCode: scrPostal.value.trim(),
+          city: scrCity.value.trim(),
+          neighborhood: scrNeighborhood.value.trim(),
+          category: scrCategory.value,
+          propertyType: scrType.value,
+          priceVal: parseInt(scrPrice.value, 10),
+          surface: parseInt(scrSurface.value, 10),
+          rooms: parseInt(scrRooms.value, 10),
+          bedrooms: parseInt(scrBedrooms.value, 10),
+          energyLabel: scrEnergy.value.trim().toUpperCase(),
+          buildYear: parseInt(scrYear.value, 10),
+          depositAmount: parseInt(scrDeposit?.value, 10) || undefined,
+          contractTerms: scrContract?.value?.trim() || undefined,
+          incomeRequirement: scrIncomeReq?.value?.trim() || undefined,
+          publicationDate: scrPubDate?.value?.trim() || new Date().toISOString().split("T")[0],
+          images: imgs,
+          image: imgs[0] || "attached_assets/appartement-luxury.webp",
+          description: scrDescription.value.trim()
+        });
+
+        // 1. Sla lokaal op (direct zichtbaar)
+        saveLocalScrapedProperty(finalProp);
+
+        // 2. Schrijf naar Firestore /listings
+        await saveScrapedPropertyToFirestore(finalProp, currentUser?.uid || "");
+
+        // Feedback
+        if (scrPublishFeedback) {
+          scrPublishFeedback.textContent = `✅ "${finalProp.address}" direct gepubliceerd in Firestore en Aanbod!`;
+          scrPublishFeedback.hidden = false;
+          setTimeout(() => { scrPublishFeedback.hidden = true; }, 5000);
+        }
+
+        renderScraperListingsTable();
+        if (publishBtn) publishBtn.disabled = false;
+      });
+    }
+
+    // Kopieer code voor properties-data.js
+    if (scrCopyCodeBtn) {
+      scrCopyCodeBtn.addEventListener("click", () => {
+        if (!currentScrapedObject) return;
+        const code = JSON.stringify(currentScrapedObject, null, 2);
+        navigator.clipboard.writeText(code).then(() => {
+          alert("JSON-code gekopieerd naar klembord! Je kunt deze direct plakken in properties-data.js.");
+        }).catch(() => {
+          prompt("Kopieer de JSON:", code);
+        });
+      });
+    }
+
+    // Tabel met actieve gescrapete woningen renderen
+    async function renderScraperListingsTable() {
+      if (!scraperListingsTbody) return;
+      const localItems = getLocalScrapedProperties();
+      const firestoreListings = await getPublicFirestoreListings().catch(() => []);
+      
+      // Combineer uniek
+      const allActive = [...localItems];
+      for (const f of firestoreListings) {
+        if (!allActive.some(a => a.id === f.id || (a.address && f.address && a.address.toLowerCase() === f.address.toLowerCase()))) {
+          allActive.push(f);
+        }
+      }
+
+      if (scraperActiveCount) scraperActiveCount.textContent = allActive.length;
+
+      if (allActive.length === 0) {
+        scraperListingsTbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--muted); padding:1.5rem;">Nog geen woningen gescrapet. Plak hierboven een Funda of Pararius link om te starten.</td></tr>`;
+        return;
+      }
+
+      scraperListingsTbody.innerHTML = allActive.map(item => `
+        <tr>
+          <td><span class="badge-tag-${item.category === 'koop' ? 'koop' : 'huur'}">🔗 ${item.sourcePlatform || 'Funda'}</span></td>
+          <td><strong>${item.address}</strong><br><span style="font-size:0.8rem; color:var(--muted);">📍 ${item.postalCode || ''} ${item.city}</span></td>
+          <td>${item.propertyType}<br><span style="font-size:0.8rem; color:var(--muted);">${item.surface} m² • ${item.rooms} kamers • Label ${item.energyLabel}</span></td>
+          <td><strong>${item.priceDisplay}</strong><br><span style="font-size:0.75rem; color:#166534;">${item.category === 'koop' ? '10% borg' : 'Geen 4x eis'}</span></td>
+          <td>
+            <a href="woning.html?id=${item.id}" target="_blank" class="btn-secondary btn-sm" style="padding:0.25rem 0.5rem; font-size:0.75rem;">Bekijk</a>
+            <button type="button" class="btn-secondary btn-sm btn-delete-scraped" data-id="${item.id}" style="padding:0.25rem 0.5rem; font-size:0.75rem; color:#dc2626; border-color:#fca5a5;">Wis</button>
+          </td>
+        </tr>
+      `).join("");
+
+      scraperListingsTbody.querySelectorAll(".btn-delete-scraped").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const id = btn.getAttribute("data-id");
+          if (confirm("Weet je zeker dat je deze gescrapete woning wilt verwijderen?")) {
+            removeLocalScrapedProperty(id);
+            await deleteFirestoreListing(id, currentUser?.uid || "");
+            renderScraperListingsTable();
+          }
+        });
+      });
+    }
+
+    if (scraperSyncDefaultsBtn) {
+      scraperSyncDefaultsBtn.addEventListener("click", async () => {
+        scraperSyncDefaultsBtn.disabled = true;
+        scraperSyncDefaultsBtn.textContent = "⏳ Synchroniseren naar Firestore...";
+        try {
+          const defaults = propertiesData.filter(p => p.sourcePlatform);
+          for (const d of defaults) {
+            await saveScrapedPropertyToFirestore(d, currentUser?.uid || "");
+            saveLocalScrapedProperty(d);
+          }
+          alert(`✅ ${defaults.length} standaard Funda/Pararius woningen gesynchroniseerd naar Firestore!`);
+          renderScraperListingsTable();
+        } catch (err) {
+          alert(`Fout bij sync: ${err.message || err}`);
+        } finally {
+          scraperSyncDefaultsBtn.disabled = false;
+          scraperSyncDefaultsBtn.textContent = "🔄 Sync Standaard Funda/Pararius Feed naar Firestore";
+        }
+      });
+    }
+
+    // Directe live Google Sheets CSV downloadknop (genereert real-time CSV van alle actieve items)
+    const btnDownloadSheetsCsv = document.getElementById("btn-download-sheets-csv");
+    if (btnDownloadSheetsCsv) {
+      btnDownloadSheetsCsv.addEventListener("click", async () => {
+        const localItems = getLocalScrapedProperties();
+        const firestoreListings = await getPublicFirestoreListings().catch(() => []);
+        
+        const combined = [...localItems];
+        for (const f of firestoreListings) {
+          if (!combined.some(a => a.id === f.id || (a.address && f.address && a.address.toLowerCase() === f.address.toLowerCase()))) {
+            combined.push(f);
+          }
+        }
+
+        // Voeg ook standaard defaults toe als fallback
+        for (const d of propertiesData.filter(p => p.sourcePlatform)) {
+          if (!combined.some(a => a.id === d.id)) combined.push(d);
+        }
+
+        const csvContent = propertiesToCsv(combined);
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `woningvry-funda-pararius-${new Date().toISOString().slice(0, 10)}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      });
+    }
+
+    renderScraperListingsTable();
 
     // AUTH OBSERVER & DATA INITIALISATIE
     onAuthStateChanged(auth, async (user) => {

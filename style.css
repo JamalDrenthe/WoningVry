@@ -306,7 +306,14 @@ header.sticky--solid {
   filter: drop-shadow(0 4px 12px rgba(212, 182, 120, 0.3));
 }
 
-.nav__checkbox { display: none; }
+.nav__checkbox {
+  position: absolute !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  pointer-events: none !important;
+  margin: 0 !important;
+}
 
 .nav__backdrop {
   display: block;
@@ -330,7 +337,7 @@ header.sticky--solid {
 
 /* Luxury Capsule Hamburger Menu Toggle (Standaard actief op Desktop, Tablet en Mobiel) */
 .nav__toggle {
-  display: inline-flex;
+  display: inline-flex !important;
   align-items: center;
   justify-content: center;
   gap: 0.55rem;
@@ -350,6 +357,7 @@ header.sticky--solid {
   z-index: calc(var(--z-header) + 3);
   user-select: none;
   -webkit-user-select: none;
+  order: 1;
 }
 
 .nav__toggle::after {
@@ -427,7 +435,7 @@ header.sticky--solid {
 }
 
 .nav__checkbox:checked ~ .nav__menu {
-  transform: translateX(0);
+  transform: translateX(0) !important;
 }
 
 .nav__menu > li {

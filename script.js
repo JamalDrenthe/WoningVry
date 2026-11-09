@@ -67,8 +67,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Mobiel & tablet menu (scroll-lock, sluiten bij klik, escape en resize)
+  // Navigatie drawer (desktop, tablet en mobiel hamburger menu)
   const navCheckbox = document.getElementById('nav__checkbox');
+  const navBackdrop = document.querySelector('.nav__backdrop');
+  const navToggle = document.querySelector('.nav__toggle');
+
   if (navCheckbox) {
     const closeMenu = () => {
       navCheckbox.checked = false;
@@ -80,6 +83,25 @@ document.addEventListener('DOMContentLoaded', function () {
         closeMenu();
       });
     });
+
+    if (navBackdrop) {
+      navBackdrop.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeMenu();
+      });
+    }
+
+    if (navToggle) {
+      navToggle.addEventListener('click', () => {
+        setTimeout(() => {
+          if (navCheckbox.checked) {
+            document.body.classList.add('menu-open');
+          } else {
+            document.body.classList.remove('menu-open');
+          }
+        }, 15);
+      });
+    }
 
     navCheckbox.addEventListener('change', () => {
       if (navCheckbox.checked) {
