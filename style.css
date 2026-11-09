@@ -3173,14 +3173,24 @@ body.menu-open {
 
 .funda-type-pills {
   display: flex;
-  background: rgba(13, 27, 46, 0.05);
-  padding: 0.3rem;
+  align-items: center;
+  flex-wrap: wrap;
+  background: rgba(13, 27, 46, 0.04);
+  border: 1px solid rgba(13, 27, 46, 0.08);
+  padding: 0.35rem 0.5rem;
   border-radius: var(--r-pill);
-  gap: 0.35rem;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
+  gap: 0.45rem;
   max-width: 100%;
+}
+@media (max-width: 768px) {
+  .funda-type-pills {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    border-radius: var(--r-s);
+    padding: 0.35rem;
+  }
 }
 .funda-type-pills::-webkit-scrollbar {
   display: none;
@@ -3189,17 +3199,17 @@ body.menu-open {
 .funda-pill-btn {
   border: 1px solid transparent;
   background: transparent;
-  padding: 0.5rem 1.1rem;
+  padding: 0.52rem 1.15rem;
   border-radius: var(--r-pill);
   font-family: var(--font-body);
-  font-size: 0.86rem;
-  font-weight: 600;
-  color: #475569;
+  font-size: 0.88rem;
+  font-weight: 650;
+  color: #334155;
   cursor: pointer;
   transition: all var(--dur-quick) var(--ease-standard);
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -3210,20 +3220,24 @@ body.menu-open {
 }
 
 .funda-pill-btn.active {
-  background: var(--ink, #0d1b2e);
-  color: #ffffff;
-  border-color: rgba(212, 182, 120, 0.45);
-  box-shadow: 0 4px 12px rgba(13, 27, 46, 0.22);
+  background: var(--ink, #0d1b2e) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(212, 182, 120, 0.5) !important;
+  box-shadow: 0 4px 14px rgba(13, 27, 46, 0.25);
 }
 
 .funda-pill-btn .pill-count {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #94a3b8;
-  transition: color var(--dur-quick);
+  font-size: 0.78rem;
+  font-weight: 750;
+  color: #64748b;
+  background: rgba(13, 27, 46, 0.06);
+  padding: 0.12rem 0.52rem;
+  border-radius: var(--r-pill);
+  transition: all var(--dur-quick);
 }
 
 .funda-pill-btn.active .pill-count {
+  background: rgba(229, 197, 131, 0.25);
   color: var(--gold-bright, #e5c583);
 }
 
@@ -3511,7 +3525,7 @@ body.menu-open {
   font-weight: 750;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--ink, #0d1b2e);
+  color: #0d1b2e !important;
   border-bottom: 1px solid rgba(13, 27, 46, 0.08);
   padding-bottom: 0.45rem;
   margin-bottom: 0.2rem;
@@ -3519,11 +3533,11 @@ body.menu-open {
 
 .adv-field-group label {
   display: block;
-  font-size: 0.76rem;
-  font-weight: 700;
+  font-size: 0.78rem;
+  font-weight: 750;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: #475569;
+  color: #0f172a !important;
   margin-bottom: 0.35rem;
 }
 
@@ -3537,17 +3551,22 @@ body.menu-open {
 .adv-toggle-chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  padding: 0.45rem 0.65rem;
+  gap: 0.5rem;
+  padding: 0.5rem 0.7rem;
   background: #ffffff;
-  border: 1.5px solid rgba(13, 27, 46, 0.12);
+  border: 1.5px solid rgba(13, 27, 46, 0.16);
   border-radius: var(--r-s);
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #1e293b;
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: #0f172a !important;
   cursor: pointer;
   user-select: none;
   transition: all 0.2s ease;
+}
+
+.adv-toggle-chip span {
+  color: #0f172a !important;
+  font-weight: 650;
 }
 
 .adv-toggle-chip input[type="checkbox"] {
@@ -3563,9 +3582,14 @@ body.menu-open {
 }
 
 .adv-toggle-chip:has(input:checked) {
-  border-color: var(--gold);
-  background: rgba(229, 197, 131, 0.16);
-  color: #080d15;
+  border-color: var(--gold) !important;
+  background: rgba(229, 197, 131, 0.2) !important;
+  color: #080d15 !important;
+}
+
+.adv-toggle-chip:has(input:checked) span {
+  color: #080d15 !important;
+  font-weight: 750;
 }
 
 .adv-drawer-footer {
@@ -3713,19 +3737,39 @@ body.menu-open {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.4rem;
+  margin-bottom: 1.5rem;
   flex-wrap: wrap;
-  gap: 0.8rem;
+  gap: 0.85rem;
+  padding: 0.85rem 1.35rem;
+  background: rgba(13, 27, 46, 0.78);
+  border: 1px solid rgba(212, 182, 120, 0.25);
+  border-radius: var(--r-m);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .aanbod-results-count {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  color: var(--ink);
+  color: #f8fafc !important;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .aanbod-results-count span {
-  color: var(--gold);
+  color: var(--gold-bright, #e5c583) !important;
+  font-weight: 750;
+}
+
+.results-meta-hint,
+.aanbod-results-bar .results-meta-hint {
+  font-size: 0.84rem;
+  color: #cbd5e1 !important;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 /* ============================================================
@@ -4030,17 +4074,17 @@ body.menu-open {
   border-radius: var(--r-pill);
 }
 
-/* Secondary Buttons on Light Cards (funda-card, similar-card, funda-modal-card) */
+/* Secondary Buttons on Cards (funda-card, similar-card, funda-modal-card) */
 .funda-card .btn-secondary,
 .funda-modal-card .btn-secondary,
 .similar-card .btn-secondary,
 .light-surface .btn-secondary,
 .btn-open-modal {
-  background: #ffffff !important;
-  color: var(--ink, #0d1b2e) !important;
-  border: 1.5px solid rgba(194, 159, 84, 0.5) !important;
-  font-weight: 600;
-  box-shadow: 0 2px 6px rgba(13, 27, 46, 0.05);
+  background: #0d1b2e !important;
+  color: #ffffff !important;
+  border: 1.5px solid rgba(212, 182, 120, 0.45) !important;
+  font-weight: 650;
+  box-shadow: 0 3px 10px rgba(13, 27, 46, 0.18);
   transition: all var(--dur-quick) var(--ease-standard);
 }
 
@@ -4049,14 +4093,15 @@ body.menu-open {
 .similar-card .btn-secondary span,
 .light-surface .btn-secondary span,
 .btn-open-modal span {
-  color: var(--ink, #0d1b2e) !important;
+  color: #ffffff !important;
+  font-weight: 650;
 }
 
 .funda-card .btn-secondary svg,
 .funda-modal-card .btn-secondary svg,
 .similar-card .btn-secondary svg,
 .btn-open-modal svg {
-  stroke: var(--ink, #0d1b2e);
+  stroke: var(--gold-bright, #e5c583) !important;
   transition: stroke var(--dur-quick) var(--ease-standard);
 }
 
@@ -4065,11 +4110,11 @@ body.menu-open {
 .similar-card .btn-secondary:hover,
 .light-surface .btn-secondary:hover,
 .btn-open-modal:hover {
-  background: var(--ink, #0d1b2e) !important;
-  color: var(--gold-bright, #e5c583) !important;
-  border-color: var(--ink, #0d1b2e) !important;
+  background: var(--gold-gradient) !important;
+  color: #080d15 !important;
+  border-color: var(--gold-bright) !important;
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(13, 27, 46, 0.18), 0 0 12px rgba(229, 197, 131, 0.25);
+  box-shadow: 0 6px 18px rgba(194, 159, 84, 0.35);
 }
 
 .funda-card .btn-secondary:hover span,
@@ -4077,14 +4122,14 @@ body.menu-open {
 .similar-card .btn-secondary:hover span,
 .light-surface .btn-secondary:hover span,
 .btn-open-modal:hover span {
-  color: var(--gold-bright, #e5c583) !important;
+  color: #080d15 !important;
 }
 
 .funda-card .btn-secondary:hover svg,
 .funda-modal-card .btn-secondary:hover svg,
 .similar-card .btn-secondary:hover svg,
 .btn-open-modal:hover svg {
-  stroke: var(--gold-bright, #e5c583);
+  stroke: #080d15 !important;
 }
 
 .funda-card .btn-secondary:active,
@@ -4620,7 +4665,7 @@ body.menu-open {
 .woning-card-block h2 {
   font-family: var(--font-display);
   font-size: 1.5rem;
-  color: var(--ink);
+  color: #080d15 !important;
   margin-bottom: 1.25rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid rgba(13, 27, 46, 0.08);
@@ -4629,10 +4674,10 @@ body.menu-open {
 .woning-desc-text,
 .woning-card-block p,
 #prop-neighborhood {
-  color: #1e293b !important;
-  font-size: 1rem;
+  color: #0f172a !important;
+  font-size: 1.02rem;
   line-height: 1.8;
-  font-weight: 450;
+  font-weight: 500;
 }
 
 .woning-advantage-box {
