@@ -1319,6 +1319,7 @@ export const propertiesData = [
   {
     id: "funda-koop-keizersgracht-412-amsterdam",
     sourcePlatform: "Funda",
+    publicationDate: "2026-11-09",
     sourceUrl: "https://www.funda.nl/detail/koop/amsterdam/appartement-keizersgracht-412-a/43891204/",
     category: "koop",
     status: "beschikbaar",
@@ -1368,6 +1369,7 @@ export const propertiesData = [
   {
     id: "funda-huur-weesperzijde-94-amsterdam",
     sourcePlatform: "Funda",
+    publicationDate: "2026-11-09",
     sourceUrl: "https://www.funda.nl/detail/huur/amsterdam/appartement-weesperzijde-94-hs/43920194/",
     category: "huur",
     status: "beschikbaar",
@@ -1418,6 +1420,7 @@ export const propertiesData = [
   {
     id: "pararius-huur-wijnhaven-88-rotterdam",
     sourcePlatform: "Pararius",
+    publicationDate: "2026-11-09",
     sourceUrl: "https://www.pararius.nl/appartement-te-huur/rotterdam/pr904182/wijnhaven",
     category: "huur",
     status: "beschikbaar",
@@ -1468,6 +1471,7 @@ export const propertiesData = [
   {
     id: "funda-koop-maliebaan-56-utrecht",
     sourcePlatform: "Funda",
+    publicationDate: "2026-11-09",
     sourceUrl: "https://www.funda.nl/detail/koop/utrecht/huis-maliebaan-56/43904512/",
     category: "koop",
     status: "beschikbaar",
@@ -1516,6 +1520,7 @@ export const propertiesData = [
   {
     id: "pararius-huur-statenlaan-119-den-haag",
     sourcePlatform: "Pararius",
+    publicationDate: "2026-11-09",
     sourceUrl: "https://www.pararius.nl/appartement-te-huur/den-haag/pr782341/statenlaan",
     category: "huur",
     status: "beschikbaar",
