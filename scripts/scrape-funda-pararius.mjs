@@ -341,7 +341,7 @@ async function main() {
       {
         updatedAt: new Date().toISOString(),
         count: scrapedList.length,
-        sources: ["Funda", "Pararius", "123Wonen", "Vastgoed Unie", "Rappange", "HB Housing"],
+        sources: ["Funda", "Pararius", "123Wonen", "Vastgoed Unie", "Rappange", "HB Housing", "NOMOS Real Estate"],
         listings: scrapedList
       },
       null,

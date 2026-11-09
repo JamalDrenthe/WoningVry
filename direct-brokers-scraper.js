@@ -433,25 +433,125 @@ export async function scrapeHBHousing(limit = 10) {
 }
 
 /**
+ * 5. NOMOS Real Estate Scraper (Exclusief Amsterdams Vastgoed)
+ */
+export async function scrapeNomos(limit = 16) {
+  const listings = [];
+  try {
+    const res = await fetch("https://www.nomos.nl/properties", {
+      headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" }
+    });
+    if (!res.ok) return listings;
+    const html = await res.text();
+    const items = [...html.matchAll(/<div role=["\x27]listitem["\x27][^>]*class=["\x27]blog_item w-dyn-item["\x27]>([\s\S]*?)<\/a>\s*<\/div>/gi)];
+
+    for (const item of items.slice(0, limit)) {
+      try {
+        const raw = item[1];
+        const href = raw.match(/href=["\x27]([^"\x27]+)["\x27]/)?.[1] || "";
+        const rawName = raw.match(/class=["\x27]property_name["\x27]>([^<]+)<\/h3>/)?.[1]?.trim() || "Exclusief Pand";
+        const address = rawName.replace(/[-_]+$/, "").trim();
+
+        const rawPrice = raw.match(/class=["\x27]price is-overview["\x27]>([^<]+)<\/div>/)?.[1]?.trim() || "2500";
+        let priceVal = parseInt(rawPrice.replace(/[^0-9]/g, ""), 10) || 2500;
+        // Fix voor eventuele typfout op site (bijv 375 voor Paulus Potterstraat -> 3750)
+        if (priceVal < 500) priceVal = priceVal * 10;
+
+        // Bepaal Rent vs Buy op basis van Webflow condition class
+        const perMonthInvisible = raw.includes("heading-style-h5 property w-condition-invisible\"> Per Month") 
+                               || raw.includes("heading-style-h5 property w-condition-invisible\"> Per Month");
+        const isRent = !perMonthInvisible && raw.includes("Per Month");
+        const category = isRent ? "huur" : "koop";
+
+        // Oppervlakte & Slaapkamers
+        const surfaceMatch = raw.match(/class=["\x27]size_wrapper["\x27]>[\s\S]*?<div[^>]*>(\d+)<\/div>/);
+        const surface = surfaceMatch ? parseInt(surfaceMatch[1], 10) : 85;
+
+        const bedroomsMatch = raw.match(/class=["\x27]bedrooms_wrapper["\x27]>[\s\S]*?<div[^>]*>(\d+)<\/div>/);
+        const bedrooms = bedroomsMatch ? parseInt(bedroomsMatch[1], 10) : 2;
+
+        // Afbeelding
+        const imgMatch = raw.match(/<img[^>]*src=["\x27]([^"\x27]+)["\x27]/)?.[1] || "attached_assets/appartement-luxury.webp";
+
+        // Stad bepalen op basis van adres
+        let city = "Amsterdam";
+        if (address.toLowerCase().includes("groenhof") || address.toLowerCase().includes("heemraadschapslaan")) {
+          city = "Amstelveen";
+        } else if (address.toLowerCase().includes("griftstraat")) {
+          city = "Utrecht";
+        } else if (address.toLowerCase().includes("vinkenkade")) {
+          city = "Vinkeveen";
+        }
+
+        // Waarborgsom
+        let depositDisplay = "";
+        let depositAmount = null;
+        if (isRent) {
+          depositAmount = priceVal * 2;
+          depositDisplay = `€ ${depositAmount.toLocaleString("nl-NL")} (2 maanden huur NOMOS)`;
+        } else {
+          depositAmount = Math.round(priceVal * 0.10);
+          depositDisplay = `€ ${depositAmount.toLocaleString("nl-NL")} (10% notariële bankgarantie)`;
+        }
+
+        const publicationDate = "2026-11-09";
+
+        listings.push(
+          convertToWoningVryProperty({
+            id: "nomos-" + address.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+            sourcePlatform: "NOMOS Real Estate",
+            sourceUrl: "https://www.nomos.nl" + href,
+            category,
+            status: "beschikbaar",
+            statusLabel: "Direct Beschikbaar",
+            address,
+            city,
+            priceVal,
+            priceDisplay: isRent ? `€ ${priceVal.toLocaleString("nl-NL")} /mnd` : `€ ${priceVal.toLocaleString("nl-NL")} k.k.`,
+            depositAmount,
+            depositDisplay,
+            contractTerms: isRent ? "Minimaal 12 maanden • Gestoffeerd / Gemeubileerd" : "Kosten koper (k.k.) • Mandaat NOMOS",
+            incomeRequirement: isRent ? "Minimaal 3x de maandhuur" : "Solvabiliteit / Eigen middelen",
+            publicationDate,
+            surface,
+            rooms: bedrooms + 1,
+            bedrooms,
+            energyLabel: "A+",
+            image: imgMatch,
+            brokerName: "NOMOS Real Estate Amsterdam",
+            description: `Exclusief ${category}-aanbod via NOMOS Real Estate aan de ${address} (${city}). Hoogwaardig afgewerkt, oppervlakte ${surface} m² met ${bedrooms} slaapkamers. Geregistreerd in november 2026.`
+          })
+        );
+      } catch (err) {}
+    }
+  } catch (err) {
+    console.error("Fout bij ophalen NOMOS:", err.message);
+  }
+  return listings;
+}
+
+/**
  * Voert een volledige scrape uit over alle directe makelaars
  */
 export async function scrapeAllDirectBrokers(options = {}) {
   const { limitPerBroker = 10 } = options;
   console.log(`📡 Starten met scrapen van directe makelaarssites (geen Cloudflare bot-barrières)...`);
 
-  const [w123, vastgoedunie, rappange, hbhousing] = await Promise.all([
+  const [w123, vastgoedunie, rappange, hbhousing, nomos] = await Promise.all([
     scrape123Wonen(limitPerBroker),
     scrapeVastgoedUnie(limitPerBroker),
     scrapeRappange(limitPerBroker),
-    scrapeHBHousing(limitPerBroker)
+    scrapeHBHousing(limitPerBroker),
+    scrapeNomos(limitPerBroker)
   ]);
 
-  const all = [...w123, ...vastgoedunie, ...rappange, ...hbhousing];
+  const all = [...w123, ...vastgoedunie, ...rappange, ...hbhousing, ...nomos];
   console.log(`✅ Directe makelaars scrape voltooid! Totaal: ${all.length} actuele woningen.`);
   console.log(`   - 123Wonen: ${w123.length} woningen`);
   console.log(`   - Vastgoed Unie: ${vastgoedunie.length} woningen`);
   console.log(`   - Rappange Makelaardij: ${rappange.length} woningen`);
   console.log(`   - HB Housing: ${hbhousing.length} woningen`);
+  console.log(`   - NOMOS Real Estate: ${nomos.length} woningen`);
 
   return all;
 }

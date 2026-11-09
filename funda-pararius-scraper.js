@@ -626,8 +626,9 @@ export function convertToWoningVryProperty(raw = {}) {
   if (isKoop) {
     // Koop: Standaard Funda k.k. / v.o.n. voorwaarden en wettelijke/notariële bankgarantie/waarborgsom (gebruikelijk 10% bij NVM koopovereenkomst)
     const borgBedrag = depositAmount || Math.round(priceVal * 0.10);
+    depositDisplay = raw.depositDisplay || `${formatEuro(borgBedrag)} (10% notariële waarborgsom)`;
     priceDisplay = `${formatEuro(priceVal)} k.k.`;
-    priceSub = `Waarborgsom conform ${platform}: <strong>${formatEuro(borgBedrag)}</strong> (10% NVM bankgarantie)`;
+    priceSub = `Waarborgsom conform ${platform}: <strong>${depositDisplay}</strong>`;
     advantage =
       raw.advantage ||
       `Aangeboden conform de officiële verkoopvoorwaarden op ${platform}. Vraagprijs ${formatEuro(priceVal)} k.k. met de standaard notariële waarborgsom / bankgarantie van ${formatEuro(borgBedrag)} (10%).`;
