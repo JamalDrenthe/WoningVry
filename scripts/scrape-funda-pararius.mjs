@@ -15,25 +15,54 @@ import {
   parseSearchResultsHtml,
   convertToWoningVryProperty
 } from "../funda-pararius-scraper.js";
+import {
+  propertiesToCsv,
+  appendToGoogleSheetCli,
+  exportSheetCli
+} from "../google-sheets-sync.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, "..");
 const PROPERTIES_DATA_PATH = path.join(ROOT_DIR, "properties-data.js");
 const SCRAPED_JSON_PATH = path.join(ROOT_DIR, "public", "scraped-listings.json");
+const SCRAPED_CSV_PATH = path.join(ROOT_DIR, "public", "scraped-listings.csv");
+const SCRAPED_XLSX_PATH = path.join(ROOT_DIR, "public", "scraped-listings.xlsx");
 
 /**
- * Standaard zoek-feeds op Pararius & Funda voor de 7 WoningVry kernsteden
+ * Standaard zoek-feeds op Funda (Koop én Huur) en Pararius (Huur én Koop)
+ * voor de Nederlandse steden.
  */
-const DEFAULT_CITY_FEEDS = [
+const DEFAULT_FEEDS = [
+  // Amsterdam
   { city: "Amsterdam", platform: "Funda", category: "koop", url: "https://www.funda.nl/zoeken/koop?selected_area=%5B%22amsterdam%22%5D" },
+  { city: "Amsterdam", platform: "Funda", category: "huur", url: "https://www.funda.nl/zoeken/huur?selected_area=%5B%22amsterdam%22%5D" },
   { city: "Amsterdam", platform: "Pararius", category: "huur", url: "https://www.pararius.nl/huurwoningen/amsterdam" },
+  { city: "Amsterdam", platform: "Pararius", category: "koop", url: "https://www.pararius.nl/koopwoningen/amsterdam" },
+
+  // Rotterdam
   { city: "Rotterdam", platform: "Funda", category: "koop", url: "https://www.funda.nl/zoeken/koop?selected_area=%5B%22rotterdam%22%5D" },
+  { city: "Rotterdam", platform: "Funda", category: "huur", url: "https://www.funda.nl/zoeken/huur?selected_area=%5B%22rotterdam%22%5D" },
   { city: "Rotterdam", platform: "Pararius", category: "huur", url: "https://www.pararius.nl/huurwoningen/rotterdam" },
+  { city: "Rotterdam", platform: "Pararius", category: "koop", url: "https://www.pararius.nl/koopwoningen/rotterdam" },
+
+  // Utrecht
   { city: "Utrecht", platform: "Funda", category: "koop", url: "https://www.funda.nl/zoeken/koop?selected_area=%5B%22utrecht%22%5D" },
+  { city: "Utrecht", platform: "Funda", category: "huur", url: "https://www.funda.nl/zoeken/huur?selected_area=%5B%22utrecht%22%5D" },
   { city: "Utrecht", platform: "Pararius", category: "huur", url: "https://www.pararius.nl/huurwoningen/utrecht" },
+  { city: "Utrecht", platform: "Pararius", category: "koop", url: "https://www.pararius.nl/koopwoningen/utrecht" },
+
+  // Den Haag
+  { city: "Den Haag", platform: "Funda", category: "koop", url: "https://www.funda.nl/zoeken/koop?selected_area=%5B%22den-haag%22%5D" },
+  { city: "Den Haag", platform: "Funda", category: "huur", url: "https://www.funda.nl/zoeken/huur?selected_area=%5B%22den-haag%22%5D" },
+  { city: "Den Haag", platform: "Pararius", category: "huur", url: "https://www.pararius.nl/huurwoningen/den-haag" },
   { city: "Den Haag", platform: "Pararius", category: "koop", url: "https://www.pararius.nl/koopwoningen/den-haag" },
-  { city: "Eindhoven", platform: "Pararius", category: "huur", url: "https://www.pararius.nl/huurwoningen/eindhoven" }
+
+  // Eindhoven
+  { city: "Eindhoven", platform: "Funda", category: "koop", url: "https://www.funda.nl/zoeken/koop?selected_area=%5B%22eindhoven%22%5D" },
+  { city: "Eindhoven", platform: "Funda", category: "huur", url: "https://www.funda.nl/zoeken/huur?selected_area=%5B%22eindhoven%22%5D" },
+  { city: "Eindhoven", platform: "Pararius", category: "huur", url: "https://www.pararius.nl/huurwoningen/eindhoven" },
+  { city: "Eindhoven", platform: "Pararius", category: "koop", url: "https://www.pararius.nl/koopwoningen/eindhoven" }
 ];
 
 /**
@@ -55,6 +84,7 @@ const STANDARD_FUNDA_PARARIUS_SEED = [
     neighborhood: "Grachtengordel-West / Negen Straatjes",
     propertyType: "Appartement",
     priceVal: 545000,
+    depositAmount: 54500,
     surface: 94,
     volume: 285,
     rooms: 3,
@@ -69,7 +99,40 @@ const STANDARD_FUNDA_PARARIUS_SEED = [
       "attached_assets/20250510_1714_Luxury Bedroom Serenity_simple_compose_01jtxc54sbej1sqqpzen90c83y.png",
       "attached_assets/locatie-amsterdam.webp"
     ],
-    description: "Hoogwaardig gerenoveerd 3-kamer grachtenappartement van 94 m² met uitzicht op de Keizersgracht, hoge plafonds met originele balkenstructuur, moderne woonkeuken met kookeiland en zonnig balkon aan de stille binnentuin. Geselecteerd uit het actuele Funda-aanbod voor directe hypotheekvrije toewijzing binnen WoningVry."
+    description: "Hoogwaardig gerenoveerd 3-kamer grachtenappartement van 94 m² met uitzicht op de Keizersgracht, hoge plafonds met originele balkenstructuur, moderne woonkeuken met kookeiland en zonnig balkon aan de stille binnentuin. Direct overgenomen van Funda Koop inclusief de originele verkoopvoorwaarden en notariële bankgarantie."
+  },
+  {
+    id: "funda-huur-weesperzijde-94-amsterdam",
+    sourcePlatform: "Funda",
+    sourceUrl: "https://www.funda.nl/detail/huur/amsterdam/appartement-weesperzijde-94-hs/43920194/",
+    category: "huur",
+    status: "beschikbaar",
+    statusLabel: "Direct Beschikbaar",
+    isFeatured: true,
+    address: "Weesperzijde 94 HS",
+    postalCode: "1091 EL",
+    city: "Amsterdam",
+    neighborhood: "Oost / Weesperzijde aan de Amstel",
+    propertyType: "Appartement",
+    priceVal: 1850,
+    depositAmount: 3700,
+    depositMonths: 2,
+    contractTerms: "Onbepaalde tijd (minimaal 12 maanden)",
+    incomeRequirement: "Minimaal 3x de bruto maandhuur",
+    surface: 78,
+    volume: 240,
+    rooms: 3,
+    bedrooms: 2,
+    bathrooms: 1,
+    energyLabel: "A",
+    buildYear: 2017,
+    image: "attached_assets/20250510_1714_Modern Scandinavian Apartment_simple_compose_01jtxc3ykgf9nre663k3zpmdmn.png",
+    images: [
+      "attached_assets/20250510_1714_Modern Scandinavian Apartment_simple_compose_01jtxc3ykgf9nre663k3zpmdmn.png",
+      "attached_assets/appartement-luxury.webp",
+      "attached_assets/locatie-amsterdam.webp"
+    ],
+    description: "Karakteristiek en hoogwaardig afgewerkt 3-kamer benedenhuis aan de Amstel met zonnige stadstuin. Geselecteerd uit het officiële Funda Huur aanbod inclusief alle oorspronkelijke huurvoorwaarden van de verhurend makelaar."
   },
   {
     id: "pararius-huur-wijnhaven-88-rotterdam",
@@ -85,6 +148,10 @@ const STANDARD_FUNDA_PARARIUS_SEED = [
     neighborhood: "Maritiem District / Scheepvaartkwartier",
     propertyType: "Appartement",
     priceVal: 1425,
+    depositAmount: 2850,
+    depositMonths: 2,
+    contractTerms: "Minimaal 12 maanden",
+    incomeRequirement: "3x de huur",
     surface: 84,
     volume: 255,
     rooms: 3,
@@ -98,7 +165,7 @@ const STANDARD_FUNDA_PARARIUS_SEED = [
       "attached_assets/appartement-luxury.webp",
       "attached_assets/locatie-rotterdam.webp"
     ],
-    description: "Licht en instapklaar 3-kamer nieuwbouwappartement op de 11e verdieping aan de Wijnhaven met loggia op het zuiden, vloerverwarming en panoramisch uitzicht over de Rotterdamse skyline. Geselecteerd via Pararius en via WoningVry direct te huren zonder 4x bruto inkomenseis."
+    description: "Licht en instapklaar 3-kamer nieuwbouwappartement op de 11e verdieping aan de Wijnhaven met loggia op het zuiden, vloerverwarming en panoramisch uitzicht over de Rotterdamse skyline. Geïmporteerd direct vanaf Pararius met alle originele huurvoorwaarden."
   },
   {
     id: "funda-koop-maliebaan-56-utrecht",
@@ -127,7 +194,7 @@ const STANDARD_FUNDA_PARARIUS_SEED = [
       "attached_assets/20250510_1719_Luxury Bedroom Oasis_simple_compose_01jtxcemdwfjktph976sg69wpt.png",
       "attached_assets/locatie-utrecht.webp"
     ],
-    description: "Stijlvolle en volledig verduurzaamde stadswoning van 128 m² nabij de statige Maliebaan en het Wilhelminapark. Voorzien van warmtepomp, zonnepanelen, drie ruime slaapkamers en een diepe stadstuin op het westen. Geselecteerd via Funda voor hypotheekvrije overname met 10% borgstelling."
+    description: "Stijlvolle en volledig verduurzaamde stadswoning van 128 m² nabij de statige Maliebaan en het Wilhelminapark. Voorzien van warmtepomp, zonnepanelen, drie ruime slaapkamers en een diepe stadstuin op het westen. Direct overgenomen van Funda met officiële NVM voorwaarden."
   },
   {
     id: "pararius-huur-statenlaan-119-den-haag",
@@ -143,6 +210,10 @@ const STANDARD_FUNDA_PARARIUS_SEED = [
     neighborhood: "Statenkwartier / Scheveningen",
     propertyType: "Appartement",
     priceVal: 1360,
+    depositAmount: 1360,
+    depositMonths: 1,
+    contractTerms: "Bepaalde tijd (max. 2 jaar)",
+    incomeRequirement: "Min. € 4.000 bruto p/m",
     surface: 88,
     volume: 270,
     rooms: 4,
@@ -161,7 +232,12 @@ const STANDARD_FUNDA_PARARIUS_SEED = [
 ];
 
 function parseArgs(argv) {
-  const args = { urls: [], cities: [], limit: 4 };
+  const args = {
+    urls: [],
+    cities: [],
+    limit: 4,
+    sheetId: process.env.GOOGLE_SHEET_ID || "17THHeBixl8YvVu7tk9cKW9waiofcI8saY5U2pyztHZY"
+  };
   for (let i = 2; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === "--url" && argv[i + 1]) {
@@ -170,6 +246,8 @@ function parseArgs(argv) {
       args.cities = argv[++i].split(",").map((s) => s.trim()).filter(Boolean);
     } else if (arg === "--limit" && argv[i + 1]) {
       args.limit = parseInt(argv[++i], 10) || 4;
+    } else if (arg === "--sheet-id" && argv[i + 1]) {
+      args.sheetId = argv[++i];
     }
   }
   return args;
@@ -209,11 +287,11 @@ async function main() {
       }
     }
   } else {
-    // 2. Standaard batch-run over de stad-feeds
+    // 2. Standaard batch-run over de stad-feeds (Funda Koop, Funda Huur, Pararius Huur, Pararius Koop)
     const activeFeeds =
       args.cities.length > 0
-        ? DEFAULT_CITY_FEEDS.filter((f) => args.cities.some((c) => c.toLowerCase() === f.city.toLowerCase()))
-        : DEFAULT_CITY_FEEDS.slice(0, args.limit);
+        ? DEFAULT_FEEDS.filter((f) => args.cities.some((c) => c.toLowerCase() === f.city.toLowerCase()))
+        : DEFAULT_FEEDS.slice(0, args.limit);
 
     for (const feed of activeFeeds) {
       console.log(`📡 Controleren van ${feed.platform} (${feed.category.toUpperCase()}) in ${feed.city}...`);
@@ -258,7 +336,30 @@ async function main() {
   );
   console.log(`💾 JSON-feed opgeslagen in: public/scraped-listings.json (${scrapedList.length} woningen)`);
 
-  console.log("✅ Scrape & conversie naar WoningVry-model voltooid!");
+  // 5. Exporteer direct naar Google Sheets CSV-formaat (met plaatsingsdatum & borg)
+  const csvData = propertiesToCsv(scrapedList);
+  fs.writeFileSync(SCRAPED_CSV_PATH, csvData, "utf8");
+  console.log(`📊 Google Sheets CSV opgeslagen in: public/scraped-listings.csv (Direct te importeren)`);
+
+  // 6. Indien Google Sheet ID meegegeven, append direct via gsheets CLI
+  if (args.sheetId) {
+    console.log(`📊 Schrijven naar Google Sheet ID: ${args.sheetId}...`);
+    const sheetRes = await appendToGoogleSheetCli(args.sheetId, scrapedList);
+    if (sheetRes.success) {
+      console.log(`   ✅ Succesvol ${sheetRes.count} rijen toegevoegd aan Google Sheet!`);
+      // Exporteer ook automatisch als Excel (.xlsx) bestand
+      try {
+        await exportSheetCli(args.sheetId, SCRAPED_XLSX_PATH, "xlsx");
+        console.log(`📊 Google Sheets Excel (.xlsx) opgeslagen in: public/scraped-listings.xlsx`);
+      } catch (err) {
+        // stil falen indien export niet lukt
+      }
+    } else {
+      console.warn(`   ⚠️ Kon niet direct naar Google Sheet schrijven: ${sheetRes.error}`);
+    }
+  }
+
+  console.log("✅ Scrape, plaatsingsdatums, borg & Google Sheets export voltooid!");
 }
 
 main().catch((err) => {

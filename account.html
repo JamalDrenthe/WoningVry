@@ -1189,11 +1189,17 @@
               <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.6rem;">
                 <h4 style="margin: 0; color: var(--ink); font-size: 1rem;">📡 Actieve Funda &amp; Pararius Woningen in WoningVry (<span id="scraper-active-count">0</span>)</h4>
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                  <button type="button" id="btn-download-sheets-csv" class="btn-primary btn-sm" title="Download direct de meest actuele CSV voor Google Sheets">
-                    📊 Download Google Sheets CSV
+                  <a href="https://docs.google.com/spreadsheets/d/17THHeBixl8YvVu7tk9cKW9waiofcI8saY5U2pyztHZY/edit" target="_blank" class="btn-primary btn-sm" style="text-decoration:none;">
+                    📊 Open Live Google Sheet ↗
+                  </a>
+                  <button type="button" id="btn-download-sheets-csv" class="btn-secondary btn-sm" title="Download direct de meest actuele CSV voor Google Sheets">
+                    📥 Download CSV
                   </button>
+                  <a href="scraped-listings.xlsx" download="woningvry-funda-pararius.xlsx" class="btn-secondary btn-sm" title="Download direct het actuele Excel (.xlsx) bestand direct uit Google Drive" style="text-decoration:none;">
+                    📗 Download Excel
+                  </a>
                   <button type="button" id="scraper-sync-defaults-btn" class="btn-secondary btn-sm">
-                    🔄 Sync Standaard Funda/Pararius Feed naar Firestore
+                    🔄 Sync Feed naar Firestore
                   </button>
                   <a href="aanbod.html" class="btn-secondary btn-sm">Bekijk op Aanbodpagina →</a>
                 </div>

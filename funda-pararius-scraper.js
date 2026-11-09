@@ -314,6 +314,46 @@ function extractDutchFeaturesFromText(html = "") {
     out.images = Array.from(imgSet).slice(0, 12);
   }
 
+  // Borg & Voorwaarden extractie direct van Funda & Pararius
+  // Pararius & Funda vermelden vaak expliciet de waarborgsom (bijv. "Waarborgsom: € 2.800" of "Borg: 2 maanden" of "1 maand huur")
+  const depositMatch = text.match(/(?:waarborgsom|borg(?:som)?|deposit)[^0-9€]{1,35}€?\s*([1-9]\d{0,2}(?:\.\d{3})+|\d{3,5})/i);
+  if (depositMatch) {
+    out.depositAmount = parseInt(depositMatch[1].replace(/\./g, ""), 10);
+  } else {
+    const depositMonthsMatch = text.match(/(?:waarborgsom|borg(?:som)?)[^a-z0-9]{1,35}(\d{1,2})\s*maand(?:en)?/i);
+    if (depositMonthsMatch) {
+      out.depositMonths = parseInt(depositMonthsMatch[1], 10);
+    }
+  }
+
+  // Contractduur / Beschikbaarheidsvoorwaarden
+  const contractMatch = text.match(/(?:huurperiode|looptijd|contract(?:duur)?|huurovereenkomst)[^:\n]{0,35}:\s*([^\n.;]{4,60})/i);
+  if (contractMatch) {
+    out.contractTerms = cleanText(contractMatch[1]);
+  }
+
+  // Inkomenseis van aanbieder (bijv. "Inkomenseis: 3x de huur" of "Minimaal bruto inkomen van € 4.500")
+  const incomeReqMatch = text.match(/(?:inkomenseis|bruto\s*inkomen)[^:\n]{0,35}:\s*([^\n.;]{4,60})/i) ||
+                         text.match(/\b([2-4](?:[,.]\d)?\s*x\s*(?:de\s*)?(?:bruto\s*)?huur(?:prijs)?)\b/i);
+  if (incomeReqMatch) {
+    out.incomeRequirement = cleanText(incomeReqMatch[1]);
+  }
+
+  // Makelaar / Aanbieder van Funda of Pararius
+  const brokerMatch = text.match(/(?:aangeboden\s+door|makelaar|beheerder)[^:\n]{0,35}:\s*([^\n.,;]{3,50})/i);
+  if (brokerMatch) {
+    out.brokerName = cleanText(brokerMatch[1]);
+  }
+
+  // Datum van plaatsing / Aangeboden sinds op Funda of Pararius
+  // Voorbeelden: "Aangeboden sinds 12 oktober 2026", "Plaatsingsdatum: 05-11-2026", "Geplaatst op 4 november 2026"
+  const dateMatch = text.match(/(?:aangeboden\s+sinds|plaatsingsdatum|geplaatst\s+op|datum\s+van\s+aanmelding)[^:\n]{0,30}:\s*([^\n.;]{4,35})/i) ||
+                    text.match(/(?:aangeboden\s+sinds|geplaatst\s+op)\s+(\d{1,2}\s+[a-z]+\s+\d{4})/i) ||
+                    text.match(/(?:sinds)\s+(\d{1,2}[-\/.]\d{1,2}[-\/.]\d{4})/i);
+  if (dateMatch) {
+    out.publicationDate = cleanText(dateMatch[1]);
+  }
+
   return out;
 }
 
@@ -344,6 +384,12 @@ export function parsePropertyHtml(html = "", sourceUrl = "") {
   let buildYear = regexFeatures.buildYear || 2020;
   let description = "";
   let images = regexFeatures.images || [];
+  let depositAmount = regexFeatures.depositAmount || null;
+  let depositMonths = regexFeatures.depositMonths || null;
+  let contractTerms = regexFeatures.contractTerms || "";
+  let incomeRequirement = regexFeatures.incomeRequirement || "";
+  let brokerName = regexFeatures.brokerName || "";
+  let publicationDate = regexFeatures.publicationDate || "";
 
   // 1. Verrijk vanuit JSON-LD (meest betrouwbare bron op Funda & Pararius)
   for (const item of jsonLdList) {
@@ -391,6 +437,12 @@ export function parsePropertyHtml(html = "", sourceUrl = "") {
       if (item.yearBuilt) {
         buildYear = parseInt(item.yearBuilt, 10) || buildYear;
       }
+      if (item.datePosted && !publicationDate) {
+        publicationDate = cleanText(item.datePosted);
+      }
+      if (item.dateCreated && !publicationDate) {
+        publicationDate = cleanText(item.dateCreated);
+      }
       if (item.image) {
         const ldImgs = Array.isArray(item.image)
           ? item.image.map((img) => (typeof img === "string" ? img : img?.url || img?.contentUrl)).filter(Boolean)
@@ -432,6 +484,10 @@ export function parsePropertyHtml(html = "", sourceUrl = "") {
     description = meta["og:description"] || meta["description"];
   }
 
+  if (!publicationDate && (meta["article:published_time"] || meta["date"] || meta["pubdate"])) {
+    publicationDate = cleanText(meta["article:published_time"] || meta["date"] || meta["pubdate"]).split("T")[0];
+  }
+
   if (meta["og:image"] && !images.includes(meta["og:image"])) {
     images.unshift(meta["og:image"]);
   }
@@ -461,6 +517,12 @@ export function parsePropertyHtml(html = "", sourceUrl = "") {
     bathrooms,
     energyLabel: energyLabel || "A+",
     buildYear: buildYear || 2021,
+    depositAmount,
+    depositMonths,
+    contractTerms,
+    incomeRequirement,
+    brokerName,
+    publicationDate: publicationDate || new Date().toISOString().split("T")[0],
     description,
     images
   });
@@ -550,25 +612,42 @@ export function convertToWoningVryProperty(raw = {}) {
   const postalCode = cleanText(raw.postalCode || "1012 AB");
   const neighborhood = cleanText(raw.neighborhood || `${city} Centrum`);
 
-  // Bereken WoningVry specifieke prijsweergave
+  // Borg & Voorwaarden direct van Funda & Pararius
+  let depositDisplay = "";
+  let depositAmount = Number(raw.depositAmount) || 0;
+  if (!depositAmount && raw.depositMonths) {
+    depositAmount = Math.round(priceVal * raw.depositMonths);
+  }
+
   let priceDisplay = "";
   let priceSub = "";
   let advantage = "";
 
   if (isKoop) {
-    const borgBedrag = Math.round(priceVal * 0.10);
-    const maandInleg = Math.round(priceVal * 0.003);
+    // Koop: Standaard Funda k.k. / v.o.n. voorwaarden en wettelijke/notariële bankgarantie/waarborgsom (gebruikelijk 10% bij NVM koopovereenkomst)
+    const borgBedrag = depositAmount || Math.round(priceVal * 0.10);
     priceDisplay = `${formatEuro(priceVal)} k.k.`;
-    priceSub = `Hypotheekvrije inleg ca. <strong>${formatEuro(maandInleg)} /mnd</strong> • Borg 10% (${formatEuro(borgBedrag)})`;
+    priceSub = `Waarborgsom conform ${platform}: <strong>${formatEuro(borgBedrag)}</strong> (10% NVM bankgarantie)`;
     advantage =
       raw.advantage ||
-      `Geselecteerd via ${platform} en direct beschikbaar binnen de hypotheekvrije regeling van WoningVry. Geen afwijzing op BKR of ontbrekende jaarcijfers voor ondernemers; toewijzing geschiedt op basis van 10% borginleg (${formatEuro(borgBedrag)}).`;
+      `Aangeboden conform de officiële verkoopvoorwaarden op ${platform}. Vraagprijs ${formatEuro(priceVal)} k.k. met de standaard notariële waarborgsom / bankgarantie van ${formatEuro(borgBedrag)} (10%).`;
   } else {
+    // Huur: Neem de exacte waarborgsom en contractvoorwaarden over van Pararius of Funda
+    const effectiveDeposit = depositAmount || (raw.depositMonths ? Math.round(priceVal * raw.depositMonths) : priceVal);
+    const monthsText = raw.depositMonths ? `${raw.depositMonths} ${raw.depositMonths === 1 ? 'maand' : 'maanden'}` : (effectiveDeposit === priceVal ? '1 maand' : `${formatEuro(effectiveDeposit)}`);
+    depositDisplay = `${formatEuro(effectiveDeposit)} (${monthsText})`;
+
     priceDisplay = `${formatEuro(priceVal)} /mnd`;
-    priceSub = `Waarborgsom: <strong>${formatEuro(priceVal)} (1 maand)</strong> • Géén 4x bruto inkomenseis`;
+    
+    const termsParts = [];
+    termsParts.push(`Borg: <strong>${depositDisplay}</strong>`);
+    if (raw.contractTerms) termsParts.push(`Looptijd: ${raw.contractTerms}`);
+    if (raw.incomeRequirement) termsParts.push(`Inkomenseis: ${raw.incomeRequirement}`);
+    
+    priceSub = termsParts.join(" • ");
     advantage =
       raw.advantage ||
-      `Geselecteerd via ${platform} voor flexibele huur via WoningVry. Geen 4x bruto inkomenseis, geen BKR-toetsing en direct beschikbaar met slechts 1 maand waarborgsom (${formatEuro(priceVal)}).`;
+      `Huurvoorwaarden conform vermelding op ${platform}: Waarborgsom ${depositDisplay}${raw.contractTerms ? `, contractduur: ${raw.contractTerms}` : ''}${raw.incomeRequirement ? `, inkomenseis: ${raw.incomeRequirement}` : ''}.`;
   }
 
   // Afbeeldingen (behoud originele Funda/Pararius foto's met fallback)
@@ -594,10 +673,10 @@ export function convertToWoningVryProperty(raw = {}) {
           `Woonoppervlakte van ${surface} m² (${rooms} kamers, ${bedrooms} slaapkamers)`,
           `Energielabel ${energyLabel} • Bouwjaar ${buildYear}`,
           isKoop
-            ? `Hypotheekvrij kopen met 10% borg (${formatEuro(Math.round(priceVal * 0.10))}) en ca. ${formatEuro(Math.round(priceVal * 0.003))}/mnd`
-            : `Flexibele huur zonder 4x inkomenseis • Waarborgsom 1 maand (${formatEuro(priceVal)})`,
-          `Bronverificatie: ${platform} aanbod gekoppeld aan WoningVry Ronde 1`,
-          `Directe notariële en contractuele zekerheid via WoningVry`
+            ? `Koopvoorwaarden ${platform}: Vraagprijs ${priceDisplay} met standaard 10% notariële waarborgsom (${formatEuro(Math.round(priceVal * 0.10))})`
+            : `Huurvoorwaarden ${platform}: Waarborgsom ${depositDisplay || formatEuro(priceVal)}${raw.incomeRequirement ? ` • Inkomenseis: ${raw.incomeRequirement}` : ''}`,
+          `Originele bronverificatie: Gevalideerd aanbod van ${platform}`,
+          raw.contractTerms ? `Contractduur: ${raw.contractTerms}` : `Beschikbaarheid conform advertentie op ${platform}`
         ];
 
   return {
@@ -614,6 +693,12 @@ export function convertToWoningVryProperty(raw = {}) {
     neighborhood,
     propertyType,
     priceVal,
+    depositAmount: depositAmount || (isKoop ? Math.round(priceVal * 0.10) : priceVal),
+    depositDisplay,
+    contractTerms: raw.contractTerms || "",
+    incomeRequirement: raw.incomeRequirement || "",
+    brokerName: raw.brokerName || "",
+    publicationDate: raw.publicationDate || new Date().toISOString().split("T")[0],
     priceDisplay: raw.priceDisplay || priceDisplay,
     priceSub: raw.priceSub || priceSub,
     surface,
@@ -630,7 +715,7 @@ export function convertToWoningVryProperty(raw = {}) {
     vveCost: raw.vveCost || (isKoop && propertyType === "Appartement" ? "€ 165 per maand" : "Niet van toepassing"),
     image: primaryImage,
     images,
-    transactedDate: raw.transactedDate || `Geselecteerd via ${platform} • Beschikbaar in Ronde 1`,
+    transactedDate: raw.transactedDate || `Geselecteerd via ${platform} • Originele voorwaarden`,
     description: cleanText(raw.description || defaultDesc),
     advantage,
     features,

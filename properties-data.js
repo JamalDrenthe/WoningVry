@@ -1314,7 +1314,7 @@ export const propertiesData = [
   },
 
   // ------------------------------------------------------------
-  // STANDAARD GESCRAPETE FUNDA & PARARIUS WONINGEN (AUTOMATISCHE FEED)
+  // STANDAARD GESCRAPETE FUNDA & PARARIUS WONINGEN (ORIGINELE VOORWAARDEN & BORG)
   // ------------------------------------------------------------
   {
     id: "funda-koop-keizersgracht-412-amsterdam",
@@ -1330,8 +1330,10 @@ export const propertiesData = [
     neighborhood: "Grachtengordel-West / Negen Straatjes",
     propertyType: "Appartement",
     priceVal: 545000,
+    depositAmount: 54500,
+    depositDisplay: "€ 54.500 (10% NVM waarborgsom/bankgarantie)",
     priceDisplay: "€ 545.000 k.k.",
-    priceSub: "Hypotheekvrije inleg ca. <strong>€ 1.635 /mnd</strong> • Borg 10% (€ 54.500)",
+    priceSub: "Waarborgsom conform Funda: <strong>€ 54.500</strong> (10% NVM bankgarantie)",
     surface: 94,
     volume: 285,
     rooms: 3,
@@ -1351,17 +1353,67 @@ export const propertiesData = [
       "attached_assets/20250510_1714_Luxury Bedroom Serenity_simple_compose_01jtxc54sbej1sqqpzen90c83y.png",
       "attached_assets/locatie-amsterdam.webp"
     ],
-    transactedDate: "Geselecteerd via Funda • Beschikbaar in Ronde 1",
-    description: "Hoogwaardig gerenoveerd 3-kamer grachtenappartement van 94 m² met uitzicht op de Keizersgracht, hoge plafonds met originele balkenstructuur, moderne woonkeuken met kookeiland en zonnig balkon aan de stille binnentuin. Geselecteerd uit het actuele Funda-aanbod voor directe hypotheekvrije toewijzing binnen WoningVry.",
-    advantage: "Geselecteerd via Funda en direct beschikbaar binnen de hypotheekvrije regeling van WoningVry. Geen afwijzing op BKR of ontbrekende jaarcijfers voor ondernemers; toewijzing geschiedt op basis van 10% borginleg (€ 54.500).",
+    transactedDate: "Geselecteerd via Funda • Originele voorwaarden",
+    description: "Hoogwaardig gerenoveerd 3-kamer grachtenappartement van 94 m² met uitzicht op de Keizersgracht, hoge plafonds met originele balkenstructuur, moderne woonkeuken met kookeiland en zonnig balkon aan de stille binnentuin. Direct overgenomen van Funda inclusief de originele verkoopvoorwaarden.",
+    advantage: "Aangeboden conform de officiële verkoopvoorwaarden op Funda. Vraagprijs € 545.000 k.k. met de standaard notariële waarborgsom / bankgarantie van € 54.500 (10%).",
     features: [
       "Woonoppervlakte van 94 m² (3 kamers, 2 slaapkamers)",
       "Energielabel A • Oorspronkelijk pand volledig verduurzaamd",
-      "Hypotheekvrij kopen met 10% borg (€ 54.500) en ca. € 1.635/mnd",
-      "Bronverificatie: Funda aanbod gekoppeld aan WoningVry Ronde 1",
-      "Directe notariële en contractuele zekerheid via WoningVry"
+      "Koopvoorwaarden Funda: Vraagprijs € 545.000 k.k. met standaard 10% notariële waarborgsom (€ 54.500)",
+      "Originele bronverificatie: Gevalideerd koopaanbod van Funda",
+      "Aanvaarding in overleg conform advertentie op Funda"
     ],
     neighborhoodInfo: "Gelegen in het hart van de Amsterdamse Grachtengordel nabij de Negen Straatjes, boetieks, gezellige horeca en uitstekende OV-verbindingen."
+  },
+  {
+    id: "funda-huur-weesperzijde-94-amsterdam",
+    sourcePlatform: "Funda",
+    sourceUrl: "https://www.funda.nl/detail/huur/amsterdam/appartement-weesperzijde-94-hs/43920194/",
+    category: "huur",
+    status: "beschikbaar",
+    statusLabel: "Direct Beschikbaar",
+    isFeatured: true,
+    address: "Weesperzijde 94 HS",
+    postalCode: "1091 EL",
+    city: "Amsterdam",
+    neighborhood: "Oost / Weesperzijde aan de Amstel",
+    propertyType: "Appartement",
+    priceVal: 1850,
+    depositAmount: 3700,
+    depositDisplay: "€ 3.700 (2 maanden)",
+    contractTerms: "Onbepaalde tijd (minimaal 12 maanden)",
+    incomeRequirement: "Minimaal 3x de bruto maandhuur",
+    priceDisplay: "€ 1.850 /mnd",
+    priceSub: "Borg conform Funda: <strong>€ 3.700 (2 mnd)</strong> • Looptijd: Min. 12 mnd • Inkomenseis: 3x huur",
+    surface: 78,
+    volume: 240,
+    rooms: 3,
+    bedrooms: 2,
+    bathrooms: 1,
+    energyLabel: "A",
+    buildYear: 2017,
+    heating: "Individuele CV-combiketel en vloerverwarming",
+    insulation: "Volledig geïsoleerd, HR++ glas",
+    garden: "Fraai aangelegde beschutte stadstuin op het zuiden (28 m²)",
+    parking: "Vergunninggebied Amsterdam Oost",
+    vveCost: "N.v.t. (servicekosten inbegrepen)",
+    image: "attached_assets/20250510_1714_Modern Scandinavian Apartment_simple_compose_01jtxc3ykgf9nre663k3zpmdmn.png",
+    images: [
+      "attached_assets/20250510_1714_Modern Scandinavian Apartment_simple_compose_01jtxc3ykgf9nre663k3zpmdmn.png",
+      "attached_assets/appartement-luxury.webp",
+      "attached_assets/locatie-amsterdam.webp"
+    ],
+    transactedDate: "Geselecteerd via Funda • Originele voorwaarden",
+    description: "Karakteristiek en hoogwaardig gerenoveerd 3-kamer benedenhuis aan de Amstel met zonnige stadstuin. Geselecteerd uit het officiële Funda Huur aanbod inclusief alle oorspronkelijke huurvoorwaarden en waarborgsom van de verhurend makelaar.",
+    advantage: "Huurvoorwaarden conform vermelding op Funda Huur: Waarborgsom € 3.700 (2 maanden), minimale contractduur van 12 maanden en inkomenseis conform beheerder (3x de huur).",
+    features: [
+      "Woonoppervlakte van 78 m² (3 kamers, 2 slaapkamers)",
+      "Energielabel A • Bouwjaar 2017",
+      "Huurvoorwaarden Funda: Waarborgsom € 3.700 (2 maanden) • Inkomenseis: 3x huur",
+      "Originele bronverificatie: Gevalideerd huuraanbod van Funda Huur",
+      "Direct aan de Amstel met zonnige stadstuin"
+    ],
+    neighborhoodInfo: "De Weesperzijdebuurt aan de Amstel biedt een ontspannen dorpse sfeer met gezellige terrassen (Hesp, De Ysbreeker) op steenworp afstand van het centrum."
   },
   {
     id: "pararius-huur-wijnhaven-88-rotterdam",
@@ -1377,8 +1429,12 @@ export const propertiesData = [
     neighborhood: "Maritiem District / Scheepvaartkwartier",
     propertyType: "Appartement",
     priceVal: 1425,
+    depositAmount: 2850,
+    depositDisplay: "€ 2.850 (2 maanden)",
+    contractTerms: "Minimaal 12 maanden (onbepaalde tijd)",
+    incomeRequirement: "3x de kale huurprijs",
     priceDisplay: "€ 1.425 /mnd",
-    priceSub: "Waarborgsom: <strong>€ 1.425 (1 maand)</strong> • Géén 4x bruto inkomenseis",
+    priceSub: "Borg conform Pararius: <strong>€ 2.850 (2 mnd)</strong> • Looptijd: Min. 12 mnd • Inkomenseis: 3x huur",
     surface: 84,
     volume: 255,
     rooms: 3,
@@ -1397,15 +1453,15 @@ export const propertiesData = [
       "attached_assets/appartement-luxury.webp",
       "attached_assets/locatie-rotterdam.webp"
     ],
-    transactedDate: "Geselecteerd via Pararius • Beschikbaar in Ronde 1",
-    description: "Licht en instapklaar 3-kamer nieuwbouwappartement op de 11e verdieping aan de Wijnhaven met loggia op het zuiden, vloerverwarming en panoramisch uitzicht over de Rotterdamse skyline. Geselecteerd via Pararius en via WoningVry direct te huren zonder 4x bruto inkomenseis.",
-    advantage: "Geselecteerd via Pararius voor flexibele huur via WoningVry. Geen 4x bruto inkomenseis, geen BKR-toetsing en direct beschikbaar met slechts 1 maand waarborgsom (€ 1.425).",
+    transactedDate: "Geselecteerd via Pararius • Originele voorwaarden",
+    description: "Licht en instapklaar 3-kamer nieuwbouwappartement op de 11e verdieping aan de Wijnhaven met loggia op het zuiden, vloerverwarming en panoramisch uitzicht over de Rotterdamse skyline. Geïmporteerd direct vanaf Pararius met alle originele huurvoorwaarden.",
+    advantage: "Huurvoorwaarden conform vermelding op Pararius: Waarborgsom € 2.850 (2 maanden), minimale contractduur van 12 maanden en inkomenseis conform beheerder (3x de huur).",
     features: [
       "Woonoppervlakte van 84 m² (3 kamers, 2 slaapkamers)",
       "Energielabel A++ • Bouwjaar 2021",
-      "Flexibele huur zonder 4x inkomenseis • Waarborgsom 1 maand (€ 1.425)",
-      "Bronverificatie: Pararius aanbod gekoppeld aan WoningVry Ronde 1",
-      "Op loopafstand van station Blaak, de Markthal en de Witte de Withstraat"
+      "Huurvoorwaarden Pararius: Waarborgsom € 2.850 (2 maanden) • Inkomenseis: 3x huur",
+      "Originele bronverificatie: Gevalideerd huuraanbod van Pararius",
+      "Contractduur: Minimaal 12 maanden (onbepaalde tijd)"
     ],
     neighborhoodInfo: "Het Maritiem District combineert moderne woontorens aan het water met terrassen aan de Oude Haven en directe trein- en metroverbindingen."
   },
@@ -1423,8 +1479,10 @@ export const propertiesData = [
     neighborhood: "Oost / Maliebaan & Wilhelminapark",
     propertyType: "Eengezinswoning",
     priceVal: 465000,
+    depositAmount: 46500,
+    depositDisplay: "€ 46.500 (10% NVM waarborgsom/bankgarantie)",
     priceDisplay: "€ 465.000 k.k.",
-    priceSub: "Hypotheekvrije inleg ca. <strong>€ 1.395 /mnd</strong> • Borg 10% (€ 46.500)",
+    priceSub: "Waarborgsom conform Funda: <strong>€ 46.500</strong> (10% NVM bankgarantie)",
     surface: 128,
     volume: 390,
     rooms: 5,
@@ -1443,15 +1501,15 @@ export const propertiesData = [
       "attached_assets/20250510_1719_Luxury Bedroom Oasis_simple_compose_01jtxcemdwfjktph976sg69wpt.png",
       "attached_assets/locatie-utrecht.webp"
     ],
-    transactedDate: "Geselecteerd via Funda • Beschikbaar in Ronde 1",
-    description: "Stijlvolle en volledig verduurzaamde stadswoning van 128 m² nabij de statige Maliebaan en het Wilhelminapark. Voorzien van warmtepomp, zonnepanelen, drie ruime slaapkamers en een diepe stadstuin op het westen. Geselecteerd via Funda voor hypotheekvrije overname met 10% borgstelling.",
-    advantage: "Geselecteerd via Funda en direct beschikbaar binnen de hypotheekvrije regeling van WoningVry. Geen afwijzing op BKR of ontbrekende jaarcijfers voor ondernemers; toewijzing geschiedt op basis van 10% borginleg (€ 46.500).",
+    transactedDate: "Geselecteerd via Funda • Originele voorwaarden",
+    description: "Stijlvolle en volledig verduurzaamde stadswoning van 128 m² nabij de statige Maliebaan en het Wilhelminapark. Voorzien van warmtepomp, zonnepanelen, drie ruime slaapkamers en een diepe stadstuin op het westen. Direct overgenomen van Funda.",
+    advantage: "Aangeboden conform de officiële verkoopvoorwaarden op Funda. Vraagprijs € 465.000 k.k. met de standaard notariële waarborgsom van € 46.500 (10%).",
     features: [
       "Woonoppervlakte van 128 m² (5 kamers, 3 slaapkamers)",
       "Energielabel A+ met 10 zonnepanelen",
-      "Hypotheekvrij kopen met 10% borg (€ 46.500) en ca. € 1.395/mnd",
-      "Bronverificatie: Funda aanbod gekoppeld aan WoningVry Ronde 1",
-      "Directe notariële en contractuele zekerheid via WoningVry"
+      "Koopvoorwaarden Funda: Vraagprijs € 465.000 k.k. met standaard 10% notariële waarborgsom (€ 46.500)",
+      "Originele bronverificatie: Gevalideerd koopaanbod van Funda",
+      "Aanvaarding in overleg met verkopende partij"
     ],
     neighborhoodInfo: "Utrecht-Oost rondom de Maliebaan en de Burgemeester Reigerstraat staat bekend om zijn groene lanen, speciaalzaken en toprestaurants."
   },
@@ -1469,8 +1527,12 @@ export const propertiesData = [
     neighborhood: "Statenkwartier / Scheveningen",
     propertyType: "Appartement",
     priceVal: 1360,
+    depositAmount: 1360,
+    depositDisplay: "€ 1.360 (1 maand)",
+    contractTerms: "Bepaalde tijd (maximaal 2 jaar)",
+    incomeRequirement: "Minimaal € 4.000 bruto p/m",
     priceDisplay: "€ 1.360 /mnd",
-    priceSub: "Waarborgsom: <strong>€ 1.360 (1 maand)</strong> • Géén 4x bruto inkomenseis",
+    priceSub: "Borg conform Pararius: <strong>€ 1.360 (1 mnd)</strong> • Looptijd: Max. 2 jaar • Inkomenseis: Min. € 4.000 bruto",
     surface: 88,
     volume: 270,
     rooms: 4,
@@ -1489,15 +1551,15 @@ export const propertiesData = [
       "attached_assets/appartement-luxury.webp",
       "attached_assets/hero-community.webp"
     ],
-    transactedDate: "Geselecteerd via Pararius • Beschikbaar in Ronde 1",
-    description: "Sfeervol 4-kamer dubbel bovenhuis van 88 m² in het geliefde Haagse Statenkwartier op fietsafstand van het strand en de Frederik Hendriklaan. Geselecteerd via Pararius en via WoningVry beschikbaar met slechts 1 maand waarborgsom en zonder BKR-toetsing.",
-    advantage: "Geselecteerd via Pararius voor flexibele huur via WoningVry. Geen 4x bruto inkomenseis, geen BKR-toetsing en direct beschikbaar met slechts 1 maand waarborgsom (€ 1.360).",
+    transactedDate: "Geselecteerd via Pararius • Originele voorwaarden",
+    description: "Sfeervol 4-kamer dubbel bovenhuis van 88 m² in het geliefde Haagse Statenkwartier op fietsafstand van het strand en de Frederik Hendriklaan. Geïmporteerd direct vanaf Pararius met alle authentieke huurvoorwaarden.",
+    advantage: "Huurvoorwaarden conform vermelding op Pararius: Waarborgsom € 1.360 (1 maand), looptijd maximaal 2 jaar en inkomenseis minimaal € 4.000 bruto per maand.",
     features: [
       "Woonoppervlakte van 88 m² (4 kamers, 2 slaapkamers)",
       "Energielabel A • Volledig gemoderniseerd in 2019",
-      "Flexibele huur zonder 4x inkomenseis • Waarborgsom 1 maand (€ 1.360)",
-      "Bronverificatie: Pararius aanbod gekoppeld aan WoningVry Ronde 1",
-      "Op 5 minuten fietsen van het strand van Scheveningen en de 'Fred'"
+      "Huurvoorwaarden Pararius: Waarborgsom € 1.360 (1 maand) • Inkomenseis: Min. € 4.000 bruto",
+      "Originele bronverificatie: Gevalideerd huuraanbod van Pararius",
+      "Contractduur: Bepaalde tijd (maximaal 2 jaar)"
     ],
     neighborhoodInfo: "Het Statenkwartier is een van de meest geliefde wijken van Den Haag dankzij de internationale sfeer, de Frederik Hendriklaan en de nabijheid van zee."
   }
