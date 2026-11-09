@@ -1311,8 +1311,277 @@ export const propertiesData = [
       "Hoge waardevastheid in de snelst groeiende hotspot van Amsterdam"
     ],
     neighborhoodInfo: "De NDSM-werf is internationaal vermaard om haar culturele festivals, galeries, strandtent Pllek en de relaxte pontverbinding naar het centrum."
+  },
+
+  // ------------------------------------------------------------
+  // STANDAARD GESCRAPETE FUNDA & PARARIUS WONINGEN (AUTOMATISCHE FEED)
+  // ------------------------------------------------------------
+  {
+    id: "funda-koop-keizersgracht-412-amsterdam",
+    sourcePlatform: "Funda",
+    sourceUrl: "https://www.funda.nl/detail/koop/amsterdam/appartement-keizersgracht-412-a/43891204/",
+    category: "koop",
+    status: "beschikbaar",
+    statusLabel: "Direct Beschikbaar",
+    isFeatured: true,
+    address: "Keizersgracht 412 A",
+    postalCode: "1016 EJ",
+    city: "Amsterdam",
+    neighborhood: "Grachtengordel-West / Negen Straatjes",
+    propertyType: "Appartement",
+    priceVal: 545000,
+    priceDisplay: "€ 545.000 k.k.",
+    priceSub: "Hypotheekvrije inleg ca. <strong>€ 1.635 /mnd</strong> • Borg 10% (€ 54.500)",
+    surface: 94,
+    volume: 285,
+    rooms: 3,
+    bedrooms: 2,
+    bathrooms: 1,
+    energyLabel: "A",
+    buildYear: 1998,
+    heating: "HR-combiketel & vloerverwarming",
+    insulation: "Monumentenglas HR++ en vloerisolatie",
+    garden: "Zonnig balkon aan stille binnentuin (8 m²)",
+    parking: "Parkeervergunning / Q-Park Europarking",
+    vveCost: "€ 185 per maand",
+    image: "attached_assets/appartement-luxury.webp",
+    images: [
+      "attached_assets/appartement-luxury.webp",
+      "attached_assets/20250510_1714_Modern Scandinavian Apartment_simple_compose_01jtxc3ykgf9nre663k3zpmdmn.png",
+      "attached_assets/20250510_1714_Luxury Bedroom Serenity_simple_compose_01jtxc54sbej1sqqpzen90c83y.png",
+      "attached_assets/locatie-amsterdam.webp"
+    ],
+    transactedDate: "Geselecteerd via Funda • Beschikbaar in Ronde 1",
+    description: "Hoogwaardig gerenoveerd 3-kamer grachtenappartement van 94 m² met uitzicht op de Keizersgracht, hoge plafonds met originele balkenstructuur, moderne woonkeuken met kookeiland en zonnig balkon aan de stille binnentuin. Geselecteerd uit het actuele Funda-aanbod voor directe hypotheekvrije toewijzing binnen WoningVry.",
+    advantage: "Geselecteerd via Funda en direct beschikbaar binnen de hypotheekvrije regeling van WoningVry. Geen afwijzing op BKR of ontbrekende jaarcijfers voor ondernemers; toewijzing geschiedt op basis van 10% borginleg (€ 54.500).",
+    features: [
+      "Woonoppervlakte van 94 m² (3 kamers, 2 slaapkamers)",
+      "Energielabel A • Oorspronkelijk pand volledig verduurzaamd",
+      "Hypotheekvrij kopen met 10% borg (€ 54.500) en ca. € 1.635/mnd",
+      "Bronverificatie: Funda aanbod gekoppeld aan WoningVry Ronde 1",
+      "Directe notariële en contractuele zekerheid via WoningVry"
+    ],
+    neighborhoodInfo: "Gelegen in het hart van de Amsterdamse Grachtengordel nabij de Negen Straatjes, boetieks, gezellige horeca en uitstekende OV-verbindingen."
+  },
+  {
+    id: "pararius-huur-wijnhaven-88-rotterdam",
+    sourcePlatform: "Pararius",
+    sourceUrl: "https://www.pararius.nl/appartement-te-huur/rotterdam/pr904182/wijnhaven",
+    category: "huur",
+    status: "beschikbaar",
+    statusLabel: "Direct Beschikbaar",
+    isFeatured: true,
+    address: "Wijnhaven 88 C",
+    postalCode: "3011 WJ",
+    city: "Rotterdam",
+    neighborhood: "Maritiem District / Scheepvaartkwartier",
+    propertyType: "Appartement",
+    priceVal: 1425,
+    priceDisplay: "€ 1.425 /mnd",
+    priceSub: "Waarborgsom: <strong>€ 1.425 (1 maand)</strong> • Géén 4x bruto inkomenseis",
+    surface: 84,
+    volume: 255,
+    rooms: 3,
+    bedrooms: 2,
+    bathrooms: 1,
+    energyLabel: "A++",
+    buildYear: 2021,
+    heating: "Stadsverwarming met vloerverwarming en -koeling",
+    insulation: "Volledig geïsoleerd, HR+++ triple glas",
+    garden: "Inpandige zonnige loggia op het zuiden (9 m²)",
+    parking: "Mogelijkheid tot huur parkeerplaats in onderbouw",
+    vveCost: "Niet van toepassing (servicekosten inbegrepen)",
+    image: "attached_assets/20250510_1714_Modern Scandinavian Apartment_simple_compose_01jtxc3ykgf9nre663k3zpmdmn.png",
+    images: [
+      "attached_assets/20250510_1714_Modern Scandinavian Apartment_simple_compose_01jtxc3ykgf9nre663k3zpmdmn.png",
+      "attached_assets/appartement-luxury.webp",
+      "attached_assets/locatie-rotterdam.webp"
+    ],
+    transactedDate: "Geselecteerd via Pararius • Beschikbaar in Ronde 1",
+    description: "Licht en instapklaar 3-kamer nieuwbouwappartement op de 11e verdieping aan de Wijnhaven met loggia op het zuiden, vloerverwarming en panoramisch uitzicht over de Rotterdamse skyline. Geselecteerd via Pararius en via WoningVry direct te huren zonder 4x bruto inkomenseis.",
+    advantage: "Geselecteerd via Pararius voor flexibele huur via WoningVry. Geen 4x bruto inkomenseis, geen BKR-toetsing en direct beschikbaar met slechts 1 maand waarborgsom (€ 1.425).",
+    features: [
+      "Woonoppervlakte van 84 m² (3 kamers, 2 slaapkamers)",
+      "Energielabel A++ • Bouwjaar 2021",
+      "Flexibele huur zonder 4x inkomenseis • Waarborgsom 1 maand (€ 1.425)",
+      "Bronverificatie: Pararius aanbod gekoppeld aan WoningVry Ronde 1",
+      "Op loopafstand van station Blaak, de Markthal en de Witte de Withstraat"
+    ],
+    neighborhoodInfo: "Het Maritiem District combineert moderne woontorens aan het water met terrassen aan de Oude Haven en directe trein- en metroverbindingen."
+  },
+  {
+    id: "funda-koop-maliebaan-56-utrecht",
+    sourcePlatform: "Funda",
+    sourceUrl: "https://www.funda.nl/detail/koop/utrecht/huis-maliebaan-56/43904512/",
+    category: "koop",
+    status: "beschikbaar",
+    statusLabel: "Direct Beschikbaar",
+    isFeatured: true,
+    address: "Maliebaan 56",
+    postalCode: "3581 CT",
+    city: "Utrecht",
+    neighborhood: "Oost / Maliebaan & Wilhelminapark",
+    propertyType: "Eengezinswoning",
+    priceVal: 465000,
+    priceDisplay: "€ 465.000 k.k.",
+    priceSub: "Hypotheekvrije inleg ca. <strong>€ 1.395 /mnd</strong> • Borg 10% (€ 46.500)",
+    surface: 128,
+    volume: 390,
+    rooms: 5,
+    bedrooms: 3,
+    bathrooms: 1,
+    energyLabel: "A+",
+    buildYear: 2018,
+    heating: "Hybride warmtepomp & 10 zonnepanelen",
+    insulation: "Volledig geïsoleerd, HR++ beglazing",
+    garden: "Diepe stadstuin op het westen (42 m²) met achterom",
+    parking: "Eigen parkeerplek en vergunning voor de deur",
+    vveCost: "Niet van toepassing (volle eigendom)",
+    image: "attached_assets/rijwoning-modern.webp",
+    images: [
+      "attached_assets/rijwoning-modern.webp",
+      "attached_assets/20250510_1719_Luxury Bedroom Oasis_simple_compose_01jtxcemdwfjktph976sg69wpt.png",
+      "attached_assets/locatie-utrecht.webp"
+    ],
+    transactedDate: "Geselecteerd via Funda • Beschikbaar in Ronde 1",
+    description: "Stijlvolle en volledig verduurzaamde stadswoning van 128 m² nabij de statige Maliebaan en het Wilhelminapark. Voorzien van warmtepomp, zonnepanelen, drie ruime slaapkamers en een diepe stadstuin op het westen. Geselecteerd via Funda voor hypotheekvrije overname met 10% borgstelling.",
+    advantage: "Geselecteerd via Funda en direct beschikbaar binnen de hypotheekvrije regeling van WoningVry. Geen afwijzing op BKR of ontbrekende jaarcijfers voor ondernemers; toewijzing geschiedt op basis van 10% borginleg (€ 46.500).",
+    features: [
+      "Woonoppervlakte van 128 m² (5 kamers, 3 slaapkamers)",
+      "Energielabel A+ met 10 zonnepanelen",
+      "Hypotheekvrij kopen met 10% borg (€ 46.500) en ca. € 1.395/mnd",
+      "Bronverificatie: Funda aanbod gekoppeld aan WoningVry Ronde 1",
+      "Directe notariële en contractuele zekerheid via WoningVry"
+    ],
+    neighborhoodInfo: "Utrecht-Oost rondom de Maliebaan en de Burgemeester Reigerstraat staat bekend om zijn groene lanen, speciaalzaken en toprestaurants."
+  },
+  {
+    id: "pararius-huur-statenlaan-119-den-haag",
+    sourcePlatform: "Pararius",
+    sourceUrl: "https://www.pararius.nl/appartement-te-huur/den-haag/pr782341/statenlaan",
+    category: "huur",
+    status: "beschikbaar",
+    statusLabel: "Direct Beschikbaar",
+    isFeatured: true,
+    address: "Statenlaan 119 II",
+    postalCode: "2582 GH",
+    city: "Den Haag",
+    neighborhood: "Statenkwartier / Scheveningen",
+    propertyType: "Appartement",
+    priceVal: 1360,
+    priceDisplay: "€ 1.360 /mnd",
+    priceSub: "Waarborgsom: <strong>€ 1.360 (1 maand)</strong> • Géén 4x bruto inkomenseis",
+    surface: 88,
+    volume: 270,
+    rooms: 4,
+    bedrooms: 2,
+    bathrooms: 1,
+    energyLabel: "A",
+    buildYear: 2019,
+    heating: "HR-combiketel (2021)",
+    insulation: "Dubbel glas HR++ en dakisolatie",
+    garden: "Zonnig achterbalkon over de volle breedte",
+    parking: "Ruime parkeergelegenheid in de straat",
+    vveCost: "Servicekosten inbegrepen",
+    image: "attached_assets/20250510_1714_Luxury Bedroom Serenity_simple_compose_01jtxc54sbej1sqqpzen90c83y.png",
+    images: [
+      "attached_assets/20250510_1714_Luxury Bedroom Serenity_simple_compose_01jtxc54sbej1sqqpzen90c83y.png",
+      "attached_assets/appartement-luxury.webp",
+      "attached_assets/hero-community.webp"
+    ],
+    transactedDate: "Geselecteerd via Pararius • Beschikbaar in Ronde 1",
+    description: "Sfeervol 4-kamer dubbel bovenhuis van 88 m² in het geliefde Haagse Statenkwartier op fietsafstand van het strand en de Frederik Hendriklaan. Geselecteerd via Pararius en via WoningVry beschikbaar met slechts 1 maand waarborgsom en zonder BKR-toetsing.",
+    advantage: "Geselecteerd via Pararius voor flexibele huur via WoningVry. Geen 4x bruto inkomenseis, geen BKR-toetsing en direct beschikbaar met slechts 1 maand waarborgsom (€ 1.360).",
+    features: [
+      "Woonoppervlakte van 88 m² (4 kamers, 2 slaapkamers)",
+      "Energielabel A • Volledig gemoderniseerd in 2019",
+      "Flexibele huur zonder 4x inkomenseis • Waarborgsom 1 maand (€ 1.360)",
+      "Bronverificatie: Pararius aanbod gekoppeld aan WoningVry Ronde 1",
+      "Op 5 minuten fietsen van het strand van Scheveningen en de 'Fred'"
+    ],
+    neighborhoodInfo: "Het Statenkwartier is een van de meest geliefde wijken van Den Haag dankzij de internationale sfeer, de Frederik Hendriklaan en de nabijheid van zee."
   }
 ];
+
+// ============================================================
+// LIVE SYNC & LOKALE SCRAPER CACHE (FUNDA / PARARIUS / FIRESTORE)
+// ============================================================
+const SCRAPED_STORAGE_KEY = "woningvry_scraped_listings";
+
+export function getLocalScrapedProperties() {
+  if (typeof localStorage === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(SCRAPED_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+export function mergeScrapedProperties(newItems = []) {
+  if (!Array.isArray(newItems) || newItems.length === 0) return propertiesData;
+  let addedOrUpdated = false;
+  for (const item of newItems) {
+    if (!item || !item.id) continue;
+    const existingIdx = propertiesData.findIndex(
+      (p) => p.id === item.id || (p.address && item.address && p.address.toLowerCase() === item.address.toLowerCase() && p.city === item.city)
+    );
+    if (existingIdx !== -1) {
+      propertiesData[existingIdx] = { ...propertiesData[existingIdx], ...item };
+      addedOrUpdated = true;
+    } else {
+      propertiesData.unshift(item);
+      addedOrUpdated = true;
+    }
+  }
+  if (addedOrUpdated && typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("woningvry:properties-updated", { detail: { count: propertiesData.length } }));
+  }
+  return propertiesData;
+}
+
+export function saveLocalScrapedProperty(prop) {
+  if (!prop || !prop.id) return null;
+  const list = getLocalScrapedProperties().filter((p) => p.id !== prop.id);
+  list.unshift(prop);
+  if (typeof localStorage !== "undefined") {
+    try {
+      localStorage.setItem(SCRAPED_STORAGE_KEY, JSON.stringify(list.slice(0, 100)));
+    } catch (e) {
+      console.warn("Kon gescrapete woning niet in localStorage opslaan:", e);
+    }
+  }
+  mergeScrapedProperties([prop]);
+  return prop;
+}
+
+export function removeLocalScrapedProperty(id) {
+  if (!id) return false;
+  const list = getLocalScrapedProperties().filter((p) => p.id !== id);
+  if (typeof localStorage !== "undefined") {
+    try {
+      localStorage.setItem(SCRAPED_STORAGE_KEY, JSON.stringify(list));
+    } catch (e) {
+      // Negeer
+    }
+  }
+  const idx = propertiesData.findIndex((p) => p.id === id);
+  if (idx !== -1) {
+    propertiesData.splice(idx, 1);
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("woningvry:properties-updated", { detail: { count: propertiesData.length } }));
+    }
+  }
+  return true;
+}
+
+// Hydrateer bij inladen direct eventuele lokaal gecachete Funda/Pararius imports
+if (typeof window !== "undefined") {
+  const cachedScraped = getLocalScrapedProperties();
+  if (cachedScraped.length > 0) {
+    mergeScrapedProperties(cachedScraped);
+  }
+}
 
 // ============================================================
 // HELPER FUNCTIES

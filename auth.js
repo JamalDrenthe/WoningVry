@@ -45,6 +45,10 @@ import {
   crmosLogActivity,
   crmosCreateCandidate,
 } from "./crmos.js";
+import {
+  toFirestoreListingPayload,
+  fromFirestoreListingPayload,
+} from "./funda-pararius-scraper.js";
 
 export {
   syncWoningVryUserToCRMos,
@@ -341,6 +345,103 @@ export async function getAanbiederListings(uid) {
   } catch (err) {
     console.warn("Fout bij ophalen aanbieder listings:", err);
     return [];
+  }
+}
+
+// ============================================================
+// FUNDA & PARARIUS SCRAPER -> FIRESTORE (/listings) SYNC
+// ============================================================
+
+/**
+ * Slaat een gescrapete Funda/Pararius woning op in de publieke `/listings` collectie
+ * én optioneel onder `/users/{uid}/listings` volgens het `isValidListing` schema.
+ */
+export async function saveScrapedPropertyToFirestore(property, uid = "") {
+  if (!property) return null;
+  try {
+    const docId = String(property.id || `wv-${Date.now()}`).replace(/[^a-zA-Z0-9_-]/g, "-").slice(0, 90);
+    const basePayload = toFirestoreListingPayload({ ...property, id: docId }, uid);
+    const firestorePayload = {
+      ...basePayload,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    };
+
+    // Schrijf naar top-level publieke /listings collectie
+    await setDoc(doc(db, "listings", docId), firestorePayload);
+
+    // En optioneel naar de subcollectie van de ingelogde admin/aanbieder
+    if (uid) {
+      try {
+        await setDoc(doc(db, "users", uid, "listings", docId), firestorePayload);
+      } catch (subErr) {
+        console.warn("Subcollectie listing opslaan overgeslagen:", subErr);
+      }
+    }
+
+    return { ...property, id: docId };
+  } catch (err) {
+    console.warn("Fout bij opslaan gescrapete woning in Firestore (/listings):", err);
+    return null;
+  }
+}
+
+/**
+ * Haalt alle publiek gepubliceerde woningen op uit `/listings` (en `public/scraped-listings.json`)
+ * en zet ze om naar volwaardige WoningVry woning-objecten.
+ */
+export async function getPublicFirestoreListings() {
+  const results = [];
+  // 1. Lees uit Firestore /listings
+  try {
+    const snap = await getDocs(collection(db, "listings"));
+    snap.forEach((d) => {
+      const converted = fromFirestoreListingPayload({ id: d.id, ...d.data() });
+      if (converted) results.push(converted);
+    });
+  } catch (err) {
+    console.warn("Firestore /listings uitlezen mislukt (gebruikt lokale/statische feed):", err);
+  }
+
+  // 2. Lees daarnaast de automatische JSON-feed uit public/scraped-listings.json
+  try {
+    const resp = await fetch("./public/scraped-listings.json", { cache: "no-store" });
+    if (resp.ok) {
+      const feed = await resp.json();
+      if (Array.isArray(feed?.listings)) {
+        for (const item of feed.listings) {
+          const converted = fromFirestoreListingPayload(item);
+          if (converted && !results.some((r) => r.id === converted.id)) {
+            results.push(converted);
+          }
+        }
+      }
+    }
+  } catch (e) {
+    // Geen probleem als JSON bestand niet bereikbaar is
+  }
+
+  return results;
+}
+
+/**
+ * Verwijdert een gescrapete woning uit Firestore `/listings/{docId}`
+ */
+export async function deleteFirestoreListing(docId, uid = "") {
+  if (!docId) return false;
+  try {
+    await deleteDoc(doc(db, "listings", docId));
+    if (uid) {
+      try {
+        await deleteDoc(doc(db, "users", uid, "listings", docId));
+      } catch (e) {
+        // Negeer
+      }
+    }
+    return true;
+  } catch (err) {
+    console.warn("Fout bij verwijderen listing uit Firestore:", err);
+    return false;
   }
 }
 

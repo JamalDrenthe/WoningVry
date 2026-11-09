@@ -998,6 +998,203 @@
             </div>
           </div>
 
+          <!-- FUNDA & PARARIUS WONING SCRAPER & 1-KLIK IMPORTER -->
+          <div class="account-card admin-scraper-card" style="grid-column: 1 / -1; margin-top: 1.5rem; border: 1px solid rgba(212,182,120,0.45);">
+            <div class="card-header-flex">
+              <div>
+                <h2>🏠 Funda &amp; Pararius Woning Scraper &amp; 1-Klik Importer</h2>
+                <p class="account-muted">Haal woningen direct op van <code>funda.nl</code> en <code>pararius.nl</code>, zet ze automatisch om naar het WoningVry-model (10% borg &amp; 0,3% mnd-inleg bij koop / 1 mnd borg zonder 4x inkomenseis bij huur) en publiceer direct live naar Firestore (<code>/listings</code>) én <code>properties-data.js</code>.</p>
+              </div>
+              <span class="badge-status badge-status--green">● Auto-Scraper Actief</span>
+            </div>
+
+            <!-- Rij 1: 1-Klik URL Importer + Optionele HTML Broncode Plakker -->
+            <form id="scraper-url-form" style="margin-top: 1.2rem; background: rgba(13,27,46,0.03); border: 1px solid rgba(13,27,46,0.09); border-radius: var(--r-s); padding: 1.25rem;" novalidate>
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;">
+                <label for="scraper-target-url" style="font-weight: 700; color: var(--ink); font-size: 0.95rem;">
+                  🔗 Stap 1: Plak een Funda of Pararius Woning-URL
+                </label>
+                <div style="display: flex; gap: 0.45rem; flex-wrap: wrap;">
+                  <button type="button" class="btn-secondary btn-sm scraper-preset-btn" data-url="https://www.funda.nl/detail/koop/amsterdam/appartement-prinsengracht-714-h/43918274/" style="font-size: 0.76rem; padding: 0.25rem 0.6rem;">
+                    Voorbeeld Funda Koop (Amsterdam)
+                  </button>
+                  <button type="button" class="btn-secondary btn-sm scraper-preset-btn" data-url="https://www.pararius.nl/appartement-te-huur/rotterdam/pr882190/kop-van-zuid-wilhelminakade" style="font-size: 0.76rem; padding: 0.25rem 0.6rem;">
+                    Voorbeeld Pararius Huur (Rotterdam)
+                  </button>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 0.65rem; flex-wrap: wrap;">
+                <input
+                  type="url"
+                  id="scraper-target-url"
+                  name="scraper_target_url"
+                  required
+                  autocorrect="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                  aria-describedby="scraper-url-help"
+                  placeholder="https://www.funda.nl/detail/koop/... of https://www.pararius.nl/appartement-te-huur/..."
+                  style="flex: 1; min-width: 260px; padding: 0.7rem 0.95rem; border-radius: var(--r-s); border: 1px solid rgba(13,27,46,0.2); font-size: 0.95rem;"
+                >
+                <button type="submit" id="scraper-fetch-btn" class="btn-primary">
+                  🔍 Scrape Woningdata
+                </button>
+                <button type="button" id="scraper-toggle-raw-btn" class="btn-secondary btn-sm" aria-expanded="false" aria-controls="scraper-raw-html-box">
+                  📋 HTML / JSON-LD plakken (Anti-Bot Bypass)
+                </button>
+              </div>
+              <p id="scraper-url-help" style="font-size: 0.8rem; color: var(--muted); margin: 0.45rem 0 0;">
+                Neemt automatisch originele foto's, woonoppervlakte (m²), kamers, energielabel, bouwjaar en beschrijving over.
+              </p>
+
+              <!-- Uitklapbaar veld voor ruwe HTML (voor wanneer Funda een CAPTCHA toont op publieke proxies) -->
+              <div id="scraper-raw-html-box" hidden style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(13,27,46,0.15);">
+                <label for="scraper-raw-html" style="display: block; font-weight: 600; font-size: 0.85rem; color: var(--ink); margin-bottom: 0.4rem;">
+                  Optioneel: Plak de paginabroncode (<code>Ctrl+U</code> op Funda/Pararius) voor 100% volledige foto- &amp; JSON-LD extractie:
+                </label>
+                <textarea
+                  id="scraper-raw-html"
+                  name="scraper_raw_html"
+                  rows="4"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                  placeholder="Plak hier optioneel de HTML-broncode van de Funda of Pararius pagina..."
+                  style="width: 100%; padding: 0.65rem; border-radius: var(--r-s); border: 1px solid rgba(13,27,46,0.2); font-family: monospace; font-size: 0.8rem;"
+                ></textarea>
+              </div>
+            </form>
+
+            <!-- Stap 2: Live Preview & Bewerkbaar Woningformulier na Scrape -->
+            <div id="scraper-preview-panel" hidden style="margin-top: 1.25rem; background: #ffffff; border: 1px solid rgba(212,182,120,0.55); border-radius: var(--r-s); padding: 1.35rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+                <div>
+                  <span class="eyebrow" style="color: #b45309; font-size: 0.75rem;">Stap 2: Controleer &amp; Publiceer</span>
+                  <h3 id="scraper-preview-heading" style="margin: 0.15rem 0 0; color: var(--ink); font-size: 1.25rem;">Gescrapete Woning Preview</h3>
+                </div>
+                <span id="scraper-method-badge" class="badge-status badge-status--green">● JSON-LD Geëxtraheerd</span>
+              </div>
+
+              <form id="scraper-publish-form">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.9rem;">
+                  <div>
+                    <label for="scr-address" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Straat &amp; Huisnummer *</label>
+                    <input type="text" id="scr-address" name="address" required style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
+                  </div>
+                  <div>
+                    <label for="scr-postal" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Postcode *</label>
+                    <input type="text" id="scr-postal" name="postalCode" required autocorrect="off" autocapitalize="characters" spellcheck="false" style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
+                  </div>
+                  <div>
+                    <label for="scr-city" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Stad *</label>
+                    <input type="text" id="scr-city" name="city" required style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
+                  </div>
+                  <div>
+                    <label for="scr-neighborhood" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Wijk / Buurt</label>
+                    <input type="text" id="scr-neighborhood" name="neighborhood" style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
+                  </div>
+                  <div>
+                    <label for="scr-category" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Woonvorm (Koop / Huur)</label>
+                    <select id="scr-category" name="category" style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
+                      <option value="koop">🏡 Koop (Hypotheekvrij 10% borg)</option>
+                      <option value="huur">🔑 Flexibele Huur (Geen 4x eis)</option>
+                      <option value="kamer">🛏️ Kamer / Studio</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="scr-type" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Woningtype</label>
+                    <select id="scr-type" name="propertyType" style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
+                      <option value="Appartement">Appartement</option>
+                      <option value="Eengezinswoning">Eengezinswoning</option>
+                      <option value="Villa">Villa / Herenhuis</option>
+                      <option value="Studio">Studio / Loft</option>
+                      <option value="Kamer">Kamer</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="scr-price" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Vraagprijs / Huurprijs (€) *</label>
+                    <input type="number" id="scr-price" name="priceVal" required min="250" step="50" style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
+                  </div>
+                  <div>
+                    <label for="scr-surface" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Woonoppervlakte (m²)</label>
+                    <input type="number" id="scr-surface" name="surface" required min="12" style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
+                  </div>
+                  <div>
+                    <label for="scr-rooms" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Kamers (Totaal)</label>
+                    <input type="number" id="scr-rooms" name="rooms" required min="1" max="20" style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
+                  </div>
+                  <div>
+                    <label for="scr-bedrooms" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Slaapkamers</label>
+                    <input type="number" id="scr-bedrooms" name="bedrooms" required min="1" max="15" style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
+                  </div>
+                  <div>
+                    <label for="scr-energy" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Energielabel</label>
+                    <input type="text" id="scr-energy" name="energyLabel" value="A+" autocorrect="off" autocapitalize="characters" spellcheck="false" style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
+                  </div>
+                  <div>
+                    <label for="scr-year" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Bouwjaar</label>
+                    <input type="number" id="scr-year" name="buildYear" value="2021" min="1600" max="2030" style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
+                  </div>
+                </div>
+
+                <div style="margin-top: 0.9rem;">
+                  <label for="scr-image" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Hoofdfoto URL (of komma-gescheiden fotolijst van Funda/Pararius)</label>
+                  <input type="text" id="scr-image" name="image" autocorrect="off" autocapitalize="off" spellcheck="false" style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s);">
+                </div>
+
+                <div style="margin-top: 0.9rem;">
+                  <label for="scr-description" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Woningomschrijving (overgenomen van bron)</label>
+                  <textarea id="scr-description" name="description" rows="3" style="width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(13,27,46,0.2); border-radius:var(--r-s); font-size:0.88rem;"></textarea>
+                </div>
+
+                <!-- Live WoningVry Rekenmodel Preview Balk -->
+                <div id="scr-calc-summary" style="margin-top: 0.9rem; padding: 0.85rem 1rem; background: #f8fafc; border-left: 4px solid #d4af37; border-radius: 4px; font-size: 0.88rem; color: var(--ink);">
+                  <!-- Dynamisch gevuld -->
+                </div>
+
+                <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-top: 1.1rem;">
+                  <button type="submit" id="scr-publish-btn" class="btn-primary">
+                    🚀 Direct Publiceren (Firestore + Aanbod)
+                  </button>
+                  <button type="button" id="scr-copy-code-btn" class="btn-secondary btn-sm">
+                    📋 Kopieer JS-Object voor properties-data.js
+                  </button>
+                  <span id="scr-publish-feedback" style="font-size: 0.85rem; font-weight: 600; color: #166534;" hidden></span>
+                </div>
+              </form>
+            </div>
+
+            <!-- Rij 3: Overzicht van Gescrapete & Live Gepubliceerde Woningen -->
+            <div style="margin-top: 1.4rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.6rem;">
+                <h4 style="margin: 0; color: var(--ink); font-size: 1rem;">📡 Actieve Funda &amp; Pararius Woningen in WoningVry (<span id="scraper-active-count">0</span>)</h4>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                  <button type="button" id="scraper-sync-defaults-btn" class="btn-secondary btn-sm">
+                    🔄 Sync Standaard Funda/Pararius Feed naar Firestore
+                  </button>
+                  <a href="aanbod.html" class="btn-secondary btn-sm">Bekijk op Aanbodpagina →</a>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Bron</th>
+                      <th>Adres &amp; Stad</th>
+                      <th>Type &amp; Kenmerken</th>
+                      <th>WoningVry Prijs &amp; Model</th>
+                      <th>Acties</th>
+                    </tr>
+                  </thead>
+                  <tbody id="scraper-listings-tbody">
+                    <tr><td colspan="5">Gescrapete woningen laden...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
           <!-- CRMos REST API Ecosysteem Sync & Realtime Zoeken -->
           <div class="account-card admin-crmos-card" style="grid-column: 1 / -1; margin-top: 1.5rem;">
             <div class="card-header-flex">

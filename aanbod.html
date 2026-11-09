@@ -132,179 +132,218 @@
 
       <!-- FUNDA-STYLE SEARCH & ADVANCED FILTER COCKPIT -->
       <section class="aanbod-filter-box" aria-label="Geavanceerde Filters">
-        <!-- Rij 1: Woonvorm pills & Lijst/Raster toggle -->
+        <!-- Rij 1: Woonvorm segment & Lijst/Raster switch -->
         <div class="aanbod-tabs-row">
           <div class="funda-type-pills" id="woonvorm-pills">
             <button type="button" class="funda-pill-btn active" data-type="all">
-              🏢 Alles <span id="count-all" style="opacity: 0.85;">(32)</span>
+              <span>🏢 Alles</span> <span id="count-all" class="pill-count">(32)</span>
             </button>
             <button type="button" class="funda-pill-btn" data-type="koop">
-              🏡 Koop <span id="count-koop" style="opacity: 0.85;">(14)</span>
+              <span>🏡 Koop</span> <span id="count-koop" class="pill-count">(14)</span>
             </button>
             <button type="button" class="funda-pill-btn" data-type="huur">
-              🔑 Huur <span id="count-huur" style="opacity: 0.85;">(13)</span>
+              <span>🔑 Huur</span> <span id="count-huur" class="pill-count">(13)</span>
             </button>
             <button type="button" class="funda-pill-btn" data-type="kamer">
-              🛏️ Kamers &amp; Studio's <span id="count-kamer" style="opacity: 0.85;">(5)</span>
+              <span>🛏️ Kamers &amp; Studio's</span> <span id="count-kamer" class="pill-count">(5)</span>
             </button>
             <button type="button" class="funda-pill-btn" data-type="bouwproject">
-              🏗️ Bouwprojecten <span id="count-bouwproject" style="opacity: 0.85;">(4)</span>
+              <span>🏗️ Bouwprojecten</span> <span id="count-bouwproject" class="pill-count">(4)</span>
             </button>
           </div>
 
           <div class="funda-view-toggle">
             <button type="button" class="funda-view-btn active" id="btn-view-list" title="Lijstweergave">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-              Lijst
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              <span>Lijst</span>
             </button>
             <button type="button" class="funda-view-btn" id="btn-view-grid" title="Rasterweergave">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-              Raster
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              <span>Raster</span>
             </button>
           </div>
         </div>
 
-        <!-- Rij 2 & 3: Zoekbalk & Dropdown filters in strak grid -->
-        <div class="funda-search-grid-wrap">
-          <div class="funda-search-grid--top">
-            <div class="funda-search-input-wrap">
-              <svg class="funda-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-              </svg>
-              <input type="text" id="filter-search" class="funda-search-input" placeholder="Zoek op adres, stad, projectnaam, wijk of postcode...">
-            </div>
-
-            <div>
-              <select id="filter-city" class="funda-select" aria-label="Filter op stad">
-                <option value="all">Alle steden (7)</option>
-                <option value="Amsterdam">Amsterdam</option>
-                <option value="Rotterdam">Rotterdam</option>
-                <option value="Utrecht">Utrecht</option>
-                <option value="Almere">Almere</option>
-                <option value="Eindhoven">Eindhoven</option>
-                <option value="Groningen">Groningen</option>
-                <option value="Den Haag">Den Haag</option>
-              </select>
-            </div>
-
-            <div>
-              <select id="filter-property-type" class="funda-select" aria-label="Filter op woningtype">
-                <option value="all">Alle woningtypes</option>
-                <option value="Appartement">Appartementen</option>
-                <option value="Eengezinswoning">Eengezinswoningen / Rijwoningen</option>
-                <option value="Villa">Villa's &amp; Herenhuizen</option>
-                <option value="Studio">Studio's &amp; Lofts</option>
-                <option value="Kamer">Kamers / Studentenwoningen</option>
-                <option value="Bouwproject">🏗️ Bouwprojecten (Nieuwbouw)</option>
-              </select>
-            </div>
-
-            <div>
-              <select id="filter-price" class="funda-select" aria-label="Filter op prijsklasse">
-                <option value="all">Alle prijsklassen</option>
-                <option value="kamer-laag">Kamers tot € 650 /mnd all-in</option>
-                <option value="huur-midden">Huur/Studio tot € 1.000 /mnd</option>
-                <option value="huur-ruim">Huur tot € 1.500 /mnd</option>
-                <option value="koop-starter">Koop tot € 400.000 v.o.n./k.k.</option>
-                <option value="koop-midden">Koop tot € 500.000</option>
-                <option value="koop-hoog">Koop vanaf € 500.000</option>
-              </select>
-            </div>
+        <!-- Rij 2: De Hoofdbalk: Zoekbalk + Stad + "Alle filters" Dropdown Knop + Sorteren + Reset -->
+        <div class="funda-primary-bar">
+          <div class="funda-search-input-wrap">
+            <svg class="funda-search-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" id="filter-search" class="funda-search-input" placeholder="Zoek op stad, wijk, adres, postcode of projectnaam...">
+            <button type="button" id="btn-clear-search" class="btn-clear-search" title="Zoekopdracht wissen" style="display: none;">✕</button>
           </div>
 
-          <div class="funda-search-grid--bottom">
-            <div>
-              <select id="filter-rooms" class="funda-select" aria-label="Filter op aantal kamers">
-                <option value="all">Aantal kamers (Alle)</option>
-                <option value="1">1 kamer (Studio of Kamer)</option>
-                <option value="2">2 kamers</option>
-                <option value="3">3 kamers</option>
-                <option value="4">4+ kamers</option>
-              </select>
+          <div class="funda-quick-city">
+            <select id="filter-city" class="funda-select" aria-label="Filter op stad">
+              <option value="all">📍 Alle steden (7)</option>
+              <option value="Amsterdam">Amsterdam</option>
+              <option value="Rotterdam">Rotterdam</option>
+              <option value="Utrecht">Utrecht</option>
+              <option value="Almere">Almere</option>
+              <option value="Eindhoven">Eindhoven</option>
+              <option value="Groningen">Groningen</option>
+              <option value="Den Haag">Den Haag</option>
+            </select>
+          </div>
+
+          <!-- De Grote "Alle filters" Dropdown Knop -->
+          <button type="button" id="btn-toggle-adv" class="btn-all-filters" aria-expanded="false" aria-controls="adv-filter-drawer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line>
+              <line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line>
+              <line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line>
+            </svg>
+            <span>Alle filters</span>
+            <span id="active-filters-count" class="filter-count-badge" style="display: none;">0</span>
+            <svg class="chevron-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+
+          <div class="funda-quick-sort">
+            <select id="filter-sort" class="funda-select" aria-label="Sorteer resultaten">
+              <option value="default">Sorteer: Aanbevolen</option>
+              <option value="price-asc">Prijs: laag naar hoog</option>
+              <option value="price-desc">Prijs: hoog naar laag</option>
+              <option value="surface-desc">Woonoppervlakte: groot naar klein</option>
+              <option value="surface-asc">Woonoppervlakte: klein naar groot</option>
+              <option value="year-desc">Bouwjaar / Oplevering</option>
+            </select>
+          </div>
+
+          <button type="button" id="btn-reset-filters" class="funda-reset-btn" title="Wis alle filters">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <span>Reset</span>
+          </button>
+        </div>
+
+        <!-- Het Drop Down Paneel met Alle Filters -->
+        <div id="adv-filter-drawer" class="funda-advanced-drawer" role="region" aria-label="Alle filter opties">
+          <div class="adv-drawer-inner">
+            <div class="adv-drawer-header">
+              <div class="adv-drawer-title">
+                <span class="adv-drawer-icon" aria-hidden="true">🎛️</span>
+                <h4>Alle filters verfijnen</h4>
+              </div>
+              <button type="button" id="btn-close-adv" class="btn-close-adv" title="Sluit filter dropdown" aria-label="Sluit filters">✕</button>
             </div>
 
-            <div>
-              <select id="filter-sort" class="funda-select" aria-label="Sorteer resultaten">
-                <option value="default">Aanbevolen volgorde</option>
-                <option value="price-asc">Prijs: laag naar hoog</option>
-                <option value="price-desc">Prijs: hoog naar laag</option>
-                <option value="surface-desc">Woonoppervlakte: groot naar klein</option>
-                <option value="surface-asc">Woonoppervlakte: klein naar groot</option>
-                <option value="year-desc">Bouwjaar / Oplevering: nieuwste eerst</option>
-              </select>
+            <div class="adv-drawer-sections">
+              <!-- Sectie 1: Type & Prijs -->
+              <div class="adv-section-card">
+                <span class="adv-section-label">🏡 Type &amp; Prijs</span>
+                <div class="adv-field-group">
+                  <label for="filter-property-type">Woningtype</label>
+                  <select id="filter-property-type" class="funda-select">
+                    <option value="all">Alle woningtypes</option>
+                    <option value="Appartement">Appartementen</option>
+                    <option value="Eengezinswoning">Eengezinswoningen / Rijwoningen</option>
+                    <option value="Villa">Villa's &amp; Herenhuizen</option>
+                    <option value="Studio">Studio's &amp; Lofts</option>
+                    <option value="Kamer">Kamers / Co-living</option>
+                    <option value="Bouwproject">🏗️ Bouwprojecten (Nieuwbouw)</option>
+                  </select>
+                </div>
+                <div class="adv-field-group">
+                  <label for="filter-price">Prijsklasse (Huur &amp; Koop)</label>
+                  <select id="filter-price" class="funda-select">
+                    <option value="all">Alle prijsklassen</option>
+                    <option value="kamer-laag">Kamers tot € 650 /mnd all-in</option>
+                    <option value="huur-midden">Huur/Studio tot € 1.000 /mnd</option>
+                    <option value="huur-ruim">Huur tot € 1.500 /mnd</option>
+                    <option value="koop-starter">Koop tot € 400.000 v.o.n./k.k.</option>
+                    <option value="koop-midden">Koop tot € 500.000</option>
+                    <option value="koop-hoog">Koop vanaf € 500.000</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Sectie 2: Indeling & Formaat -->
+              <div class="adv-section-card">
+                <span class="adv-section-label">📐 Ruimte &amp; Indeling</span>
+                <div class="adv-field-group">
+                  <label for="filter-rooms">Aantal kamers</label>
+                  <select id="filter-rooms" class="funda-select">
+                    <option value="all">Aantal kamers (Alle)</option>
+                    <option value="1">1 kamer (Studio of Kamer)</option>
+                    <option value="2">2 kamers</option>
+                    <option value="3">3 kamers</option>
+                    <option value="4">4+ kamers</option>
+                  </select>
+                </div>
+                <div class="adv-field-group">
+                  <label for="filter-adv-surface">Min. woonoppervlakte</label>
+                  <select id="filter-adv-surface" class="funda-select">
+                    <option value="all">Elk formaat</option>
+                    <option value="20">Vanaf 20 m² (Kamers &amp; Studio's)</option>
+                    <option value="50">Vanaf 50 m² (Compacte appartementen)</option>
+                    <option value="75">Vanaf 75 m² (Gezinswoningen)</option>
+                    <option value="100">Vanaf 100 m² (Grote woningen &amp; Villa's)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Sectie 3: Duurzaamheid & Eigenschappen -->
+              <div class="adv-section-card">
+                <span class="adv-section-label">🌱 Duurzaamheid &amp; Comfort</span>
+                <div class="adv-field-group">
+                  <label for="filter-adv-energy">Min. Energielabel</label>
+                  <select id="filter-adv-energy" class="funda-select">
+                    <option value="all">Alle energielabels</option>
+                    <option value="A++++">Label A++++ (Nul-op-de-meter)</option>
+                    <option value="A+++">Label A+++ of beter</option>
+                    <option value="A++">Label A++ of beter</option>
+                    <option value="A">Label A of beter</option>
+                  </select>
+                </div>
+
+                <div class="adv-field-group">
+                  <label>WoningVry Eigenschappen</label>
+                  <div class="adv-toggle-chips">
+                    <label class="adv-toggle-chip">
+                      <input type="checkbox" id="filter-adv-project">
+                      <span>🏗️ Bouwprojecten</span>
+                    </label>
+                    <label class="adv-toggle-chip">
+                      <input type="checkbox" id="filter-adv-available">
+                      <span>🟢 Direct Beschikbaar</span>
+                    </label>
+                    <label class="adv-toggle-chip">
+                      <input type="checkbox" id="filter-adv-garden">
+                      <span>🌿 Buitenruimte</span>
+                    </label>
+                    <label class="adv-toggle-chip">
+                      <input type="checkbox" id="filter-adv-parking">
+                      <span>🚗 Parkeerplaats</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div>
-              <button type="button" id="btn-toggle-adv" class="btn-toggle-adv" aria-expanded="false" aria-controls="adv-filter-drawer">
-                <span>Geavanceerd filteren</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            <!-- Footer van de dropdown -->
+            <div class="adv-drawer-footer">
+              <button type="button" id="btn-adv-reset" class="btn-adv-reset">Wis alle filters</button>
+              <button type="button" id="btn-adv-apply" class="btn-primary btn-sm">
+                <span>Toon resultaten (<span id="btn-results-count">32</span>)</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
               </button>
             </div>
-
-            <div>
-              <button type="button" id="btn-reset-filters" class="funda-reset-btn" title="Wis alle filters">Filters wissen</button>
-            </div>
           </div>
         </div>
 
-        <!-- Uitklapbare Geavanceerde Filter Drawer -->
-        <div id="adv-filter-drawer" class="funda-advanced-drawer" role="region" aria-label="Geavanceerde filter opties">
-          <div class="adv-drawer-grid">
-            <div class="adv-checkbox-group">
-              <label class="adv-checkbox-label">
-                <input type="checkbox" id="filter-adv-project">
-                <span>🏗️ Alleen WoningVry Bouwprojecten (Nieuwbouw)</span>
-              </label>
-              <label class="adv-checkbox-label">
-                <input type="checkbox" id="filter-adv-available">
-                <span>🟢 Alleen Direct Beschikbaar (Ronde 1)</span>
-              </label>
-              <label class="adv-checkbox-label">
-                <input type="checkbox" id="filter-adv-garden">
-                <span>🌿 Met buitenruimte (tuin, terras of balkon)</span>
-              </label>
-              <label class="adv-checkbox-label">
-                <input type="checkbox" id="filter-adv-parking">
-                <span>🚗 Met eigen parkeerplaats of garage</span>
-              </label>
-            </div>
-
-            <div class="adv-dropdowns-group">
-              <div>
-                <label for="filter-adv-energy">Min. Energielabel</label>
-                <select id="filter-adv-energy" class="funda-select" style="padding: 0.55rem 0.8rem; font-size: 0.85rem;">
-                  <option value="all">Alle energielabels</option>
-                  <option value="A++++">Label A++++ (Nul-op-de-meter)</option>
-                  <option value="A+++">Label A+++ of beter</option>
-                  <option value="A++">Label A++ of beter</option>
-                  <option value="A">Label A of beter</option>
-                </select>
-              </div>
-
-              <div>
-                <label for="filter-adv-surface">Min. Oppervlakte</label>
-                <select id="filter-adv-surface" class="funda-select" style="padding: 0.55rem 0.8rem; font-size: 0.85rem;">
-                  <option value="all">Elk formaat</option>
-                  <option value="20">Vanaf 20 m² (Kamers &amp; Studio's)</option>
-                  <option value="50">Vanaf 50 m² (Compacte appartementen)</option>
-                  <option value="75">Vanaf 75 m² (Gezinswoningen)</option>
-                  <option value="100">Vanaf 100 m² (Grote woningen &amp; Villa's)</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Rij 4: Status Quick Chips -->
+        <!-- Rij 3: Status Quick Chips (horizontaal veegbaar) -->
         <div class="funda-status-chips" id="status-chips">
-          <span style="font-size: 0.82rem; font-weight: 600; color: var(--muted); align-self: center; margin-right: 0.2rem;">Snelfilter:</span>
-          <button type="button" class="funda-chip active" data-status="all">Alles tonen</button>
-          <button type="button" class="funda-chip" data-status="beschikbaar" style="border-color: #22c55e; color: #166534; font-weight: 600;">🟢 Direct Beschikbaar</button>
-          <button type="button" class="funda-chip" data-status="projecten" style="border-color: #f59e0b; color: #b45309; font-weight: 600;">🏗️ Bouwprojecten</button>
-          <button type="button" class="funda-chip" data-status="kamers" style="border-color: #8b5cf6; color: #6d28d9; font-weight: 600;">🛏️ Kamers &amp; Studio's</button>
-          <button type="button" class="funda-chip" data-status="verkocht">🏷️ Verkocht</button>
-          <button type="button" class="funda-chip" data-status="verhuurd">🔑 Verhuurd</button>
-          <button type="button" class="funda-chip" data-status="ov">⏳ Onder voorbehoud</button>
+          <span class="status-chips-label">Snelfilter:</span>
+          <div class="status-chips-scroll">
+            <button type="button" class="funda-chip active" data-status="all">Alles tonen</button>
+            <button type="button" class="funda-chip chip-beschikbaar" data-status="beschikbaar">🟢 Direct Beschikbaar</button>
+            <button type="button" class="funda-chip chip-projecten" data-status="projecten">🏗️ Bouwprojecten</button>
+            <button type="button" class="funda-chip chip-kamers" data-status="kamers">🛏️ Kamers &amp; Studio's</button>
+            <button type="button" class="funda-chip" data-status="verkocht">🏷️ Verkocht</button>
+            <button type="button" class="funda-chip" data-status="verhuurd">🔑 Verhuurd</button>
+            <button type="button" class="funda-chip" data-status="ov">⏳ Onder voorbehoud</button>
+          </div>
         </div>
       </section>
 
@@ -424,8 +463,8 @@
 
   <script src="script.js"></script>
   <script type="module">
-    import { auth, onAuthStateChanged } from "./auth.js";
-    import { propertiesData, isFavorite, toggleFavorite } from "./properties-data.js";
+    import { auth, onAuthStateChanged, getPublicFirestoreListings } from "./auth.js";
+    import { propertiesData, isFavorite, toggleFavorite, mergeScrapedProperties } from "./properties-data.js";
 
     onAuthStateChanged(auth, (user) => {
       const link = document.querySelector(".nav-auth-link");
@@ -622,6 +661,7 @@
 
       // Update counters
       countEl.textContent = filtered.length;
+      updateActiveFilterBadge(filtered.length);
 
       // Lege staat tonen indien 0 resultaten
       if (filtered.length === 0) {
@@ -670,6 +710,7 @@
                 <span class="badge-funda-status ${statusClass}">${item.statusLabel}</span>
                 <span class="badge-funda-model ${modelBadgeClass}">${modelBadgeLabel}</span>
                 ${isProject && item.projectPhase ? `<span class="badge-funda-phase">📅 ${item.projectPhase}</span>` : ''}
+                ${item.sourcePlatform ? `<span class="badge-funda-phase" style="background: rgba(13,27,46,0.88); color: #f8fafc; border-color: rgba(212,182,120,0.45);">🔗 ${item.sourcePlatform}</span>` : ''}
               </div>
             </div>
 
@@ -831,13 +872,93 @@
       if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
     });
 
-    // Toggle geavanceerd filteren drawer
+    // Toggle "Alle filters" dropdown drawer
+    const btnCloseAdv = document.getElementById("btn-close-adv");
+    const btnAdvApply = document.getElementById("btn-adv-apply");
+    const btnAdvReset = document.getElementById("btn-adv-reset");
+    const btnClearSearch = document.getElementById("btn-clear-search");
+
+    function closeFilterDrawer() {
+      if (advFilterDrawer) advFilterDrawer.classList.remove("open");
+      if (btnToggleAdv) {
+        btnToggleAdv.classList.remove("active");
+        btnToggleAdv.setAttribute("aria-expanded", "false");
+      }
+    }
+
     if (btnToggleAdv && advFilterDrawer) {
-      btnToggleAdv.addEventListener("click", () => {
+      btnToggleAdv.addEventListener("click", (e) => {
+        e.stopPropagation();
         const isOpen = advFilterDrawer.classList.toggle("open");
         btnToggleAdv.classList.toggle("active", isOpen);
         btnToggleAdv.setAttribute("aria-expanded", String(isOpen));
       });
+    }
+
+    if (btnCloseAdv) {
+      btnCloseAdv.addEventListener("click", closeFilterDrawer);
+    }
+
+    if (btnAdvApply) {
+      btnAdvApply.addEventListener("click", () => {
+        closeFilterDrawer();
+        container.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+
+    if (btnAdvReset) {
+      btnAdvReset.addEventListener("click", resetAllFilters);
+    }
+
+    // Sluit dropdown bij klik daarbuiten
+    document.addEventListener("click", (e) => {
+      if (advFilterDrawer && advFilterDrawer.classList.contains("open")) {
+        if (!advFilterDrawer.contains(e.target) && !btnToggleAdv.contains(e.target)) {
+          closeFilterDrawer();
+        }
+      }
+    });
+
+    // Snelle zoekveld wissen knop
+    if (filterSearch && btnClearSearch) {
+      filterSearch.addEventListener("input", () => {
+        btnClearSearch.style.display = filterSearch.value ? "flex" : "none";
+      });
+      btnClearSearch.addEventListener("click", () => {
+        filterSearch.value = "";
+        btnClearSearch.style.display = "none";
+        renderProperties();
+        filterSearch.focus();
+      });
+    }
+
+    // Telt hoeveel filters actief zijn en toont badge
+    function updateActiveFilterBadge(filteredCount) {
+      let count = 0;
+      if (filterPropertyType && filterPropertyType.value !== "all") count++;
+      if (filterPrice && filterPrice.value !== "all") count++;
+      if (filterRooms && filterRooms.value !== "all") count++;
+      if (filterAdvSurface && filterAdvSurface.value !== "all") count++;
+      if (filterAdvEnergy && filterAdvEnergy.value !== "all") count++;
+      if (filterAdvProject && filterAdvProject.checked) count++;
+      if (filterAdvAvailable && filterAdvAvailable.checked) count++;
+      if (filterAdvGarden && filterAdvGarden.checked) count++;
+      if (filterAdvParking && filterAdvParking.checked) count++;
+
+      const badge = document.getElementById("active-filters-count");
+      if (badge) {
+        if (count > 0) {
+          badge.textContent = String(count);
+          badge.style.display = "inline-flex";
+        } else {
+          badge.style.display = "none";
+        }
+      }
+
+      const btnResultsCount = document.getElementById("btn-results-count");
+      if (btnResultsCount) {
+        btnResultsCount.textContent = String(filteredCount);
+      }
     }
 
     // Woonvorm pills interacties (Alles / Koop / Huur / Kamers / Bouwprojecten)
@@ -932,9 +1053,44 @@
       }, 3500);
     }
 
+    function syncDynamicCitiesDropdown() {
+      if (!filterCity) return;
+      const existingCities = new Set(
+        Array.from(filterCity.options).map((o) => o.value)
+      );
+      let added = false;
+      for (const prop of propertiesData) {
+        if (prop.city && !existingCities.has(prop.city)) {
+          existingCities.add(prop.city);
+          const opt = document.createElement("option");
+          opt.value = prop.city;
+          opt.textContent = prop.city;
+          filterCity.appendChild(opt);
+          added = true;
+        }
+      }
+      if (added) {
+        const allOpt = filterCity.querySelector('option[value="all"]');
+        if (allOpt) allOpt.textContent = `Alle steden (${existingCities.size - 1})`;
+      }
+    }
+
     // Initialiseer tellers & render
+    syncDynamicCitiesDropdown();
     updatePillCounts();
     renderProperties();
+
+    // Haal live gescrapete Funda/Pararius woningen op uit Firestore (/listings) & JSON-feed
+    getPublicFirestoreListings().then((liveListings) => {
+      if (liveListings && liveListings.length > 0) {
+        mergeScrapedProperties(liveListings);
+        syncDynamicCitiesDropdown();
+        updatePillCounts();
+        renderProperties();
+      }
+    }).catch((err) => {
+      console.warn("Live listings sync melding:", err);
+    });
   </script>
 
   <!-- PWA Service Worker Registratie -->

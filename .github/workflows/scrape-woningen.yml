@@ -1,0 +1,57 @@
+name: Scrape Funda & Pararius Woningen
+
+on:
+  schedule:
+    # Draait automatisch elke ochtend om 06:30 UTC (07:30 NL tijd)
+    - cron: '30 6 * * *'
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: 'Optioneel: Specifieke Funda of Pararius URL om direct te scrapen'
+        required: false
+        default: ''
+      cities:
+        description: 'Steden om te scrapen (komma-gescheiden)'
+        required: false
+        default: 'Amsterdam,Rotterdam,Utrecht,Den Haag'
+
+jobs:
+  scrape-and-sync:
+    name: Scrape Funda & Pararius Aanbod
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Funda & Pararius Scraper
+        env:
+          TARGET_URL: ${{ github.event.inputs.target_url }}
+          TARGET_CITIES: ${{ github.event.inputs.cities }}
+        run: |
+          if [ -n "$TARGET_URL" ]; then
+            node scripts/scrape-funda-pararius.mjs --url "$TARGET_URL"
+          elif [ -n "$TARGET_CITIES" ]; then
+            node scripts/scrape-funda-pararius.mjs --cities "$TARGET_CITIES" --limit 8
+          else
+            node scripts/scrape-funda-pararius.mjs --limit 8
+          fi
+
+      - name: Commit & Push Gescrapete Woningen
+        run: |
+          git config user.name "WoningVry Scraper Bot"
+          git config user.email "info@woningvry.nl"
+          git add public/scraped-listings.json properties-data.js
+          if ! git diff --staged --quiet; then
+            git commit -m "chore(scraper): automatische Funda & Pararius woning-update"
+            git push
+          else
+            echo "Geen nieuwe wijzigingen in het woningaanbod."
+          fi

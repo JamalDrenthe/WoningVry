@@ -3157,46 +3157,83 @@ body.menu-open {
   margin-bottom: 1.2rem;
 }
 
+/* ============================================================
+   AANBOD COCKPIT & FILTER ARCHITECTUUR
+   ============================================================ */
+.aanbod-tabs-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid rgba(13, 27, 46, 0.08);
+  margin-bottom: 1.1rem;
+}
+
 .funda-type-pills {
-  display: inline-flex;
-  background: rgba(13, 27, 46, 0.06);
-  padding: 0.25rem;
-  border-radius: 999px;
-  gap: 0.25rem;
+  display: flex;
+  background: rgba(13, 27, 46, 0.05);
+  padding: 0.3rem;
+  border-radius: var(--r-pill);
+  gap: 0.35rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+.funda-type-pills::-webkit-scrollbar {
+  display: none;
 }
 
 .funda-pill-btn {
-  border: none;
+  border: 1px solid transparent;
   background: transparent;
-  padding: 0.5rem 1.25rem;
-  border-radius: 999px;
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--r-pill);
   font-family: var(--font-body);
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 600;
-  color: var(--muted);
+  color: #475569;
   cursor: pointer;
   transition: all var(--dur-quick) var(--ease-standard);
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .funda-pill-btn:hover {
   color: var(--ink);
+  background: rgba(13, 27, 46, 0.06);
 }
 
 .funda-pill-btn.active {
-  background: var(--ink);
+  background: var(--ink, #0d1b2e);
   color: #ffffff;
-  box-shadow: 0 2px 8px rgba(13, 27, 46, 0.2);
+  border-color: rgba(212, 182, 120, 0.45);
+  box-shadow: 0 4px 12px rgba(13, 27, 46, 0.22);
+}
+
+.funda-pill-btn .pill-count {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #94a3b8;
+  transition: color var(--dur-quick);
+}
+
+.funda-pill-btn.active .pill-count {
+  color: var(--gold-bright, #e5c583);
 }
 
 .funda-view-toggle {
   display: inline-flex;
-  gap: 0.35rem;
-  background: rgba(13, 27, 46, 0.04);
+  gap: 0.3rem;
+  background: rgba(13, 27, 46, 0.05);
   padding: 0.25rem;
   border-radius: var(--r-s);
+  flex-shrink: 0;
 }
 
 .funda-view-btn {
@@ -3218,209 +3255,153 @@ body.menu-open {
   background: #ffffff;
   border-color: rgba(13, 27, 46, 0.12);
   color: var(--ink);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
-/* Tweede rij: Zoekveld en dropdowns */
-.funda-search-grid-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-}
-
-.funda-search-grid--top {
+/* De Hoofdbalk: Zoekbalk + Stad + Alle Filters Dropdown Knop + Sortering + Reset */
+.funda-primary-bar {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1.2fr;
-  gap: 0.85rem;
+  grid-template-columns: 2.2fr 1.2fr auto 1.3fr auto;
+  gap: 0.75rem;
   align-items: center;
-}
-
-.funda-search-grid--bottom {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr auto auto;
-  gap: 0.85rem;
-  align-items: center;
-}
-
-.btn-toggle-adv {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.72rem 1.15rem;
-  border-radius: var(--r-s);
-  border: 1px solid rgba(212, 182, 120, 0.4);
-  background: rgba(229, 197, 131, 0.08);
-  color: var(--ink);
-  font-size: 0.86rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--dur-quick) var(--ease-standard);
-  white-space: nowrap;
-}
-
-.btn-toggle-adv:hover {
-  background: rgba(229, 197, 131, 0.18);
-  border-color: var(--gold);
-}
-
-.btn-toggle-adv.active {
-  background: var(--ink);
-  color: var(--gold-bright);
-  border-color: var(--ink);
-}
-
-.btn-toggle-adv svg {
-  transition: transform 0.25s ease;
-}
-
-.btn-toggle-adv.active svg {
-  transform: rotate(180deg);
-}
-
-.funda-advanced-drawer {
-  display: none;
-  background: #f8fafc;
-  border: 1px solid rgba(13, 27, 46, 0.08);
-  border-radius: var(--r-s);
-  padding: 1.25rem 1.4rem;
-  margin-top: 0.5rem;
-  animation: slideDown 0.25s ease-out;
-}
-
-.funda-advanced-drawer.open {
-  display: block;
-}
-
-.adv-drawer-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 1.5rem;
-  align-items: start;
-}
-
-.adv-checkbox-group {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.65rem;
-}
-
-.adv-checkbox-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  font-size: 0.84rem;
-  font-weight: 550;
-  color: #334155;
-  cursor: pointer;
-  user-select: none;
-}
-
-.adv-checkbox-label input[type="checkbox"] {
-  width: 17px;
-  height: 17px;
-  accent-color: var(--gold);
-  cursor: pointer;
-}
-
-.adv-dropdowns-group {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.85rem;
-}
-
-.adv-dropdowns-group label {
-  display: block;
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 0.35rem;
-}
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 900px) {
-  .funda-search-grid--top {
-    grid-template-columns: 1fr 1fr;
-  }
-  .funda-search-grid--bottom {
-    grid-template-columns: 1fr 1fr;
-  }
-  .adv-drawer-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .funda-search-grid--top,
-  .funda-search-grid--bottom {
-    grid-template-columns: 1fr;
-  }
-  .adv-checkbox-group {
-    grid-template-columns: 1fr;
-  }
-  .funda-type-pills {
-    display: flex;
-    flex-wrap: wrap;
-    border-radius: var(--r-s);
-  }
 }
 
 .funda-search-input-wrap {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .funda-search-input {
   width: 100%;
-  padding: 0.75rem 1rem 0.75rem 2.4rem;
-  border: 1px solid rgba(13, 27, 46, 0.15);
+  padding: 0.75rem 2.2rem 0.75rem 2.4rem;
+  border: 1.5px solid rgba(13, 27, 46, 0.15);
   border-radius: var(--r-s);
   font-size: 0.92rem;
   font-family: var(--font-body);
   background: #ffffff;
   color: var(--ink);
-  transition: border-color var(--dur-quick);
+  transition: all var(--dur-quick);
 }
 
 .funda-search-input:focus {
   outline: none;
-  border-color: var(--ink);
-  box-shadow: 0 0 0 3px rgba(13, 27, 46, 0.1);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(194, 159, 84, 0.18);
 }
 
 .funda-search-icon {
   position: absolute;
-  left: 0.8rem;
-  top: 50%;
-  transform: translateY(-50%);
+  left: 0.85rem;
   color: var(--muted);
   pointer-events: none;
 }
 
-.funda-select {
-  padding: 0.75rem 1rem;
-  border: 1px solid rgba(13, 27, 46, 0.15);
+.btn-clear-search {
+  position: absolute;
+  right: 0.75rem;
+  background: rgba(13, 27, 46, 0.08);
+  border: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-clear-search:hover {
+  background: rgba(13, 27, 46, 0.18);
+  color: var(--ink);
+}
+
+.funda-quick-city,
+.funda-quick-sort {
+  min-width: 0;
+}
+
+/* De Grote "Alle filters" Dropdown Knop */
+.btn-all-filters {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.15rem;
   border-radius: var(--r-s);
-  font-size: 0.9rem;
+  border: 1.5px solid rgba(194, 159, 84, 0.45);
+  background: linear-gradient(135deg, rgba(247, 229, 181, 0.18) 0%, rgba(229, 197, 131, 0.08) 100%);
+  color: var(--ink);
+  font-size: 0.88rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: all var(--dur-quick) var(--ease-standard);
+  white-space: nowrap;
+}
+
+.btn-all-filters:hover {
+  background: rgba(229, 197, 131, 0.25);
+  border-color: var(--gold);
+  transform: translateY(-1px);
+}
+
+.btn-all-filters.active {
+  background: var(--ink, #0d1b2e);
+  color: var(--gold-bright, #e5c583);
+  border-color: var(--ink, #0d1b2e);
+  box-shadow: 0 6px 18px rgba(13, 27, 46, 0.25);
+}
+
+.btn-all-filters .chevron-arrow {
+  transition: transform 0.25s ease;
+}
+
+.btn-all-filters.active .chevron-arrow {
+  transform: rotate(180deg);
+}
+
+.filter-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: var(--gold-gradient);
+  color: #080d15;
+  font-size: 0.72rem;
+  font-weight: 800;
+  box-shadow: 0 2px 6px rgba(194, 159, 84, 0.4);
+}
+
+.funda-select {
+  padding: 0.75rem 0.95rem;
+  border: 1.5px solid rgba(13, 27, 46, 0.15);
+  border-radius: var(--r-s);
+  font-size: 0.88rem;
   font-family: var(--font-body);
   background: #ffffff;
   color: var(--ink);
   cursor: pointer;
   width: 100%;
+  transition: border-color var(--dur-quick);
 }
 
 .funda-select:focus {
   outline: none;
-  border-color: var(--ink);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(194, 159, 84, 0.18);
 }
 
 .funda-reset-btn {
-  padding: 0.75rem 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.75rem 1rem;
   border: 1px solid rgba(13, 27, 46, 0.15);
   background: rgba(13, 27, 46, 0.04);
   border-radius: var(--r-s);
@@ -3434,27 +3415,226 @@ body.menu-open {
 
 .funda-reset-btn:hover {
   background: rgba(13, 27, 46, 0.08);
+  border-color: rgba(13, 27, 46, 0.25);
 }
 
-/* Status filtering row (chips) */
+/* ============================================================
+   DROP DOWN PANEEL MET ALLE FILTERS (Geavanceerd & Granulair)
+   ============================================================ */
+.funda-advanced-drawer {
+  display: none;
+  background: #ffffff;
+  border: 1.5px solid rgba(194, 159, 84, 0.35);
+  border-radius: var(--r-m);
+  padding: 1.5rem;
+  margin-top: 0.85rem;
+  box-shadow: 0 20px 45px -10px rgba(13, 27, 46, 0.18), 0 0 25px -5px rgba(212, 182, 120, 0.15);
+  animation: slideDownFilter 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.funda-advanced-drawer.open {
+  display: block;
+}
+
+@keyframes slideDownFilter {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.adv-drawer-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.adv-drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.95rem;
+  margin-bottom: 1.15rem;
+  border-bottom: 1px solid rgba(13, 27, 46, 0.08);
+}
+
+.adv-drawer-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.adv-drawer-title h4 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--ink, #0d1b2e);
+  margin: 0;
+}
+
+.btn-close-adv {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(13, 27, 46, 0.12);
+  background: rgba(13, 27, 46, 0.05);
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-close-adv:hover {
+  background: var(--ink);
+  color: #ffffff;
+}
+
+.adv-drawer-sections {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.15rem;
+}
+
+.adv-section-card {
+  background: #f8fafc;
+  border: 1px solid rgba(13, 27, 46, 0.08);
+  border-radius: var(--r-s);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.adv-section-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink, #0d1b2e);
+  border-bottom: 1px solid rgba(13, 27, 46, 0.08);
+  padding-bottom: 0.45rem;
+  margin-bottom: 0.2rem;
+}
+
+.adv-field-group label {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #475569;
+  margin-bottom: 0.35rem;
+}
+
+/* Clickable Toggle Chips for Checkboxes */
+.adv-toggle-chips {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.adv-toggle-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.65rem;
+  background: #ffffff;
+  border: 1.5px solid rgba(13, 27, 46, 0.12);
+  border-radius: var(--r-s);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1e293b;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.adv-toggle-chip input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+
+.adv-toggle-chip:hover {
+  border-color: var(--gold);
+  background: rgba(229, 197, 131, 0.08);
+}
+
+.adv-toggle-chip:has(input:checked) {
+  border-color: var(--gold);
+  background: rgba(229, 197, 131, 0.16);
+  color: #080d15;
+}
+
+.adv-drawer-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.2rem;
+  margin-top: 1.25rem;
+  border-top: 1px solid rgba(13, 27, 46, 0.08);
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.btn-adv-reset {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color var(--dur-quick);
+}
+
+.btn-adv-reset:hover {
+  color: #ef4444;
+}
+
+/* Status Quick Chips (Horizontaal Scrollable) */
 .funda-status-chips {
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
   margin-top: 1rem;
   padding-top: 0.85rem;
-  border-top: 1px solid rgba(13, 27, 46, 0.05);
+  border-top: 1px solid rgba(13, 27, 46, 0.06);
+}
+
+.status-chips-label {
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.status-chips-scroll {
+  display: flex;
+  gap: 0.45rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 2px;
+}
+.status-chips-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 .funda-chip {
   border: 1px solid rgba(13, 27, 46, 0.12);
-  background: transparent;
+  background: #ffffff;
   padding: 0.35rem 0.85rem;
-  border-radius: 999px;
+  border-radius: var(--r-pill);
   font-size: 0.82rem;
-  font-weight: 500;
-  color: var(--muted);
+  font-weight: 550;
+  color: #334155;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: all var(--dur-quick);
 }
 
@@ -3464,9 +3644,68 @@ body.menu-open {
 }
 
 .funda-chip.active {
-  background: var(--ink);
-  border-color: var(--ink);
+  background: var(--ink, #0d1b2e);
+  border-color: var(--ink, #0d1b2e);
   color: #ffffff;
+  box-shadow: 0 2px 6px rgba(13, 27, 46, 0.15);
+}
+
+.funda-chip.chip-beschikbaar {
+  border-color: rgba(34, 197, 94, 0.4);
+  color: #166534;
+}
+.funda-chip.chip-beschikbaar.active {
+  background: #166534;
+  border-color: #166534;
+  color: #ffffff;
+}
+
+.funda-chip.chip-projecten {
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #b45309;
+}
+.funda-chip.chip-projecten.active {
+  background: #b45309;
+  border-color: #b45309;
+  color: #ffffff;
+}
+
+.funda-chip.chip-kamers {
+  border-color: rgba(139, 92, 246, 0.4);
+  color: #6d28d9;
+}
+.funda-chip.chip-kamers.active {
+  background: #6d28d9;
+  border-color: #6d28d9;
+  color: #ffffff;
+}
+
+/* Responsive Media Queries voor Filter Cockpit */
+@media (max-width: 960px) {
+  .funda-primary-bar {
+    grid-template-columns: 1fr 1fr;
+  }
+  .funda-search-input-wrap {
+    grid-column: 1 / -1;
+  }
+  .adv-drawer-sections {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .funda-primary-bar {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+  .adv-toggle-chips {
+    grid-template-columns: 1fr;
+  }
+  .funda-tabs-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
 /* Resultaten Header */

@@ -371,14 +371,15 @@
 
   <!-- SCRIPT INTEGRATIE -->
   <script type="module">
-    import { auth, onAuthStateChanged, addUserViewing, saveUserFavorites } from "./auth.js";
+    import { auth, onAuthStateChanged, addUserViewing, saveUserFavorites, getPublicFirestoreListings } from "./auth.js";
     import { 
       getPropertyById, 
       getAllProperties, 
       isFavorite, 
       toggleFavorite, 
       getFavorites,
-      saveViewing 
+      saveViewing,
+      mergeScrapedProperties
     } from "./properties-data.js";
 
     // 1. Auth state controleren voor nav en formulier auto-fill
@@ -756,6 +757,22 @@
 
     // Initialiseer weergave
     renderPropertyDetails(property);
+
+    // Synchroniseer ook live Firestore /listings zodat direct gedeelde links van gescrapete woningen werken
+    const requestedId = params.get("id");
+    getPublicFirestoreListings().then((liveListings) => {
+      if (liveListings && liveListings.length > 0) {
+        mergeScrapedProperties(liveListings);
+        if (requestedId) {
+          const freshMatch = getPropertyById(requestedId);
+          if (freshMatch && freshMatch.id !== property.id) {
+            property = freshMatch;
+            propId = freshMatch.id;
+            renderPropertyDetails(property);
+          }
+        }
+      }
+    }).catch(() => {});
   </script>
 
   <script src="script.js"></script>
