@@ -265,9 +265,14 @@
           <p id="modal-desc" style="color: #334155; line-height: 1.7; font-size: 0.95rem; margin-bottom: 1.5rem;"></p>
         </div>
 
-        <div style="background: #f8fafc; border: 1px solid rgba(13,27,46,0.08); border-radius: var(--r-s); padding: 1.2rem; margin-bottom: 1.5rem;">
-          <h4 style="font-size: 0.95rem; color: var(--ink); margin-bottom: 0.35rem;">🏆 WoningVry Toewijzingsvoordeel</h4>
-          <p id="modal-advantage" style="font-size: 0.88rem; color: var(--muted); margin: 0;"></p>
+        <div class="funda-wv-perk" style="padding: 1rem 1.2rem; margin-bottom: 1.5rem;">
+          <div class="funda-wv-perk__top">
+            <span class="funda-wv-perk__badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              WoningVry Toewijzingsvoordeel
+            </span>
+          </div>
+          <p id="modal-advantage" class="funda-wv-perk__text" style="font-size: 0.9rem; line-height: 1.6;"></p>
         </div>
 
         <div style="display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap;">
@@ -470,7 +475,13 @@
                 </div>
 
                 <div class="funda-wv-perk">
-                  <span>⚡ WoningVry:</span> ${item.advantage}
+                  <div class="funda-wv-perk__top">
+                    <span class="funda-wv-perk__badge">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                      WoningVry Voordeel
+                    </span>
+                  </div>
+                  <p class="funda-wv-perk__text">${item.advantage}</p>
                 </div>
               </div>
 
