@@ -67,15 +67,37 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Mobiel menu sluiten bij klik op link of Escape toets
+  // Mobiel & tablet menu (scroll-lock, sluiten bij klik, escape en resize)
   const navCheckbox = document.getElementById('nav__checkbox');
   if (navCheckbox) {
+    const closeMenu = () => {
+      navCheckbox.checked = false;
+      document.body.classList.remove('menu-open');
+    };
+
     document.querySelectorAll('.nav__menu a').forEach(link => {
-      link.addEventListener('click', () => { navCheckbox.checked = false; });
+      link.addEventListener('click', () => {
+        closeMenu();
+      });
     });
+
+    navCheckbox.addEventListener('change', () => {
+      if (navCheckbox.checked) {
+        document.body.classList.add('menu-open');
+      } else {
+        document.body.classList.remove('menu-open');
+      }
+    });
+
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && navCheckbox.checked) {
-        navCheckbox.checked = false;
+        closeMenu();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 1040 && navCheckbox.checked) {
+        closeMenu();
       }
     });
   }
