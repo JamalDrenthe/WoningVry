@@ -117,29 +117,43 @@
         <!-- Directe Demo Accounts & Admin Toegang -->
         <div class="demo-box">
           <div class="demo-box__header">
-            <span class="demo-badge">Snelle Demo Inlog</span>
+            <span class="demo-badge">
+              <span class="demo-badge__pulse" aria-hidden="true"></span>
+              Snelle Demo Inlog
+            </span>
             <span class="demo-subtext">Direct testen zonder registratie:</span>
           </div>
           <div class="demo-grid">
-            <button type="button" id="demo-zoekende-btn" class="btn-demo">
-              <span class="btn-demo__tag">Demo</span>
+            <button type="button" id="demo-zoekende-btn" class="btn-demo" title="Inloggen als Demo Woningzoekende">
+              <div class="btn-demo__top">
+                <span class="btn-demo__tag">Demo</span>
+                <span class="btn-demo__icon" aria-hidden="true">🎯</span>
+              </div>
               <span class="btn-demo__role">Woningzoekende</span>
               <span class="btn-demo__email">zoekende@woningvry.nl</span>
             </button>
-            <button type="button" id="demo-aanbieder-btn" class="btn-demo">
-              <span class="btn-demo__tag">Demo</span>
+            <button type="button" id="demo-aanbieder-btn" class="btn-demo" title="Inloggen als Demo Woningaanbieder">
+              <div class="btn-demo__top">
+                <span class="btn-demo__tag">Demo</span>
+                <span class="btn-demo__icon" aria-hidden="true">🏢</span>
+              </div>
               <span class="btn-demo__role">Woningaanbieder</span>
               <span class="btn-demo__email">aanbieder@woningvry.nl</span>
             </button>
-            <button type="button" id="demo-admin-btn" class="btn-demo btn-demo--admin">
-              <span class="btn-demo__tag">Demo 👑</span>
+            <button type="button" id="demo-admin-btn" class="btn-demo btn-demo--admin" title="Inloggen als Demo Beheerder">
+              <div class="btn-demo__top">
+                <span class="btn-demo__tag btn-demo__tag--gold">Demo</span>
+                <span class="btn-demo__icon" aria-hidden="true">👑</span>
+              </div>
               <span class="btn-demo__role">Beheerder</span>
               <span class="btn-demo__email">admin@woningvry.nl</span>
             </button>
           </div>
           <div class="demo-admin-hint">
-            <span class="admin-icon">👑</span>
-            <span><strong>Eigen admin-toegang:</strong> Log in met Google via <code>info@woningvry.nl</code> voor permanent hoofdbeheer.</span>
+            <span class="admin-icon" aria-hidden="true">👑</span>
+            <div class="admin-hint-text">
+              <strong>Directe beheerderstoegang:</strong> Log in met Google via <code>info@woningvry.nl</code> voor permanent hoofdbeheer.
+            </div>
           </div>
         </div>
       </div>
