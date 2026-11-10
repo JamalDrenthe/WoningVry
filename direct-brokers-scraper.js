@@ -71,6 +71,36 @@ export function parseDutchDateToIso(str) {
 }
 
 /**
+ * Normaliseert vastgoedstatussen over alle platformen
+ * Voorkomt het tonen van verouderde woningen (verhuurd, verkocht, onder bod, etc.)
+ */
+export function normalizePropertyStatus(rawStatusText) {
+  if (!rawStatusText) return { status: "beschikbaar", statusLabel: "Direct Beschikbaar" };
+  const s = String(rawStatusText).toLowerCase().trim();
+
+  if (s.includes("verhuurd onder voorbehoud") || s.includes("rented_under_conditions")) {
+    return { status: "verhuurd_voorbehoud", statusLabel: "Verhuurd onder voorbehoud" };
+  }
+  if (s.includes("verhuurd") || s.includes("rented") || s.includes("let agreed")) {
+    return { status: "verhuurd", statusLabel: "Verhuurd" };
+  }
+  if (s.includes("verkocht onder voorbehoud") || s.includes("sold_under_conditions") || s.includes("onder voorbehoud")) {
+    return { status: "verkocht_voorbehoud", statusLabel: "Verkocht onder voorbehoud" };
+  }
+  if (s.includes("verkocht") || s.includes("sold")) {
+    return { status: "verkocht", statusLabel: "Verkocht" };
+  }
+  if (s.includes("onder bod") || s.includes("has_received_bid") || s.includes("under-offer") || s.includes("in onderhandeling")) {
+    return { status: "in_onderhandeling", statusLabel: "In onderhandeling / Onder bod" };
+  }
+  if (s.includes("onder optie") || s.includes("in optie") || s.includes("under-option") || s.includes("gereserveerd")) {
+    return { status: "in_optie", statusLabel: "Onder optie / Gereserveerd" };
+  }
+
+  return { status: "beschikbaar", statusLabel: "Direct Beschikbaar" };
+}
+
+/**
  * 1. 123Wonen Scraper
  */
 export async function scrape123Wonen(limit = 15) {
@@ -141,14 +171,20 @@ export async function scrape123Wonen(limit = 15) {
         const imageMatch = dHtml.match(/<meta property=["\x27]og:image["\x27] content=["\x27]([^"\x27]+)["\x27]/i)?.[1]
           || "attached_assets/appartement-luxury.webp";
 
+        // Status (Detecteer Verhuurd, Onder Optie, In Aanvraag, Beschikbaar)
+        const rawStatus = (dHtml.match(/Status<\/span><span>([^<]+)<\/span>/i)?.[1] || "")
+          + " " + (dHtml.match(/Beschikbaarheid<\/span><span>([^<]+)<\/span>/i)?.[1] || "")
+          + (dHtml.toLowerCase().includes("verhuurd") && !dHtml.toLowerCase().includes("verhuurder") ? " verhuurd" : "");
+        const { status, statusLabel } = normalizePropertyStatus(rawStatus);
+
         listings.push(
           convertToWoningVryProperty({
             id: "123wonen-" + address.toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-" + city.toLowerCase(),
             sourcePlatform: "123Wonen",
             sourceUrl: url,
             category: "huur",
-            status: "beschikbaar",
-            statusLabel: "Direct Beschikbaar",
+            status,
+            statusLabel,
             address,
             city,
             priceVal,
@@ -243,14 +279,19 @@ export async function scrapeVastgoedUnie(limit = 15) {
         const imageMatch = dHtml.match(/<meta property=["\x27]og:image["\x27] content=["\x27]([^"\x27]+)["\x27]/i)?.[1]
           || "attached_assets/appartement-luxury.webp";
 
+        // Status (Onder bod, Onder optie, Verhuurd, Verkocht, Beschikbaar)
+        const statusMatch = dHtml.match(/class=["\x27]status_container["\x27]>([^<]+)<\/div>/i)?.[1]
+          || rawTitle.match(/^(?:Te koop|Te huur|Onder bod|Onder optie|Verhuurd|Verkocht)/i)?.[0];
+        const { status, statusLabel } = normalizePropertyStatus(statusMatch);
+
         listings.push(
           convertToWoningVryProperty({
             id: "vastgoedunie-" + address.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
             sourcePlatform: "Vastgoed Unie",
             sourceUrl: url,
             category,
-            status: "beschikbaar",
-            statusLabel: "Direct Beschikbaar",
+            status,
+            statusLabel,
             address,
             postalCode,
             city,
@@ -331,14 +372,19 @@ export async function scrapeRappange(limit = 15) {
         const imageMatch = dHtml.match(/<meta property=["\x27]og:image["\x27] content=["\x27]([^"\x27]+)["\x27]/i)?.[1]
           || "attached_assets/appartement-luxury.webp";
 
+        // Status (Onder bod, In optie, Verkocht, Verhuurd, Beschikbaar)
+        const statusMatch = dHtml.match(/class=["\x27](?:status-text|status)[^"\x27]*["\x27]>([^<]+)<\/span>/i)?.[1]
+          || (dHtml.includes("status-sold") ? "Verkocht" : (dHtml.includes("under-offer") ? "Onder bod" : "Beschikbaar"));
+        const { status, statusLabel } = normalizePropertyStatus(statusMatch);
+
         listings.push(
           convertToWoningVryProperty({
             id: "rappange-" + address.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
             sourcePlatform: "Rappange Makelaardij",
             sourceUrl: url,
             category,
-            status: "beschikbaar",
-            statusLabel: "Direct Beschikbaar",
+            status,
+            statusLabel,
             address,
             city,
             priceVal,
@@ -402,14 +448,19 @@ export async function scrapeHBHousing(limit = 10) {
         const priceVal = isKoop ? 395000 : 1650;
         const depositAmount = isKoop ? Math.round(priceVal * 0.10) : priceVal * 2;
 
+        // Status
+        const statusMatch = itemXml.match(/<status>([^<]+)<\/status>/i)?.[1]
+          || (rawTitle.toLowerCase().includes("verhuurd") ? "Verhuurd" : (rawTitle.toLowerCase().includes("onder optie") ? "Onder optie" : "Beschikbaar"));
+        const { status, statusLabel } = normalizePropertyStatus(statusMatch);
+
         listings.push(
           convertToWoningVryProperty({
             id: "hbhousing-" + address.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
             sourcePlatform: "HB Housing",
             sourceUrl: link,
             category,
-            status: "beschikbaar",
-            statusLabel: "Direct Beschikbaar",
+            status,
+            statusLabel,
             address,
             city,
             priceVal,
@@ -571,14 +622,18 @@ export async function scrapeNomos(limit = 16) {
 
         const defaultDesc = `Exclusief ${category}-aanbod via NOMOS Real Estate: ${address} te ${city}. Hoogwaardig afgewerkt met een woonoppervlakte van ca. ${surface} m², ${bedrooms} slaapkamers en energielabel ${energyLabel}. Geregistreerd in november 2026 met de officiële waarborgsom en contractvoorwaarden.`;
 
+        // Status (AVAILABLE, HAS_RECEIVED_BID, Rented, Sold, SOLD_UNDER_CONDITIONS)
+        const statusRaw = raw.match(/class=["\x27]status_text[^"\x27]*["\x27]>([^<]+)<\/p>/i)?.[1] || "AVAILABLE";
+        const { status, statusLabel } = normalizePropertyStatus(statusRaw);
+
         listings.push(
           convertToWoningVryProperty({
             id: "nomos-" + address.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
             sourcePlatform: "NOMOS Real Estate",
             sourceUrl: href ? (href.startsWith("http") ? href : "https://www.nomos.nl" + href) : "https://www.nomos.nl/properties",
             category,
-            status: "beschikbaar",
-            statusLabel: "Direct Beschikbaar",
+            status,
+            statusLabel,
             address,
             postalCode,
             city,

@@ -1204,11 +1204,22 @@
                   <a href="aanbod.html" class="btn-secondary btn-sm">Bekijk op Aanbodpagina →</a>
                 </div>
               </div>
+
+              <!-- Status Filterknoppen (Live actualiteit: Voorkomt verouderde woningen) -->
+              <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap;">
+                <span style="font-size: 0.82rem; font-weight: 600; color: var(--ink);">Status filter:</span>
+                <button type="button" class="btn-secondary btn-sm scraper-filter-status active" data-filter="all" style="padding: 0.2rem 0.55rem; font-size: 0.78rem;">Alles (<span id="count-filter-all">0</span>)</button>
+                <button type="button" class="btn-secondary btn-sm scraper-filter-status" data-filter="beschikbaar" style="padding: 0.2rem 0.55rem; font-size: 0.78rem; border-color: #22c55e;">🟢 Beschikbaar (<span id="count-filter-avail">0</span>)</button>
+                <button type="button" class="btn-secondary btn-sm scraper-filter-status" data-filter="onderhandeling" style="padding: 0.2rem 0.55rem; font-size: 0.78rem; border-color: #f59e0b;">🟠 Onder bod / Optie (<span id="count-filter-pending">0</span>)</button>
+                <button type="button" class="btn-secondary btn-sm scraper-filter-status" data-filter="verhuurd_verkocht" style="padding: 0.2rem 0.55rem; font-size: 0.78rem; border-color: #ef4444;">🔴 Verhuurd / Verkocht (<span id="count-filter-closed">0</span>)</button>
+              </div>
+
               <div class="table-wrap">
                 <table class="data-table">
                   <thead>
                     <tr>
                       <th>Bron</th>
+                      <th>Status</th>
                       <th>Adres &amp; Stad</th>
                       <th>Type &amp; Kenmerken</th>
                       <th>WoningVry Prijs &amp; Model</th>
@@ -1216,7 +1227,7 @@
                     </tr>
                   </thead>
                   <tbody id="scraper-listings-tbody">
-                    <tr><td colspan="5">Gescrapete woningen laden...</td></tr>
+                    <tr><td colspan="6">Gescrapete woningen laden...</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -1988,39 +1999,96 @@
       });
     }
 
+    let currentScraperFilter = "all";
+
     // Tabel met actieve gescrapete woningen renderen
     async function renderScraperListingsTable() {
       if (!scraperListingsTbody) return;
       const localItems = getLocalScrapedProperties();
       const firestoreListings = await getPublicFirestoreListings().catch(() => []);
       
+      // Laad ook uit scraped-listings.json indien beschikbaar
+      let jsonFeedListings = [];
+      try {
+        const jRes = await fetch("scraped-listings.json");
+        if (jRes.ok) {
+          const jData = await jRes.json();
+          jsonFeedListings = jData.listings || [];
+        }
+      } catch (e) {}
+
       // Combineer uniek
       const allActive = [...localItems];
-      for (const f of firestoreListings) {
-        if (!allActive.some(a => a.id === f.id || (a.address && f.address && a.address.toLowerCase() === f.address.toLowerCase()))) {
-          allActive.push(f);
+      for (const item of [...jsonFeedListings, ...firestoreListings]) {
+        if (!allActive.some(a => a.id === item.id || (a.address && item.address && a.address.toLowerCase() === item.address.toLowerCase()))) {
+          allActive.push(item);
         }
       }
 
+      // Bereken status tellers
+      const countAvail = allActive.filter(i => (i.status || "beschikbaar") === "beschikbaar").length;
+      const countPending = allActive.filter(i => i.status === "in_onderhandeling" || i.status === "in_optie").length;
+      const countClosed = allActive.filter(i => i.status === "verhuurd" || i.status === "verkocht" || i.status === "verhuurd_voorbehoud" || i.status === "verkocht_voorbehoud").length;
+
+      const elAll = document.getElementById("count-filter-all");
+      const elAvail = document.getElementById("count-filter-avail");
+      const elPending = document.getElementById("count-filter-pending");
+      const elClosed = document.getElementById("count-filter-closed");
+      if (elAll) elAll.textContent = allActive.length;
+      if (elAvail) elAvail.textContent = countAvail;
+      if (elPending) elPending.textContent = countPending;
+      if (elClosed) elClosed.textContent = countClosed;
       if (scraperActiveCount) scraperActiveCount.textContent = allActive.length;
 
-      if (allActive.length === 0) {
-        scraperListingsTbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--muted); padding:1.5rem;">Nog geen woningen gescrapet. Plak hierboven een Funda of Pararius link om te starten.</td></tr>`;
+      // Filteren op geselecteerde status
+      const filtered = allActive.filter(item => {
+        const st = item.status || "beschikbaar";
+        if (currentScraperFilter === "beschikbaar") return st === "beschikbaar";
+        if (currentScraperFilter === "onderhandeling") return st === "in_onderhandeling" || st === "in_optie";
+        if (currentScraperFilter === "verhuurd_verkocht") return st === "verhuurd" || st === "verkocht" || st === "verhuurd_voorbehoud" || st === "verkocht_voorbehoud";
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        scraperListingsTbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:1.5rem;">Geen woningen met de geselecteerde filterstatus (${currentScraperFilter}).</td></tr>`;
         return;
       }
 
-      scraperListingsTbody.innerHTML = allActive.map(item => `
+      scraperListingsTbody.innerHTML = filtered.map(item => {
+        const st = item.status || "beschikbaar";
+        const isAvail = st === "beschikbaar";
+        const isPending = st === "in_onderhandeling" || st === "in_optie";
+        const badgeColor = isAvail ? "#15803d" : (isPending ? "#b45309" : "#b91c1c");
+        const badgeBg = isAvail ? "rgba(34,197,94,0.12)" : (isPending ? "rgba(245,158,11,0.14)" : "rgba(239,68,68,0.14)");
+
+        return `
         <tr>
           <td><span class="badge-tag-${item.category === 'koop' ? 'koop' : 'huur'}">🔗 ${item.sourcePlatform || 'Funda'}</span></td>
+          <td>
+            <span style="display:inline-block; padding:0.2rem 0.5rem; font-size:0.75rem; font-weight:600; border-radius:999px; color:${badgeColor}; background:${badgeBg}; white-space:nowrap;">
+              ${isAvail ? '🟢' : (isPending ? '🟠' : '🔴')} ${item.statusLabel || 'Direct Beschikbaar'}
+            </span>
+          </td>
           <td><strong>${item.address}</strong><br><span style="font-size:0.8rem; color:var(--muted);">📍 ${item.postalCode || ''} ${item.city}</span></td>
           <td>${item.propertyType}<br><span style="font-size:0.8rem; color:var(--muted);">${item.surface} m² • ${item.rooms} kamers • Label ${item.energyLabel}</span></td>
-          <td><strong>${item.priceDisplay}</strong><br><span style="font-size:0.75rem; color:#166534;">${item.category === 'koop' ? '10% borg' : 'Geen 4x eis'}</span></td>
+          <td><strong>${item.priceDisplay}</strong><br><span style="font-size:0.75rem; color:#166534;">${item.depositDisplay || (item.category === 'koop' ? '10% borg' : '1 mnd borg')}</span></td>
           <td>
             <a href="woning.html?id=${item.id}" target="_blank" class="btn-secondary btn-sm" style="padding:0.25rem 0.5rem; font-size:0.75rem;">Bekijk</a>
             <button type="button" class="btn-secondary btn-sm btn-delete-scraped" data-id="${item.id}" style="padding:0.25rem 0.5rem; font-size:0.75rem; color:#dc2626; border-color:#fca5a5;">Wis</button>
           </td>
         </tr>
-      `).join("");
+      `;
+      }).join("");
+
+      // Filter knop handlers
+      document.querySelectorAll(".scraper-filter-status").forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll(".scraper-filter-status").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          currentScraperFilter = btn.getAttribute("data-filter");
+          renderScraperListingsTable();
+        };
+      });
 
       scraperListingsTbody.querySelectorAll(".btn-delete-scraped").forEach(btn => {
         btn.addEventListener("click", async () => {

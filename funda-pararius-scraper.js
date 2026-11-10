@@ -354,6 +354,13 @@ function extractDutchFeaturesFromText(html = "") {
     out.publicationDate = cleanText(dateMatch[1]);
   }
 
+  // Status (Verhuurd, Verkocht, In onderhandeling, Onder bod, Onder optie)
+  const statusMatch = text.match(/(?:status|beschikbaarheid)[^:\n]{0,25}:\s*([^\n.,;]{4,40})/i) ||
+                      text.match(/\b(verhuurd\s+onder\s+voorbehoud|verkocht\s+onder\s+voorbehoud|verhuurd|verkocht|in\s+onderhandeling|onder\s+bod|onder\s+optie|in\s+optie)\b/i);
+  if (statusMatch) {
+    out.rawStatus = cleanText(statusMatch[1] || statusMatch[0]);
+  }
+
   return out;
 }
 
@@ -612,6 +619,30 @@ export function convertToWoningVryProperty(raw = {}) {
   const postalCode = cleanText(raw.postalCode || "1012 AB");
   const neighborhood = cleanText(raw.neighborhood || `${city} Centrum`);
 
+  // Status normalisatie (beschikbaar, verhuurd, verkocht, onder bod, etc.)
+  let status = raw.status || "beschikbaar";
+  let statusLabel = raw.statusLabel || "Direct Beschikbaar";
+  const stText = (raw.rawStatus || raw.status || "").toLowerCase();
+  if (stText.includes("verhuurd onder voorbehoud")) {
+    status = "verhuurd_voorbehoud";
+    statusLabel = "Verhuurd onder voorbehoud";
+  } else if (stText.includes("verhuurd") || stText.includes("rented")) {
+    status = "verhuurd";
+    statusLabel = "Verhuurd";
+  } else if (stText.includes("verkocht onder voorbehoud") || stText.includes("onder voorbehoud")) {
+    status = "verkocht_voorbehoud";
+    statusLabel = "Verkocht onder voorbehoud";
+  } else if (stText.includes("verkocht") || stText.includes("sold")) {
+    status = "verkocht";
+    statusLabel = "Verkocht";
+  } else if (stText.includes("onder bod") || stText.includes("in onderhandeling") || stText.includes("under-offer")) {
+    status = "in_onderhandeling";
+    statusLabel = "In onderhandeling / Onder bod";
+  } else if (stText.includes("in optie") || stText.includes("onder optie") || stText.includes("gereserveerd")) {
+    status = "in_optie";
+    statusLabel = "Onder optie / Gereserveerd";
+  }
+
   // Borg & Voorwaarden direct van Funda & Pararius
   let depositDisplay = "";
   let depositAmount = Number(raw.depositAmount) || 0;
@@ -683,8 +714,8 @@ export function convertToWoningVryProperty(raw = {}) {
   return {
     id,
     category,
-    status: raw.status || "beschikbaar",
-    statusLabel: raw.statusLabel || "Direct Beschikbaar",
+    status,
+    statusLabel,
     isFeatured: Boolean(raw.isFeatured ?? true),
     sourcePlatform: platform,
     sourceUrl: raw.sourceUrl || "",
